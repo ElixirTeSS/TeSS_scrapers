@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = 'Uses the a Custom RoR API on http://tess.oerc.ox.ac.uk to upload data in the format being used by the TeSS project.'
   s.authors     = ['Milo Thurston','Niall Beard']
   s.email       = 'milo.thurston@oerc.ox.ac.uk'
-  s.files       = ['lib/upload.rb','lib/material.rb']
+  s.files       = ['lib/tess_api.rb','lib/material.rb','lib/uploader.rb','lib/config.rb']
   s.homepage    = 'https://github.com/ElixirUK/newtessscraper'
   s.license     = 'BSD'
 end
