@@ -2,26 +2,28 @@ class Event
   attr_accessor :external_id, :title,:subtitle,:link,:provider,:field,:description,:category,:start,:end,:sponsor,:venue,:city,:county,
       :country,:postcode,:latitude,:longitude
 
-  def initialize(external_id,title,subtitle,link,provider,field,description,category,start_date,end_date,sponsor,venue,city,county,
-      country,postcode,latitude,longitude)
-    @external_id = id || nil
-    @title = title || nil
-    @subtitle = subtitle || nil
-    @link = link || nil
-    @provider = provider || nil
-    @field = field || nil
-    @description = description || nil
-    @category = category || nil
-    @start = start_date || nil
-    @end = end_date || nil
-    @sponsor = sponsor || nil
-    @venue = venue || nil
-    @city = city || nil
-    @county = county || nil
-    @country = country || nil
-    @postcode = postcode || nil
-    @latitude = latitude || nil
-    @longitude = longitude || nil
+  def initialize(external_id=nil,title=nil,subtitle=nil,link=nil,provider=nil,field=nil,
+                 description=nil,category=nil,start_date=nil,end_date=nil,sponsor=nil,
+                 venue=nil,city=nil,county=nil,country=nil,postcode=nil,latitude=nil,
+                 longitude=nil)
+    @external_id = external_id
+    @title = title
+    @subtitle = subtitle
+    @link = link
+    @provider = provider
+    @field = field
+    @description = description
+    @category = category
+    @start = start_date
+    @end = end_date
+    @sponsor = sponsor
+    @venue = venue
+    @city = city
+    @county = county
+    @country = country
+    @postcode = postcode
+    @latitude = latitude
+    @longitude = longitude
   end
 
 
