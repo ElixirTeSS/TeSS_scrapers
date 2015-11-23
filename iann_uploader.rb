@@ -25,10 +25,12 @@ docs.each do |event|
     case element.values
       when ['id']
         new_event.external_id = element.text
-      when ['keyword'], ['public'],
+      when ['public'],
           ['submission_comment'], ['submission_date'], ['submission_name'],
           ['submission_organization'], ['_version_'], ['submission_email'], ['image']
         puts "Ignored for element type #{element.values}"
+      when ['category'], ['field'], ['keyword']
+        new_event.send("#{element.values.first}=", element.children.collect{|children| children.text})
       else
         puts "Set event.#{element.values.first} to #{ element.text}"
         new_event.send("#{element.values.first}=", element.text)
