@@ -3,21 +3,42 @@ class Uploader
   def self.create_material(data)
     conf = Config.get_config
     action = '/materials.json'
+    data_type = 'material'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = true
-    return self.do_upload(data,url,conf,auth)
+    return self.do_upload(data,url,conf,auth,data_type)
   end
 
     def self.check_material(data)
     conf = Config.get_config
     action = '/materials/check_title.json'
+    data_type = 'material'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = false
-    return self.do_upload(data,url,conf,auth)
+    return self.do_upload(data,url,conf,auth,data_type)
+    end
 
+  def self.create_event(data)
+    conf = Config.get_config
+    action = '/events.json'
+    data_type = 'event'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(data,url,conf,auth,data_type)
   end
 
-  def self.do_upload(data,url,conf,auth)
+  def self.check_event(data)
+    conf = Config.get_config
+    action = '/events/check_title.json'
+    data_type = 'event'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = false
+    return self.do_upload(data,url,conf,auth,data_type)
+  end
+
+
+
+  def self.do_upload(data,url,conf,auth,data_type)
     # process data to json for uploading
     puts "Trying URL: #{url}"
 
@@ -33,7 +54,7 @@ class Uploader
     if auth
       payload = {:user_email => user_email,
                 :user_token => user_token,
-                :material => data.dump
+                 data_type.to_sym => data.dump
       }.to_json
     else
       payload = data.to_json

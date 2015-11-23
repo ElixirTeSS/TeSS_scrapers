@@ -3,6 +3,7 @@ class TessApi
   require 'net/http'
   require 'net/https'
   require 'material'
+  require 'event'
   require 'json'
   require 'uploader'
   require 'config'
