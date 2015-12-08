@@ -1,13 +1,14 @@
 class Material
-  attr_accessor :title, :url, :short_description, :doi, :remote_updated_date, :remote_created_date
+  attr_accessor :title, :url, :short_description, :doi, :remote_updated_date, :remote_created_date, :content_provider_id
 
-  def initialize(title, url, short_description, doi, remote_updated_date, remote_created_date)
+  def initialize(title, url, short_description, doi, remote_updated_date, remote_created_date, content_provider_id)
     @title = title || nil
     @url = url || nil
     @short_description = short_description || nil
     @doi = doi || nil
     @remote_updated_date = remote_updated_date || nil
     @remote_created_date = remote_created_date || nil
+    @content_provider_id = content_provider_id || nil
   end
 
 

@@ -7,4 +7,5 @@ class TessApi
   require 'json'
   require 'uploader'
   require 'config'
+  require 'httparty'
 end

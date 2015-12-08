@@ -36,6 +36,13 @@ class Uploader
     return self.do_upload(data,url,conf,auth,data_type)
   end
 
+  def self.get_content_provider_id(cp_name)
+    conf = Config.get_config
+    content_provider_url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + "/content_providers/#{cp_name}.json"
+    response = HTTParty.get(content_provider_url)
+    return JSON.parse(response.body)['id']
+  end
+
 
 
   def self.do_upload(data,url,conf,auth,data_type)
