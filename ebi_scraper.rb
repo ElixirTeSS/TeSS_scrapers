@@ -22,7 +22,7 @@ def parse_data(page)
 
     #puts "TITLES: #{titles.css('a')[0]['href']}, #{titles.text}"
     #puts "DESC: #{desc.text}"
-    puts "TOPICS: #{topics.collect{|t| t.text }}"
+    #puts "TOPICS: #{topics.collect{|t| t.text }}"
 
     href = titles.css('a')[0]['href']
     $lessons[href] = {}
@@ -30,7 +30,8 @@ def parse_data(page)
     $lessons[href]['text'] = titles.css('a')[0].text
     topic_text =  topics.collect{|t| t.text }
     if !topic_text.empty?
-      $lessons[href]['topics'] = topic_text.map{|t| {'name' => t.gsub(/[^0-9a-z ]/i, ' ')} } # Replaces extract_keywords
+      #$lessons[href]['topics'] = topic_text.map{|t| {'name' => t.gsub(/[^0-9a-z ]/i, ' ')} } # Replaces extract_keywords
+      $lessons[href]['topics'] = topic_text.collect{|t| t.gsub(/[^0-9a-z ]/i, ' ') } # Replaces extract_keywords
     end                                                                             # Non-alphanumeric purged
 
   end
@@ -58,17 +59,16 @@ cp_id = Uploader.get_content_provider_id($owner_org)
 
 # Create the new record
 $lessons.each_key do |key|
-  material = Material.new(title = $lessons[key]['name'],
+
+  material = Material.new(title = $lessons[key]['text'],
                           url = $root_url + key,
-                          short_description = "#{$lessons[key]['name']} from #{$root_url + key}, added automatically.",
+                          short_description = "#{$lessons[key]['text']} from #{$root_url + key}, added automatically.",
                           doi = 'N/A',
                           remote_updated_date = Time.now,
                           remote_created_date = $lessons[key]['last_modified'],
                           content_provider_id = cp_id,
                           scientific_topic = $lessons[key]['topics'],
                           keywords = $lessons[key]['topics'])
-  #TODO: Modify the material class to accept additional keyword parameters
-  # $lessons[key]['topics']
 
   check = Uploader.check_material(material)
   puts check.inspect
@@ -80,4 +80,5 @@ $lessons.each_key do |key|
   else
     puts 'A record by this name already exists.'
   end
+
 end
