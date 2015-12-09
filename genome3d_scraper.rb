@@ -65,7 +65,9 @@ $lessons.each_key do |key|
                           doi = 'N/A',
                           remote_updated_date = Time.now,
                           remote_created_date = $lessons[key]['last_modified'],
-                          content_provider_id = cp_id)
+                          content_provider_id = cp_id,
+                          scientific_topic = [],
+                          keywords = [])
 
   check = Uploader.check_material(material)
   puts check.inspect

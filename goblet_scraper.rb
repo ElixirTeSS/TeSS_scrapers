@@ -9,7 +9,7 @@ require 'httparty'
 $root_url = 'http://www.mygoblet.org/'
 $owner_org = 'goblet'
 $lessons = {}
-$debug = false
+$debug = true
 
 def parse_data(page)
     topic_match = Regexp.new('topic-tags')
@@ -136,7 +136,9 @@ $lessons.each_key do |key|
                           doi = 'N/A',
                           remote_updated_date = Time.now,
                           remote_created_date = $lessons[key]['last_modified'],
-                          content_provider_id = cp_id)
+                          content_provider_id = cp_id,
+                          scientific_topic = [],
+                          keywords = [])
 
   check = Uploader.check_material(material)
   puts check.inspect

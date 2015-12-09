@@ -1,7 +1,9 @@
 class Material
-  attr_accessor :title, :url, :short_description, :doi, :remote_updated_date, :remote_created_date, :content_provider_id
+  attr_accessor :title, :url, :short_description, :doi, :remote_updated_date, :remote_created_date, :content_provider_id,
+                :scientific_topic, :keywords
 
-  def initialize(title, url, short_description, doi, remote_updated_date, remote_created_date, content_provider_id)
+  def initialize(title, url, short_description, doi, remote_updated_date, remote_created_date, content_provider_id,
+                 scientific_topic, keywords)
     @title = title || nil
     @url = url || nil
     @short_description = short_description || nil
@@ -9,6 +11,8 @@ class Material
     @remote_updated_date = remote_updated_date || nil
     @remote_created_date = remote_created_date || nil
     @content_provider_id = content_provider_id || nil
+    @scientific_topic = scientific_topic || nil
+    @keywords = keywords || nil
   end
 
 

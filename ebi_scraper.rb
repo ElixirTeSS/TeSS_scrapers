@@ -7,7 +7,7 @@ require 'tess_api'
 $root_url = 'http://www.ebi.ac.uk'
 $owner_org = 'european-bioinformatics-institute-ebi'
 $lessons = {}
-$debug = false
+$debug = true
 
 
 def parse_data(page)
@@ -64,7 +64,11 @@ $lessons.each_key do |key|
                           doi = 'N/A',
                           remote_updated_date = Time.now,
                           remote_created_date = $lessons[key]['last_modified'],
-                          content_provider_id = cp_id)
+                          content_provider_id = cp_id,
+                          scientific_topic = $lessons[key]['topics'],
+                          keywords = $lessons[key]['topics'])
+  #TODO: Modify the material class to accept additional keyword parameters
+  # $lessons[key]['topics']
 
   check = Uploader.check_material(material)
   puts check.inspect
