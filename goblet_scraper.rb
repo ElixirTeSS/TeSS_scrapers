@@ -127,7 +127,6 @@ end
 
 # Get the details of the content provider
 cp_id = Uploader.get_content_provider_id($owner_org)
-puts "CP: #{cp_id}"
 
 # Create the new record
 $lessons.each_key do |key|
