@@ -39,6 +39,7 @@ class Uploader
   def self.get_content_provider_id(cp_name)
     conf = Config.get_config
     content_provider_url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + "/content_providers/#{cp_name}.json"
+    HTTParty::Basement.default_options.update(verify: false)
     response = HTTParty.get(content_provider_url)
     return JSON.parse(response.body)['id']
   end
