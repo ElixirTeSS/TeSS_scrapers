@@ -11,7 +11,7 @@ class Uploader
 
     def self.check_material(data)
     conf = Config.get_config
-    action = '/materials/check_title.json'
+    action = '/materials/check_exists.json'
     data_type = 'material'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = false
