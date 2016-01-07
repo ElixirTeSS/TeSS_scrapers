@@ -9,7 +9,7 @@ require 'httparty'
 $root_url = 'http://www.mygoblet.org/'
 $owner_org = 'goblet'
 $lessons = {}
-$debug = true
+$debug = false
 
 def parse_data(page)
     topic_match = Regexp.new('topic-tags')

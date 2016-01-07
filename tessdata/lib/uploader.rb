@@ -44,6 +44,14 @@ class Uploader
     return JSON.parse(response.body)['id']
   end
 
+  def self.update_paterial(data)
+    conf = Config.get_config
+    #action = '/materials.json'
+    #data_type = 'material'
+    #url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    #auth = true
+    #return self.do_upload(data,url,conf,auth,data_type)
+  end
 
 
   def self.do_upload(data,url,conf,auth,data_type)
