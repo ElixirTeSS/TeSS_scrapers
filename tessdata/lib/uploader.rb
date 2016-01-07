@@ -29,7 +29,7 @@ class Uploader
 
   def self.check_event(data)
     conf = Config.get_config
-    action = '/events/check_title.json'
+    action = '/events/check_exists.json'
     data_type = 'event'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = false
