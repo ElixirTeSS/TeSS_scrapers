@@ -9,7 +9,7 @@ require 'httparty'
 $root_url = 'http://www.mygoblet.org/'
 $owner_org = 'goblet'
 $lessons = {}
-$debug = false
+$debug = true
 
 def parse_data(page)
     topic_match = Regexp.new('topic-tags')
@@ -148,7 +148,10 @@ $lessons.each_key do |key|
     result = Uploader.create_material(material)
     puts result.inspect
   else
-    puts 'A record by this name already exists.'
+    puts 'A record by this name already exists. Updating!'
+    material.id = check['id']
+    result = Uploader.update_material(material)
+    puts result.inspect
   end
 end
 

@@ -1,10 +1,10 @@
 class Material
   attr_accessor :title, :url, :short_description, :doi, :remote_updated_date, :remote_created_date, :content_provider_id,
-                :scientific_topic, :keywords
+                :scientific_topic, :keywords, :id
 
   def initialize(title=nil, url=nil, short_description=nil, doi=nil, remote_updated_date=nil, remote_created_date=nil,
                  content_provider_id=nil, scientific_topic=[], keywords=[], licence=nil, difficulty_level=nil,
-                 contributors=[], authors=[], target_audience=[])
+                 contributors=[], authors=[], target_audience=[], id=nil)
     @title = title
     @url = url
     @short_description = short_description 
@@ -18,7 +18,8 @@ class Material
     @difficulty_level = target_audience 
     @contributors = target_audience 
     @authors = target_audience 
-    @target_audience = target_audience 
+    @target_audience = target_audience
+    @id = id
   end
 
 

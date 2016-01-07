@@ -6,7 +6,7 @@ class Uploader
     data_type = 'material'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = true
-    return self.do_upload(data,url,conf,auth,data_type)
+    return self.do_upload(data,url,conf,auth,data_type,'post')
   end
 
     def self.check_material(data)
@@ -15,7 +15,7 @@ class Uploader
     data_type = 'material'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = false
-    return self.do_upload(data,url,conf,auth,data_type)
+    return self.do_upload(data,url,conf,auth,data_type,'post')
     end
 
   def self.create_event(data)
@@ -24,7 +24,7 @@ class Uploader
     data_type = 'event'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = true
-    return self.do_upload(data,url,conf,auth,data_type)
+    return self.do_upload(data,url,conf,auth,data_type,'post')
   end
 
   def self.check_event(data)
@@ -33,7 +33,7 @@ class Uploader
     data_type = 'event'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = false
-    return self.do_upload(data,url,conf,auth,data_type)
+    return self.do_upload(data,url,conf,auth,data_type,'post')
   end
 
   def self.get_content_provider_id(cp_name)
@@ -44,17 +44,17 @@ class Uploader
     return JSON.parse(response.body)['id']
   end
 
-  def self.update_paterial(data)
+  def self.update_material(data)
     conf = Config.get_config
-    #action = '/materials.json'
-    #data_type = 'material'
-    #url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
-    #auth = true
-    #return self.do_upload(data,url,conf,auth,data_type)
+    action = "/materials/#{data['id']}.json"
+    data_type = 'material'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(data,url,conf,auth,data_type,'put')
   end
 
 
-  def self.do_upload(data,url,conf,auth,data_type)
+  def self.do_upload(data,url,conf,auth,data_type,method)
     # process data to json for uploading
     puts "Trying URL: #{url}"
 
@@ -82,7 +82,16 @@ class Uploader
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     end
-    req = Net::HTTP::Post.new(uri.request_uri, initheader = { 'Content-Type' =>'application/json' })
+
+    if method == 'put'
+      req = Net::HTTP::Put.new(uri.request_uri, initheader = { 'Content-Type' =>'application/json' })
+    elsif method == 'post'
+      req = Net::HTTP::Post.new(uri.request_uri, initheader = { 'Content-Type' =>'application/json' })
+    else
+      puts "Unknown method '#{method}'!"
+      return
+    end
+
 
     req.body = payload
     res = http.request(req)
@@ -90,6 +99,7 @@ class Uploader
     unless res.code == '201' or res.code == '200'
       puts "Upload failed: #{res.code}"
       puts "ERROR: #{res.body}"
+      puts "PAYLOAD: #{payload}"
       return {}
     end
 
