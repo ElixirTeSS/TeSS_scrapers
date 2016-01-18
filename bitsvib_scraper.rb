@@ -3,7 +3,6 @@
 require 'open-uri'
 require 'nokogiri'
 require 'tess_api'
-require 'httparty'
 
 $root_url = 'https://www.bits.vib.be/training'
 $owner_org = 'bioinformatics-training-and-services'

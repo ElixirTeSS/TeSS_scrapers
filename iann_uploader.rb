@@ -1,7 +1,6 @@
 # This doesn't actually scrape anything, but does perform an upload.
 
 require 'tess_api'
-
 require 'Nokogiri'
 
 
@@ -44,7 +43,10 @@ docs.each do |event|
     result = Uploader.create_event(new_event)
     puts result.inspect
   else
-    puts 'A record by this name already exists.'
+    puts 'A record by this name already exists. Updating!'
+    new_event.id = check['id']
+    result = Uploader.update_event(new_event)
+    puts result.inspect
   end
 end
 

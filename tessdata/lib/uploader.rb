@@ -53,6 +53,15 @@ class Uploader
     return self.do_upload(data,url,conf,auth,data_type,'put')
   end
 
+  def self.update_event(data)
+    conf = Config.get_config
+    action = "/events/#{data['id']}.json"
+    data_type = 'material'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(data,url,conf,auth,data_type,'put')
+  end
+
 
   def self.do_upload(data,url,conf,auth,data_type,method)
     # process data to json for uploading
