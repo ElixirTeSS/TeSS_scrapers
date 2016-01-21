@@ -4,7 +4,7 @@ require 'tess_api'
 require 'Nokogiri'
 
 
-file_name = Time.now.strftime("%Y%m%d.txt")
+file_name = 'iann_events_' +Time.now.strftime("%Y%m%d.txt")
 
 if File.exists?(file_name)
   iann_content = File.open(file_name).read
