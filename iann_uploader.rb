@@ -9,7 +9,7 @@ iann_file = iann_dir + '/iann_events_' +Time.now.strftime("%Y%m%d.txt")
 
 if File.exists?(iann_file)
   iann_content = File.open(iann_file).read
-  puts "Already have a copy of todays iAnn events so loaded from file: '#{iann_filee}'."
+  puts "Already have a copy of todays iAnn events so loaded from file: '#{iann_file}'."
 else
   iann_content = Net::HTTP.get('iann.pro', '/solr/select/?q=*&rows=20000&start=0')
   File.write(iann_file, iann_content)
