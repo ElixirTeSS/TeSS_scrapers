@@ -3,16 +3,17 @@
 require 'tess_api'
 require 'Nokogiri'
 
+iann_dir = 'iann'
+Dir.mkdir(iann_dir) unless Dir.exists?(iann_dir) 
+iann_file = iann_dir + '/iann_events_' +Time.now.strftime("%Y%m%d.txt")
 
-file_name = 'iann_events_' +Time.now.strftime("%Y%m%d.txt")
-
-if File.exists?(file_name)
-  iann_content = File.open(file_name).read
-  puts "Already have a copy of todays iAnn events so loaded from file: '#{file_name}'"
+if File.exists?(iann_file)
+  iann_content = File.open(iann_file).read
+  puts "Already have a copy of todays iAnn events so loaded from file: '#{iann_filee}'."
 else
   iann_content = Net::HTTP.get('iann.pro', '/solr/select/?q=*&rows=20000&start=0')
-  File.write(file_name, iann_content)
-  puts "Retrieved new iAnn dump for today. Saved in file #{file_name}"
+  File.write(iann_file, iann_content)
+  puts "Retrieved new iAnn dump for today. Saved in file #{File.absolute_path(iann_file)}."
 end
 
 
