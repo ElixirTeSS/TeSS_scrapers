@@ -116,6 +116,9 @@ end
 # Main body of the script below, functions above #
 ##################################################
 
+puts "This is deprecated. Use goblet_api_scraper instead."
+exit
+
 # Actually run the code here...
 if $debug
   parse_data('a random string')
