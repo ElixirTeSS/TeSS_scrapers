@@ -6,7 +6,7 @@ require 'tess_api'
 require 'geocoder'
 
 
-$root_url = 'http://www.elixir-europe.org/events/'
+$root_url = 'http://www.elixir-europe.org'
 $owner_org = 'elixir'
 $events = {}
 $debug = false
@@ -65,7 +65,7 @@ if $debug
   parse_data('a random string')
 else
   0.upto(1) do |p|
-    parse_data('upcoming?page=' + p.to_s)
+    parse_data('/events/upcoming?page=' + p.to_s)
   end
 end
 
@@ -98,14 +98,18 @@ $events.each_key do |key|
   newpage.css('script').each do |script|
     begin
       lat,lon = coord_match.match(script).captures
+      if lat and lon
+        break
+      end
+      print "LAT: #{lat}, LON: #{lon}"
     rescue
     end
   end
 
-  event = Event.new(nil,$events[key]['title'],nil,$root_url + key,cp_id,nil,nil,nil,$events[key]['category'],
+  event = Event.new(nil,nil,$events[key]['title'],nil,$root_url + key,cp_id,nil,nil,nil,$events[key]['category'],
                     $events[key]['start_date'], $events[key]['end_date'],nil,$events[key]['location'],nil,nil,nil,nil,lat,lon)
 
-  #puts "E: #{event.inspect}"
+  puts "E: #{event.inspect}"
 
 
   check = Uploader.check_event(event)
