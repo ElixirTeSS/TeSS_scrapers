@@ -56,7 +56,7 @@ class Uploader
   def self.update_event(data)
     conf = Config.get_config
     action = "/events/#{data['id']}.json"
-    data_type = 'material'
+    data_type = 'event'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = true
     return self.do_upload(data,url,conf,auth,data_type,'put')
