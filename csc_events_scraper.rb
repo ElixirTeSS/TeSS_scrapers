@@ -8,7 +8,7 @@ require 'tess_api'
 $root_url = 'https://www.csc.fi/web/training/'
 $owner_org = 'csc'
 $events = {}
-$debug = false
+$debug = true
 
 def parse_data()
 
@@ -83,7 +83,7 @@ $events.each_key do |key|
     end
   end
 
-  event = Event.new(nil,nil,$events[key]['title'],nil,key,cp_id,nil,$events[key]['description'],$events[key]['category'],
+  event = Event.new(nil,cp_id,nil,$events[key]['title'],nil,key,'CSC',nil,$events[key]['description'],$events[key]['category'],
                     $events[key]['category'],start_date,end_date,nil,venue,nil,nil,nil,nil,lat,lon)
 
 

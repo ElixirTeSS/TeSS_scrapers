@@ -9,7 +9,7 @@ require 'geocoder'
 $root_url = 'http://www.elixir-europe.org'
 $owner_org = 'elixir'
 $events = {}
-$debug = false
+$debug = true
 
 def parse_data(page)
 
@@ -106,10 +106,10 @@ $events.each_key do |key|
     end
   end
 
-  event = Event.new(nil,nil,$events[key]['title'],nil,$root_url + key,cp_id,nil,nil,nil,$events[key]['category'],
+  event = Event.new(nil,cp_id,nil,$events[key]['title'],nil,$root_url + key,'Elixir',nil,nil,nil,$events[key]['category'],
                     $events[key]['start_date'], $events[key]['end_date'],nil,$events[key]['location'],nil,nil,nil,nil,lat,lon)
 
-  puts "E: #{event.inspect}"
+  #puts "E: #{event.inspect}"
 
 
   check = Uploader.check_event(event)
