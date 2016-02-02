@@ -1,5 +1,14 @@
 class Uploader
 
+  def self.check_material(data)
+    conf = Config.get_config
+    action = '/materials/check_exists.json'
+    data_type = 'material'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = false
+    return self.do_upload(data,url,conf,auth,data_type,'post')
+  end
+
   def self.create_material(data)
     conf = Config.get_config
     action = '/materials.json'
@@ -7,41 +16,6 @@ class Uploader
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = true
     return self.do_upload(data,url,conf,auth,data_type,'post')
-  end
-
-    def self.check_material(data)
-    conf = Config.get_config
-    action = '/materials/check_exists.json'
-    data_type = 'material'
-    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
-    auth = false
-    return self.do_upload(data,url,conf,auth,data_type,'post')
-    end
-
-  def self.create_event(data)
-    conf = Config.get_config
-    action = '/events.json'
-    data_type = 'event'
-    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
-    auth = true
-    return self.do_upload(data,url,conf,auth,data_type,'post')
-  end
-
-  def self.check_event(data)
-    conf = Config.get_config
-    action = '/events/check_exists.json'
-    data_type = 'event'
-    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
-    auth = false
-    return self.do_upload(data,url,conf,auth,data_type,'post')
-  end
-
-  def self.get_content_provider_id(cp_name)
-    conf = Config.get_config
-    content_provider_url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + "/content_providers/#{cp_name}.json"
-    HTTParty::Basement.default_options.update(verify: false)
-    response = HTTParty.get(content_provider_url)
-    return JSON.parse(response.body)['id']
   end
 
   def self.update_material(data)
@@ -53,6 +27,26 @@ class Uploader
     return self.do_upload(data,url,conf,auth,data_type,'put')
   end
 
+
+
+  def self.check_event(data)
+    conf = Config.get_config
+    action = '/events/check_exists.json'
+    data_type = 'event'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = false
+    return self.do_upload(data,url,conf,auth,data_type,'post')
+  end
+
+  def self.create_event(data)
+    conf = Config.get_config
+    action = '/events.json'
+    data_type = 'event'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(data,url,conf,auth,data_type,'post')
+  end
+
   def self.update_event(data)
     conf = Config.get_config
     action = "/events/#{data['id']}.json"
@@ -61,6 +55,54 @@ class Uploader
     auth = true
     return self.do_upload(data,url,conf,auth,data_type,'put')
   end
+
+
+
+  def self.check_content_provider(data)
+    conf = Config.get_config
+    action = '/content_providers/check_exists.json'
+    data_type = 'content_provider'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = false
+    return self.do_upload(data,url,conf,auth,data_type,'post')
+  end
+
+  def self.create_content_provider(data)
+    conf = Config.get_config
+    action = '/content_providers.json'
+    data_type = 'content_provider'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(data,url,conf,auth,data_type,'post')
+  end
+
+  def self.update_content_provider(data)
+    conf = Config.get_config
+    action = "/content_providers/#{data['id']}.json"
+    data_type = 'content_provider'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(data,url,conf,auth,data_type,'put')
+  end
+
+  def self.create_or_update_content_provider(content_provider)
+    tess_cp = Uploader.check_content_provider(content_provider)
+    if (tess_cp and !tess_cp.empty?)
+      content_provider.id = tess_cp['id']
+      Uploader.update_content_provider(content_provider)
+    else
+      Uploader.create_content_provider(content_provider)
+    end
+  end
+
+  def self.get_content_provider_id(cp_name)
+    conf = Config.get_config
+    content_provider_url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + "/content_providers/#{cp_name}.json"
+    HTTParty::Basement.default_options.update(verify: false)
+    response = HTTParty.get(content_provider_url)
+    return JSON.parse(response.body)['id']
+  end
+
 
 
   def self.do_upload(data,url,conf,auth,data_type,method)
