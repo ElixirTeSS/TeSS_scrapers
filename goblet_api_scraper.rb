@@ -61,16 +61,21 @@ end
 parse_data($courses)
 parse_data($materials)
 
+cp = ContentProvider.new('Goblet',
+ 'http://mygoblet.org',
+ 'http://1.bp.blogspot.com/-j5qAvFKaJPc/VUO-vE4ZiII/AAAAAAAAEog/6ldLHrM0ges/s1600/GobletLogo.png', 
+ 'This is GOBLET!!!!')
+cp = Uploader.create_or_update_content_provider(cp)
 
 # Get the details of the content provider
-cp_id = Uploader.get_content_provider_id($owner_org)
+cp_id = cp['id']#Uploader.get_content_provider_id($owner_org)
 
 # Create the new record
 $lessons.each_key do |key|
   material = Material.new(title = $lessons[key]['title'],
                           url = key,
                           short_description = "#{$lessons[key]['title']} from #{$root_url}, added automatically.",
-                          doi = 'N/A',
+                          doi = nil,
                           remote_updated_date = $lessons[key]['updated'],
                           remote_created_date = nil,
                           content_provider_id = cp_id,

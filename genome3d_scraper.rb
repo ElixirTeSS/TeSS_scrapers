@@ -54,15 +54,21 @@ end
 # parse the data
 parse_data('tutorials/page/Public/Page/Tutorial/Index')
 
+cp = ContentProvider.new('Genome3d',
+ 'http://genome3d.eu',
+ 'https://pbs.twimg.com/profile_images/2593830125/2b54r4g2041o4vhy96xl_400x400.png', 
+ 'This is Genome3D!!!!')
+cp = Uploader.create_or_update_content_provider(cp)
+
 # Get the details of the content provider
-cp_id = Uploader.get_content_provider_id($owner_org)
+cp_id = cp['id']#Uploader.get_content_provider_id($owner_org)
 
 # Create the new record
 $lessons.each_key do |key|
   material = Material.new(title = $lessons[key]['name'],
                           url = $root_url + key,
                           short_description = "#{$lessons[key]['name']} from #{$root_url + key}, added automatically.",
-                          doi = 'N/A',
+                          doi = nil,
                           remote_updated_date = Time.now,
                           remote_created_date = $lessons[key]['last_modified'],
                           content_provider_id = cp_id,
