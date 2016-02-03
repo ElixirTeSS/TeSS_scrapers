@@ -61,14 +61,13 @@ end
 parse_data($courses)
 parse_data($materials)
 
-cp = ContentProvider.new('Goblet',
- 'http://mygoblet.org',
- 'http://1.bp.blogspot.com/-j5qAvFKaJPc/VUO-vE4ZiII/AAAAAAAAEog/6ldLHrM0ges/s1600/GobletLogo.png', 
- 'This is GOBLET!!!!')
+cp = ContentProvider.new(
+    "GOBLET",
+    "http://www.mygoblet.org",
+    "http://www.mygoblet.org/sites/default/files/logo_goblet_trans.png",
+    "GOBLET, the Global Organisation for Bioinformatics Learning, Education and Training, is a legally registered foundation providing a global, sustainable support and networking structure for bioinformatics educators/trainers and students/trainees."
+    )
 cp = Uploader.create_or_update_content_provider(cp)
-
-# Get the details of the content provider
-cp_id = cp['id']#Uploader.get_content_provider_id($owner_org)
 
 # Create the new record
 $lessons.each_key do |key|
@@ -78,22 +77,9 @@ $lessons.each_key do |key|
                           doi = nil,
                           remote_updated_date = $lessons[key]['updated'],
                           remote_created_date = nil,
-                          content_provider_id = cp_id,
+                          content_provider_id = cp['id'],
                           scientific_topic = $lessons[key]['topics'],
                           keywords = $lessons[key]['topics'])
-
-  check = Uploader.check_material(material)
-  puts check.inspect
-
-  if check.empty?
-    puts 'No record by this name found. Creating it...'
-    result = Uploader.create_material(material)
-    puts result.inspect
-  else
-    puts 'A record by this name already exists. Updating!'
-    material.id = check['id']
-    result = Uploader.update_material(material)
-    puts result.inspect
-  end
+  Uploader.create_or_update_material(material)
 end
 

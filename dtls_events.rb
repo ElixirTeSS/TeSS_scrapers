@@ -3,6 +3,14 @@
 require 'tess_api'
 require 'Nokogiri'
 
+cp = ContentProvider.new(
+    "DTLS - Dutch Techcentre For Life Sciences",
+    "https://www.dtls.nl",
+    "http://www.dtls.nl/wp-content/themes/dtls/images/logo.png",
+    "DTL focuses on the great potential of high-end technologies in pioneering life science research, and on the skills and solutions to professionally use computers to deal with the ever-growing data streams in research."
+    )
+cp = Uploader.create_or_update_content_provider(cp)
+
 dtls_dir = 'dtls'
 Dir.mkdir(dtls_dir) unless Dir.exists?(dtls_dir) 
 dtls_file = dtls_dir + '/dtls_events_' +Time.now.strftime("%Y%m%d.txt")
@@ -20,19 +28,19 @@ docs = Nokogiri::XML(dtls_content).xpath('//item')
 
 docs.first.element_children.each{|x| x.name}
 
-
-docs.each do |event|
-  new_event = Event.new
-  event.element_children.each do |element|
-  	new_event.category = 'course'
-  	new_event.provider = 'DTLS'
+docs.each do |event_item|
+  event = Event.new
+  event_item.element_children.each do |element|
+    event.content_provider_id = cp['id']
+  	event.category = 'course'
+  	event.provider = 'DTLS'
   	case element.name
       when 'title'
-        new_event.title = element.text
+        event.title = element.text
       when 'link'
-      	new_event.link = element.text
+      	event.link = element.text
       when 'description'
-      	new_event.description = element.text
+      	event.description = element.text
       when 'creator'
       	# no creator field. Not sure needs one
       when 'guid'
@@ -43,18 +51,6 @@ docs.each do |event|
       	#chuck away
     end
   end
-  check = Uploader.check_event(new_event)
-  puts check.inspect
-
-  if check.empty?
-    puts 'No record by this name found. Creating it...'
-    result = Uploader.create_event(new_event)
-    puts result.inspect
-  else
-    puts 'A record by this name already exists. Updating!'
-    new_event.id = check['id']
-    result = Uploader.update_event(new_event)
-    puts result.inspect
-  end
+  Uploader.create_or_update_event(event)
 end
 
