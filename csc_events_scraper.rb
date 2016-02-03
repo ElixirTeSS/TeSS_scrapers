@@ -8,7 +8,7 @@ require 'tess_api'
 $root_url = 'https://www.csc.fi/web/training/'
 $owner_org = 'csc'
 $events = {}
-$debug = true
+$debug = Config.debug?
 
 def parse_data()
 

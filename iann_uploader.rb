@@ -3,6 +3,8 @@
 require 'tess_api'
 require 'Nokogiri'
 
+$debug = Config.debug?
+
 cp = ContentProvider.new(
     "iAnn",
     "https://iann.pro",
@@ -31,17 +33,19 @@ docs.each do |event_item|
   event = Event.new
   event_item.children.each do |element|
     event.content_provider_id = cp['id']
-    case element.values
-      when ['id']
-        event.external_id = element.text
-      when ['public'],
-          ['submission_comment'], ['submission_date'], ['submission_name'],
-          ['submission_organization'], ['_version_'], ['submission_email'], ['image']
-        #puts "Ignored for element type #{element.values}"
-      when ['category'], ['field'], ['keyword']
-        event.send("#{element.values.first}=", element.children.collect{|children| children.text})
-      else
-        event.send("#{element.values.first}=", element.text)
+    if element.text and !element.text.empty?
+      case element.values
+        when ['id']
+          event.external_id = element.text
+        when ['public'],
+            ['submission_comment'], ['submission_date'], ['submission_name'],
+            ['submission_organization'], ['_version_'], ['submission_email'], ['image']
+          #puts "Ignored for element type #{element.values}"
+        when ['category'], ['field'], ['keyword']
+          event.send("#{element.values.first}=", element.children.collect{|children| children.text})
+        else
+          event.send("#{element.values.first}=", element.text)
+      end
     end
   end
 

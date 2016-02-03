@@ -7,7 +7,7 @@ require 'tess_api'
 $root_url = 'https://www.bits.vib.be/training'
 $owner_org = 'bioinformatics-training-and-services'
 $lessons = {}
-$debug = false
+$debug = Config.debug?
 
 def parse_data()
   #upcoming_match = Regexp.new('upcoming-trainings')

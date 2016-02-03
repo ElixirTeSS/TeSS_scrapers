@@ -4,7 +4,7 @@ require 'tess_api'
 
 
 $lessons = {}
-$debug = false
+$debug = Config.debug?
 $git_dir = "#{ENV['HOME']}/Work/Web/bc/"
 $owner_org = 'software-carpentry'
 $git_url = "https://github.com/swcarpentry/bc/tree/gh-pages/"

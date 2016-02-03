@@ -28,4 +28,7 @@ class Config
 
   end
 
+  def self.debug?
+    return myini = IniFile.load('uploader_config.txt')['Main']['debug'] || false
+  end
 end

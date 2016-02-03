@@ -7,7 +7,7 @@ require 'tess_api'
 $root_url = 'http://genome3d.eu/'
 $owner_org = 'genome-3d'
 $lessons = {}
-$debug = false
+$debug = Config.debug?
 
 
 def parse_data(page)

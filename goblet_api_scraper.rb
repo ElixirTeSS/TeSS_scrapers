@@ -9,7 +9,7 @@ $courses = 'http://www.mygoblet.org/training-portal/courses-xml'
 $materials = 'http://www.mygoblet.org/training-portal/materials-xml'
 $owner_org = 'goblet'
 $lessons = {}
-$debug = false
+$debug = Config.debug?
 
 def parse_data(page)
   doc = Nokogiri::XML(open(page))

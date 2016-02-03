@@ -7,7 +7,7 @@ require 'tess_api'
 $root_url = 'http://www.ebi.ac.uk'
 $owner_org = 'european-bioinformatics-institute-ebi'
 $lessons = {}
-$debug = true
+$debug = Config.debug?
 
 
 def parse_data(page)

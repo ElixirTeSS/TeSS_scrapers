@@ -7,7 +7,7 @@ require 'tess_api'
 $root_url = 'http://edu.isb-sib.ch/'
 $owner_org = 'swiss-institute-of-bioinformatics'
 $lessons = {}
-$debug = false
+$debug = Config.debug?
 
 
 def parse_data(page)

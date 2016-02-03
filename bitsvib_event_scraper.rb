@@ -8,7 +8,7 @@ $root_url = 'http://www.vib.be/en/training/research-training/courses/Pages/defau
 $owner_org = 'bioinformatics-training-and-services'
 $events = {}
 $categories = %w{Bioinformatics, Skills, Science, Coaching}
-$debug = true
+$debug = Config.debug?
 
 cp = ContentProvider.new(
     "VIB Bioinformatics Training and Services",

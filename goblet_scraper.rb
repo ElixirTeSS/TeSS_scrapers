@@ -9,7 +9,7 @@ require 'httparty'
 $root_url = 'http://www.mygoblet.org/'
 $owner_org = 'goblet'
 $lessons = {}
-$debug = true
+$debug = Config.debug?
 
 def parse_data(page)
     topic_match = Regexp.new('topic-tags')
@@ -116,8 +116,6 @@ end
 # Main body of the script below, functions above #
 ##################################################
 
-puts "This is deprecated. Use goblet_api_scraper instead."
-exit
 
 # Actually run the code here...
 if $debug
