@@ -7,7 +7,7 @@ require 'tess_api'
 $root_url = 'https://www.bits.vib.be/training'
 $owner_org = 'bioinformatics-training-and-services'
 $lessons = {}
-$debug = false
+$debug = Config.debug?
 
 def parse_data()
   #upcoming_match = Regexp.new('upcoming-trainings')
@@ -48,31 +48,24 @@ end
 
 parse_data
 
-# Get the details of the content provider
-cp_id = Uploader.get_content_provider_id($owner_org)
+cp = ContentProvider.new(
+    "VIB Bioinformatics Training and Services",
+    "https://www.bits.vib.be/",
+    "http://www.vib.be/VIBMediaLibrary/Logos/Service_facilities/BITS_website.jpg",
+    "Belgian provider of Bioinformatics and Software Training, plus informatics services and resource management support."
+    )
+cp = Uploader.create_or_update_content_provider(cp)
+
 
 $lessons.each_key do |key|
   material = Material.new(title = $lessons[key],
                           url = $root_url + key,
                           short_description = "#{$lessons[key]} from #{$root_url + key}, added automatically.",
-                          doi = 'N/A',
+                          doi = nil,
                           remote_updated_date = Time.now,
                           remote_created_date = nil,
-                          content_provider_id = cp_id,
+                          content_provider_id = cp['id'],
                           scientific_topic = [],
                           keywords = [])
-
-  check = Uploader.check_material(material)
-  puts check.inspect
-
-  if check.empty?
-    puts 'No record by this name found. Creating it...'
-    result = Uploader.create_material(material)
-    puts result.inspect
-  else
-    puts 'A record by this name already exists. Updating!'
-    material.id = check['id']
-    result = Uploader.update_material(material)
-    puts result.inspect
-  end
+  Uploader.create_or_update_material(material)
 end

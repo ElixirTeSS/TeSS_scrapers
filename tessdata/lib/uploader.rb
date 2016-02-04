@@ -1,39 +1,120 @@
 class Uploader
 
-  def self.create_material(data)
-    conf = Config.get_config
-    action = '/materials.json'
-    data_type = 'material'
-    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
-    auth = true
-    return self.do_upload(data,url,conf,auth,data_type,'post')
-  end
-
-    def self.check_material(data)
+  def self.check_material(material)
     conf = Config.get_config
     action = '/materials/check_exists.json'
     data_type = 'material'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = false
-    return self.do_upload(data,url,conf,auth,data_type,'post')
-    end
-
-  def self.create_event(data)
-    conf = Config.get_config
-    action = '/events.json'
-    data_type = 'event'
-    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
-    auth = true
-    return self.do_upload(data,url,conf,auth,data_type,'post')
+    return self.do_upload(material,url,conf,auth,data_type,'post')
   end
 
-  def self.check_event(data)
+  def self.create_material(material)
+    conf = Config.get_config
+    action = '/materials.json'
+    data_type = 'material'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(material,url,conf,auth,data_type,'post')
+  end
+
+  def self.update_material(material)
+    conf = Config.get_config
+    action = "/materials/#{material['id']}.json"
+    data_type = 'material'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(material,url,conf,auth,data_type,'put')
+  end
+
+  def self.create_or_update_material(material)
+    check = Uploader.check_material(material)
+    if check.empty?
+      result = Uploader.create_material(material)
+      puts "Created new material '#{material.title}'"
+    else
+      material.id = check['id']
+      result = Uploader.update_material(material)
+      puts "Updated existing material '#{material.title}'"
+    end
+  end
+ 
+  def self.check_event(event)
     conf = Config.get_config
     action = '/events/check_exists.json'
     data_type = 'event'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
     auth = false
+    return self.do_upload(event,url,conf,auth,data_type,'post')
+  end
+
+  def self.create_event(event)
+    conf = Config.get_config
+    action = '/events.json'
+    data_type = 'event'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(event,url,conf,auth,data_type,'post')
+  end
+
+  def self.update_event(event)
+    conf = Config.get_config
+    action = "/events/#{event['id']}.json"
+    data_type = 'event'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(event,url,conf,auth,data_type,'put')
+  end
+
+  def self.create_or_update_event(event)
+    check = Uploader.check_event(event)
+    if check.empty?
+      result = Uploader.create_event(event)
+      puts "Created new event '#{event.title}'"
+    else
+      event.id = check['id']
+      result = Uploader.update_event(event)
+      puts "Updated existing event '#{event.title}'"
+    end
+  end
+
+
+  def self.check_content_provider(data)
+    conf = Config.get_config
+    action = '/content_providers/check_exists.json'
+    data_type = 'content_provider'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = false
     return self.do_upload(data,url,conf,auth,data_type,'post')
+  end
+
+  def self.create_content_provider(data)
+    conf = Config.get_config
+    action = '/content_providers.json'
+    data_type = 'content_provider'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(data,url,conf,auth,data_type,'post')
+  end
+
+  def self.update_content_provider(data)
+    puts "Updating Content Provider #{data.id} - #{data.title}"
+    conf = Config.get_config
+    action = "/content_providers/#{data['id']}.json"
+    data_type = 'content_provider'
+    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
+    auth = true
+    return self.do_upload(data,url,conf,auth,data_type,'put')
+  end
+
+  def self.create_or_update_content_provider(content_provider)
+    tess_cp = Uploader.check_content_provider(content_provider)
+    if (tess_cp and !tess_cp.empty?)
+      content_provider.id = tess_cp['id']
+      Uploader.update_content_provider(content_provider)
+    else
+      Uploader.create_content_provider(content_provider)
+    end
   end
 
   def self.get_content_provider_id(cp_name)
@@ -44,28 +125,10 @@ class Uploader
     return JSON.parse(response.body)['id']
   end
 
-  def self.update_material(data)
-    conf = Config.get_config
-    action = "/materials/#{data['id']}.json"
-    data_type = 'material'
-    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
-    auth = true
-    return self.do_upload(data,url,conf,auth,data_type,'put')
-  end
-
-  def self.update_event(data)
-    conf = Config.get_config
-    action = "/events/#{data['id']}.json"
-    data_type = 'event'
-    url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
-    auth = true
-    return self.do_upload(data,url,conf,auth,data_type,'put')
-  end
 
 
   def self.do_upload(data,url,conf,auth,data_type,method)
     # process data to json for uploading
-    puts "Trying URL: #{url}"
 
     user_email = conf['user_email']
     user_token = conf['user_token']

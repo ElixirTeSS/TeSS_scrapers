@@ -7,7 +7,7 @@ require 'tess_api'
 $root_url = 'http://edu.isb-sib.ch/'
 $owner_org = 'swiss-institute-of-bioinformatics'
 $lessons = {}
-$debug = false
+$debug = Config.debug?
 
 
 def parse_data(page)
@@ -49,34 +49,25 @@ end
 # parse the data
 parse_data('course/index.php?categoryid=2')
 
-
-# Get the details of the content provider
-cp_id = Uploader.get_content_provider_id($owner_org)
-
+cp = ContentProvider.new(
+    "Swiss Institute of Bioinformatics",
+    "http://edu.isb-sib.ch/",
+    "http://bcf.isb-sib.ch/img/sib.png",
+    "The SIB Swiss Institute of Bioinformatics is an academic, non-profit foundation recognised of public utility and established in 1998. SIB coordinates research and education in bioinformatics throughout Switzerland and provides high quality bioinformatics services to the national and international research community."
+    )
+cp = Uploader.create_or_update_content_provider(cp)
 # Create the new record
 $lessons.each_key do |key|
   material = Material.new(title = $lessons[key]['name'],
                           url = key,
                           short_description = $lessons[key]['description'],
-                          doi = 'N/A',
+                          doi = nil,
                           remote_updated_date = $lessons[key]['updated'],
                           remote_created_date = nil,
-                          content_provider_id = cp_id,
+                          content_provider_id = cp['id'],
                           scientific_topic = [],
                           keywords = [])
 
-  check = Uploader.check_material(material)
-  puts check.inspect
-
-  if check.empty?
-    puts 'No record by this name found. Creating it...'
-    result = Uploader.create_material(material)
-    puts result.inspect
-  else
-    puts 'A record by this name already exists. Updating!'
-    material.id = check['id']
-    result = Uploader.update_material(material)
-    puts result.inspect
-  end
+  Uploader.create_or_update_material(material)
 end
 

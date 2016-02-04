@@ -9,7 +9,11 @@ require 'geocoder'
 $root_url = 'http://www.elixir-europe.org'
 $owner_org = 'elixir'
 $events = {}
+<<<<<<< HEAD
 $debug = false
+=======
+$debug = Config.debug?
+>>>>>>> 31db55b5c71198606b71ce8d37c59e49d9d91482
 
 def parse_data(page)
 
@@ -69,8 +73,17 @@ else
   end
 end
 
-# Get the details of the content provider
-cp_id = Uploader.get_content_provider_id($owner_org)
+
+cp = ContentProvider.new(
+    "ELIXIR",
+    "https://www.elixir-europe.org/",
+    "http://media.eurekalert.org/multimedia_prod/pub/web/38675_web.jpg",
+    "Building a sustainable European infrastructure for biological information, supporting life science research and its translation to medicine, agriculture, bioindustries and society.
+ELIXIR unites Europe’s leading life science organisations in managing and safeguarding the massive amounts of data being generated every day by publicly funded research. It is a pan-European research infrastructure for biological information.
+ELIXIR provides the facilities necessary for life science researchers - from bench biologists to cheminformaticians - to make the most of our rapidly growing store of information about living systems, which is the foundation on which our understanding of life is built."
+    )
+cp = Uploader.create_or_update_content_provider(cp)
+
 
 # Create the new record
 coord_match = Regexp.new('\"coordinates\":\[([\-\.\d]+),([\-\.\d]+)\]')
@@ -106,26 +119,12 @@ $events.each_key do |key|
     end
   end
 
-  event = Event.new(nil,cp_id,nil,$events[key]['title'],nil,$root_url + key,'Elixir',nil,nil,nil,$events[key]['category'],
+  event = Event.new(nil,cp['id'],nil,$events[key]['title'],nil,$root_url + key,'Elixir',nil,nil,nil,$events[key]['category'],
                     $events[key]['start_date'], $events[key]['end_date'],nil,$events[key]['location'],nil,nil,nil,nil,lat,lon)
 
   #puts "E: #{event.inspect}"
 
-
-  check = Uploader.check_event(event)
-  puts check.inspect
-
-  if check.empty?
-    puts 'No record by this name found. Creating it...'
-    result = Uploader.create_event(event)
-    puts result.inspect
-  else
-    puts 'A record by this name already exists. Updating!'
-    event.id = check['id']
-    result = Uploader.update_event(event)
-    puts result.inspect
-  end
-
+  Uploader.create_or_update_event(event)
 
 end
 

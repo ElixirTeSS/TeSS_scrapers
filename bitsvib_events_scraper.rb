@@ -8,7 +8,15 @@ $root_url = 'http://www.vib.be/en/training/research-training/courses/Pages/defau
 $owner_org = 'bioinformatics-training-and-services'
 $events = {}
 $categories = %w{Bioinformatics, Skills, Science, Coaching}
-$debug = true
+$debug = Config.debug?
+
+cp = ContentProvider.new(
+    "VIB Bioinformatics Training and Services",
+    "https://www.bits.vib.be/",
+    "http://www.vib.be/VIBMediaLibrary/Logos/Service_facilities/BITS_website.jpg",
+    "Provider of Bioinformatics and software training, plus informatics services and resource management support."
+    )
+cp = Uploader.create_or_update_content_provider(cp)
 
 
 def parse_data()

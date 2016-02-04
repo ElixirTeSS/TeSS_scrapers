@@ -3,6 +3,16 @@
 require 'tess_api'
 require 'Nokogiri'
 
+$debug = Config.debug?
+
+cp = ContentProvider.new(
+    "iAnn",
+    "https://iann.pro",
+    "http://iann.pro/sites/default/files/itico_logo.png",
+    "Enabling Collaborative Announcement Dissemination"
+    )
+cp = Uploader.create_or_update_content_provider(cp)
+
 iann_dir = 'iann'
 Dir.mkdir(iann_dir) unless Dir.exists?(iann_dir) 
 iann_file = iann_dir + '/iann_events_' +Time.now.strftime("%Y%m%d.txt")
@@ -19,35 +29,26 @@ end
 
 docs = Nokogiri::HTML(iann_content).xpath('//doc')
 
-docs.each do |event|
-  new_event = Event.new
-  event.children.each do |element|
-    case element.values
-      when ['id']
-        new_event.external_id = element.text
-      when ['public'],
-          ['submission_comment'], ['submission_date'], ['submission_name'],
-          ['submission_organization'], ['_version_'], ['submission_email'], ['image']
-        puts "Ignored for element type #{element.values}"
-      when ['category'], ['field'], ['keyword']
-        new_event.send("#{element.values.first}=", element.children.collect{|children| children.text})
-      else
-        puts "Set event.#{element.values.first} to #{ element.text}"
-        new_event.send("#{element.values.first}=", element.text)
+docs.each do |event_item|
+  event = Event.new
+  event_item.children.each do |element|
+    event.content_provider_id = cp['id']
+    if element.text and !element.text.empty?
+      case element.values
+        when ['id']
+          event.external_id = element.text
+        when ['public'],
+            ['submission_comment'], ['submission_date'], ['submission_name'],
+            ['submission_organization'], ['_version_'], ['submission_email'], ['image']
+          #puts "Ignored for element type #{element.values}"
+        when ['category'], ['field'], ['keyword']
+          event.send("#{element.values.first}=", element.children.collect{|children| children.text})
+        else
+          event.send("#{element.values.first}=", element.text)
+      end
     end
   end
-  check = Uploader.check_event(new_event)
-  puts check.inspect
 
-  if check.empty?
-    puts 'No record by this name found. Creating it...'
-    result = Uploader.create_event(new_event)
-    puts result.inspect
-  else
-    puts 'A record by this name already exists. Updating!'
-    new_event.id = check['id']
-    result = Uploader.update_event(new_event)
-    puts result.inspect
-  end
+  Uploader.create_or_update_event(event)
 end
 

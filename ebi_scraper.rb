@@ -7,7 +7,7 @@ require 'tess_api'
 $root_url = 'http://www.ebi.ac.uk'
 $owner_org = 'european-bioinformatics-institute-ebi'
 $lessons = {}
-$debug = true
+$debug = Config.debug?
 
 
 def parse_data(page)
@@ -54,8 +54,14 @@ parse_data(first_page)
     parse_data(page)
 end
 
-# Get the details of the content provider
-cp_id = Uploader.get_content_provider_id($owner_org)
+cp = ContentProvider.new(
+ "European Bioinformatics Institute (EBI)",
+ "http://www.ebi.ac.uk",
+ "http://www.ebi.ac.uk/miriam/static/main/img/EBI_logo.png",
+ "EMBL-EBI provides freely available data from life science experiments, performs basic research in computational biology and offers an extensive user training programme, supporting researchers in academia and industry."
+)
+
+cp = Uploader.create_or_update_content_provider(cp)
 
 # Create the new record
 $lessons.each_key do |key|
@@ -63,10 +69,10 @@ $lessons.each_key do |key|
   material = Material.new(title = $lessons[key]['text'],
                           url = $root_url + key,
                           short_description = "#{$lessons[key]['text']} from #{$root_url + key}, added automatically.",
-                          doi = 'N/A',
+                          doi = nil,
                           remote_updated_date = Time.now,
                           remote_created_date = $lessons[key]['last_modified'],
-                          content_provider_id = cp_id,
+                          content_provider_id = cp['id'],
                           scientific_topic = $lessons[key]['topics'],
                           keywords = $lessons[key]['topics'])
 

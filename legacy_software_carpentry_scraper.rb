@@ -4,7 +4,7 @@ require 'tess_api'
 
 
 $lessons = {}
-$debug = false
+$debug = Config.debug?
 $git_dir = "#{ENV['HOME']}/Work/Web/bc/"
 $owner_org = 'software-carpentry'
 $git_url = "https://github.com/swcarpentry/bc/tree/gh-pages/"
@@ -61,34 +61,25 @@ end
 
 parse_data
 
-
-# Get the details of the content provider
-cp_id = Uploader.get_content_provider_id($owner_org)
+cp = ContentProvider.new(
+    "Software Carpentry",
+    "http://software-carpentry.org/",
+    "http://software-carpentry.org/img/software-carpentry-banner.png",
+    "The Software Carpentry Foundation is a non-profit organization whose members teach researchers basic software skills.")
+cp = Uploader.create_or_update_content_provider(cp)
 
 # Create the new record
 $lessons.each_key do |key|
   material = Material.new(title = $lessons[key]['title'],
                           url = key,
                           short_description = "#{$lessons[key]['title']} from #{key}, added automatically.",
-                          doi = 'N/A',
+                          doi = nil,
                           remote_updated_date = $lessons[key]['date'],
                           remote_created_date = nil,
-                          content_provider_id = cp_id,
+                          content_provider_id = cp['id'],
                           scientific_topic = [],
                           keywords = $lessons[key]['tags'])
 
-  check = Uploader.check_material(material)
-  puts check.inspect
-
-  if check.empty?
-    puts 'No record by this name found. Creating it...'
-    result = Uploader.create_material(material)
-    puts result.inspect
-  else
-    puts 'A record by this name already exists. Updating!'
-    material.id = check['id']
-    result = Uploader.update_material(material)
-    puts result.inspect
-  end
+  Uploader.create_or_update_material(material)
 end
 

@@ -9,7 +9,7 @@ $courses = 'http://www.mygoblet.org/training-portal/courses-xml'
 $materials = 'http://www.mygoblet.org/training-portal/materials-xml'
 $owner_org = 'goblet'
 $lessons = {}
-$debug = false
+$debug = Config.debug?
 
 def parse_data(page)
   doc = Nokogiri::XML(open(page))
@@ -61,34 +61,25 @@ end
 parse_data($courses)
 parse_data($materials)
 
-
-# Get the details of the content provider
-cp_id = Uploader.get_content_provider_id($owner_org)
+cp = ContentProvider.new(
+    "GOBLET",
+    "http://www.mygoblet.org",
+    "http://www.mygoblet.org/sites/default/files/logo_goblet_trans.png",
+    "GOBLET, the Global Organisation for Bioinformatics Learning, Education and Training, is a legally registered foundation providing a global, sustainable support and networking structure for bioinformatics educators/trainers and students/trainees."
+    )
+cp = Uploader.create_or_update_content_provider(cp)
 
 # Create the new record
 $lessons.each_key do |key|
   material = Material.new(title = $lessons[key]['title'],
                           url = key,
                           short_description = "#{$lessons[key]['title']} from #{$root_url}, added automatically.",
-                          doi = 'N/A',
+                          doi = nil,
                           remote_updated_date = $lessons[key]['updated'],
                           remote_created_date = nil,
-                          content_provider_id = cp_id,
+                          content_provider_id = cp['id'],
                           scientific_topic = $lessons[key]['topics'],
                           keywords = $lessons[key]['topics'])
-
-  check = Uploader.check_material(material)
-  puts check.inspect
-
-  if check.empty?
-    puts 'No record by this name found. Creating it...'
-    result = Uploader.create_material(material)
-    puts result.inspect
-  else
-    puts 'A record by this name already exists. Updating!'
-    material.id = check['id']
-    result = Uploader.update_material(material)
-    puts result.inspect
-  end
+  Uploader.create_or_update_material(material)
 end
 
