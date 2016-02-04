@@ -116,14 +116,12 @@ end
 # Main body of the script below, functions above #
 ##################################################
 
-puts "This is deprecated. Use goblet_api_scraper instead."
-exit
 
 # Actually run the code here...
 if $debug
   parse_data('a random string')
 else
-  0.upto(2) do |p|
+  0.upto(3) do |p|
     parse_data('training-portal?page=' + p.to_s)
   end
 end
@@ -158,3 +156,6 @@ $lessons.each_key do |key|
   end
 end
 
+
+
+puts "This is deprecated. Use goblet_api_scraper instead."
