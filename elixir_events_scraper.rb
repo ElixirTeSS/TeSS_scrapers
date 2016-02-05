@@ -9,11 +9,7 @@ require 'geocoder'
 $root_url = 'http://www.elixir-europe.org'
 $owner_org = 'elixir'
 $events = {}
-<<<<<<< HEAD
-$debug = false
-=======
 $debug = Config.debug?
->>>>>>> 31db55b5c71198606b71ce8d37c59e49d9d91482
 
 def parse_data(page)
 
