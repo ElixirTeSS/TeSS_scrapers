@@ -121,7 +121,7 @@ end
 if $debug
   parse_data('a random string')
 else
-  0.upto(2) do |p|
+  0.upto(3) do |p|
     parse_data('training-portal?page=' + p.to_s)
   end
 end
@@ -149,3 +149,6 @@ $lessons.each_key do |key|
   Uploader.create_or_update_material(material)
 end
 
+
+
+puts "This is deprecated. Use goblet_api_scraper instead."
