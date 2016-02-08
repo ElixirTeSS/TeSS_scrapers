@@ -14,11 +14,11 @@ $skill_levels = {'novice' => %w{extras git hg matlab python r ref shell sql teac
 $git_repo_remote = "https://github.com/swcarpentry/bc.git"
 $git_repo = Dir.pwd + '/bc/'
 #Not sure if there'll be updates to this repo as its frozen but it can't hurt.
-#if File.exists?($git_repo)
-#    %x{cd bc && git pull #{$git_repo} & cd ..}
-#else
-#    %x{git clone #{$git_repo_remote} }
-#end
+if File.exists?($git_repo)
+    %x{cd bc && git pull #{$git_repo} & cd ..}
+else
+    %x{git clone #{$git_repo_remote} }
+end
 
 
 def parse_data

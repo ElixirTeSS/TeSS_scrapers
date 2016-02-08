@@ -76,18 +76,6 @@ $lessons.each_key do |key|
                           scientific_topic = $lessons[key]['topics'],
                           keywords = $lessons[key]['topics'])
 
-  check = Uploader.check_material(material)
-  puts check.inspect
-
-  if check.empty?
-    puts 'No record by this name found. Creating it...'
-    result = Uploader.create_material(material)
-    puts result.inspect
-  else
-    puts 'A record by this name already exists. Updating!'
-    material.id = check['id']
-    result = Uploader.update_material(material)
-    puts result.inspect
-  end
+  Uploader.create_or_update_material(material)
 
 end
