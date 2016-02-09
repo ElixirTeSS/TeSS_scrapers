@@ -3,6 +3,7 @@
 require 'open-uri'
 require 'nokogiri'
 require 'tess_api'
+require 'geocoder'
 
 
 $root_url = 'https://www.csc.fi/web/training/'
@@ -85,9 +86,17 @@ $events.each_key do |key|
       venue = row.css('td')[1].text.strip
       # Strip out certain long strings we don't need in the venue.
       venue.gsub!(/^The event is organised at the /,"")
+      venue.gsub!(/^The event is organised at /,"")
       venue.gsub!(/ The best way to reach us is by public transportation; more detailed travel tips(\)?) are available.$/,"")
     end
   end
+
+  loc = Geocoder.search(venue)
+  if !loc.empty?
+    lat = loc[0].data['geometry']['location']['lat']
+    lon = loc[0].data['geometry']['location']['lng']
+  end
+
 
   event = Event.new(nil,cp['id'],nil,$events[key]['title'],nil,key,'CSC',nil,$events[key]['description'],$events[key]['category'],
                     $events[key]['category'],start_date,end_date,nil,venue,nil,nil,nil,nil,lat,lon)

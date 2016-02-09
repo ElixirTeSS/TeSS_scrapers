@@ -85,8 +85,8 @@ cp = Uploader.create_or_update_content_provider(cp)
 coord_match = Regexp.new('\"coordinates\":\[([\-\.\d]+),([\-\.\d]+)\]')
 
 $events.each_key do |key|
-  #loc = Geocoder.search($events[key]['location'])
-  #puts "LOC: #{$events[key]['location']}, #{loc.inspect}"
+  loc = Geocoder.search($events[key]['location'])
+  puts "LOC: #{$events[key]['location']}, #{loc.inspect}"
 
   # Open another page mainly to look for the coordinates of the venue,
   # and hack one's way through it:
@@ -115,8 +115,17 @@ $events.each_key do |key|
     end
   end
 
+  # Attempts to clean up the venue string
+  venue = nil
+  if $events[key]['location']
+    venue = $events[key]['location'].gsub(/-/,'').gsub(/,,/,',')
+    if venue =~ /Wellcome Trust Conference Centre/
+      venue = 'Wellcome Trust Conference Centre, Wellcome Genome Campus, Hinxton, CB10 1SD, United Kingdom.'
+    end
+  end
+
   event = Event.new(nil,cp['id'],nil,$events[key]['title'],nil,$root_url + key,'Elixir',nil,nil,nil,$events[key]['category'],
-                    $events[key]['start_date'], $events[key]['end_date'],nil,$events[key]['location'],nil,nil,nil,nil,lat,lon)
+                    $events[key]['start_date'], $events[key]['end_date'],nil,venue,nil,nil,nil,nil,lat,lon)
 
   #puts "E: #{event.inspect}"
 
