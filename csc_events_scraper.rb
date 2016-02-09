@@ -83,6 +83,9 @@ $events.each_key do |key|
       start_date,end_date = datefield.split(/ - /)
     elsif fieldname == 'Location details:'
       venue = row.css('td')[1].text.strip
+      # Strip out certain long strings we don't need in the venue.
+      venue.gsub!(/^The event is organised at the /,"")
+      venue.gsub!(/ The best way to reach us is by public transportation; more detailed travel tips are available.$/,"")
     end
   end
 
