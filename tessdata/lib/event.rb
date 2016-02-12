@@ -1,8 +1,8 @@
 class Event
-  attr_accessor :external_id, :title,:subtitle,:link,:provider,:field,:description,:keyword,:category,:start,:end,:sponsor,:venue,:city,:county,
+  attr_accessor :external_id, :title,:subtitle,:url,:provider,:field,:description,:keyword,:category,:start,:end,:sponsor,:venue,:city,:county,
       :country,:postcode,:latitude,:longitude,:id, :content_provider_id
 
-  def initialize(id=nil, content_provider_id=nil, external_id=nil,title=nil,subtitle=nil,link=nil,provider=nil,
+  def initialize(id=nil, content_provider_id=nil, external_id=nil,title=nil,subtitle=nil,url=nil,provider=nil,
                  field=nil, description=nil,keyword=nil,category=nil,start_date=nil,end_date=nil,sponsor=nil,
                  venue=nil,city=nil,county=nil,country=nil,postcode=nil,latitude=nil,longitude=nil)
 
@@ -11,7 +11,7 @@ class Event
     @external_id = external_id
     @title = title
     @subtitle = subtitle
-    @link = link
+    @url = url
     @provider = provider
     @field = field
     @description = description

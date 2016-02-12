@@ -4,7 +4,7 @@ class ContentProvider
   def initialize(title=nil, url=nil, logo_url=nil,description=nil,id=nil)
   	@title = title
   	@url = url
-  	@logo_url = logo_url
+  	@image_url = logo_url
     @description = description
     @id = id
   end

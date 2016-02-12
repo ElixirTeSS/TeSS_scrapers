@@ -19,7 +19,7 @@ def parse_data(page)
     if $debug
         puts 'Opening local file.'
         begin
-          f = File.open("goblet.html")
+          f = File.open("html/goblet.html")
           doc = Nokogiri::HTML(f)
           f.close
         rescue
