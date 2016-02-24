@@ -1,11 +1,9 @@
-#gem install 'rdf/rdfa'
-#gem install 'json-ld'
-
 require 'rdf/rdfa'
 require 'json/ld'
 require 'open-uri'
 require 'nokogiri'
 require 'tess_api'
+require 'digest/sha1'
 
 # This scraper should use the XML API to get the URL of each course, then go to each individual
 # course page to parse embedded RDFa data.
@@ -14,8 +12,7 @@ $courses = 'http://www.mygoblet.org/training-portal/courses-xml'
 $materials = 'http://www.mygoblet.org/training-portal/materials-xml'
 $owner_org = 'goblet'
 $lessons = {}
-$debug = true
-
+$debug = false
 # Get all URLs from XML
 def get_urls(page,type)
   if $debug
@@ -38,7 +35,6 @@ def get_urls(page,type)
   return urls
 end
 
-
 def get_label_for_id(graph, id)
     node = graph.select{|node| node['@id'] == id}.first
     labels = []
@@ -57,11 +53,37 @@ def get_label_for_id(graph, id)
 end
 
 
+cp = ContentProvider.new(
+    "GOBLET",
+    "http://www.mygoblet.org",
+    "http://www.mygoblet.org/sites/default/files/logo_goblet_trans.png",
+    "GOBLET, the Global Organisation for Bioinformatics Learning, Education and Training, is a legally registered foundation providing a global, sustainable support and networking structure for bioinformatics educators/trainers and students/trainees."
+    )
+cp = Uploader.create_or_update_content_provider(cp)
+
 dump_file = File.open('parsed_goblet.json', 'w') if $debug
 
+
+
+
+#Go through each Training Material, load RDFa, dump to JSON, interogate data, and upload to TeSS. 
 get_urls($materials,'materials').each do |url|
 	#f = open(url)
-	rdfa = RDF::Graph.load(url, format: :rdfa)
+	if true
+		if File.exists?("html/goblet_pages/#{Digest::SHA1.hexdigest(url)}")
+			rdfa = RDF::Graph.load("html/goblet_pages/#{Digest::SHA1.hexdigest(url)}", format: :rdfa)
+			puts 'Opened from Filesystem'
+		else
+			File.open("html/goblet_pages/#{Digest::SHA1.hexdigest(url)}", 'w') do |file|
+				file.write(open(url).read)
+			end
+			rdfa = RDF::Graph.load("html/goblet_pages/#{Digest::SHA1.hexdigest(url)}", format: :rdfa)
+			puts 'Opened from Web'
+		end
+	else
+		rdfa = RDF::Graph.load(url, format: :rdfa)
+	end
+
 	json_graph = JSON.load(rdfa.dump(:jsonld, standard_prefixes: true))["@graph"]
 
 =begin
@@ -118,7 +140,12 @@ get_urls($materials,'materials').each do |url|
 	      material[property] = get_label_for_id(json_graph, values["@id"])
 	      puts "#{property} ------ #{material[property]}" if $debug
 	    elsif values.has_key?('@value') #e.g. root["schema:description"] => {"@value"=>"<p> This is a description </p>"}
-	      material[property] = values['@value']
+	      parsed_val = Nokogiri::HTML(values['@value'])
+	      if parsed_val.html?
+	      	material[property] = parsed_val.text 
+	      else
+	      	material[property] = values['@value']
+	      end
 	      puts "#{property} ------ #{values['@value']}" if $debug
 	    end 
 	end
@@ -132,7 +159,22 @@ get_urls($materials,'materials').each do |url|
 		end
 	end
 
-	puts "#{material['schema:name']}"
-
-
+	# Create the new record
+  	upload_material = Material.new(
+  		title = material['schema:name'],
+        url = url,
+        short_description = material['schema:description'],
+        doi = nil,
+        remote_updated_date = Time.now,
+        remote_created_date = material['dc:date'],
+        content_provider_id = cp['id'],
+		scientific_topic = material['schema:genre'],
+        keywords = material['schema:keywords'],
+        licence = nil,
+        difficulty_level = nil,
+        contributors = nil,
+        authors = material['sioc:has_creator'],
+        target_audience = material['schema:audience']
+    )
+   Uploader.create_or_update_material(upload_material)
 end
