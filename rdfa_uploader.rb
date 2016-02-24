@@ -57,7 +57,7 @@ def get_label_for_id(graph, id)
 end
 
 
-xxx = File.open('big_dump.json', 'w') if $debug
+dump_file = File.open('parsed_goblet.json', 'w') if $debug
 
 get_urls($materials,'materials').each do |url|
 	#f = open(url)
@@ -122,14 +122,17 @@ get_urls($materials,'materials').each do |url|
 	      puts "#{property} ------ #{values['@value']}" if $debug
 	    end 
 	end
+	material['url'] = url
 	# Material now contains a hash with all our training materials' fields. 
 
 	#write out to JSON for debug mode.
 	if $debug
 		material.each do |material|
-		  xxx.write("#{material.to_json}")
+		  dump_file.write("#{material.to_json}")
 		end
 	end
 
 	puts "#{material['schema:name']}"
+
+
 end
