@@ -14,10 +14,10 @@ class Material
     @content_provider_id = content_provider_id 
     @scientific_topic = scientific_topic 
     @keywords = keywords 
-    @licence = target_audience 
-    @difficulty_level = target_audience 
-    @contributors = target_audience 
-    @authors = target_audience 
+    @licence = licence 
+    @difficulty_level = difficulty_level 
+    @contributors = contributors 
+    @authors = authors 
     @target_audience = target_audience
     @id = id
   end
