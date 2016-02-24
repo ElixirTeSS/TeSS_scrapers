@@ -9,4 +9,7 @@ class TessApi
   require 'uploader'
   require 'config'
   require 'httparty'
+  require 'rdfa_extractor'
+  require 'json/ld'
+  require 'nokogiri'
 end
