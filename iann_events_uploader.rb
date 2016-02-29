@@ -37,6 +37,8 @@ docs.each do |event_item|
       case element.values
         when ['id']
           event.external_id = element.text
+        when ['link']
+          event.url = element.text
         when ['public'],
             ['submission_comment'], ['submission_date'], ['submission_name'],
             ['submission_organization'], ['_version_'], ['submission_email'], ['image']
