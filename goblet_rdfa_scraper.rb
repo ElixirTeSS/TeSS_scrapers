@@ -87,7 +87,7 @@ get_urls($materials,'materials').each do |url|
         keywords = material['schema:keywords'],
         licence = nil,
         difficulty_level = nil,
-        contributors = nil,
+        contributors = [],
         authors = material['sioc:has_creator'],
         target_audience = material['schema:audience']
     )
