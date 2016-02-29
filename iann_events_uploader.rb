@@ -43,7 +43,9 @@ docs.each do |event_item|
             ['submission_comment'], ['submission_date'], ['submission_name'],
             ['submission_organization'], ['_version_'], ['submission_email'], ['image']
           #puts "Ignored for element type #{element.values}"
-        when ['category'], ['field'], ['keyword']
+        when ['keyword']
+          event.keywords = element.children.collect{|children| children.text}
+        when ['category'], ['field']
           event.send("#{element.values.first}=", element.children.collect{|children| children.text})
         else
           event.send("#{element.values.first}=", element.text)

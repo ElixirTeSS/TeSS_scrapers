@@ -1,9 +1,10 @@
 class Event
-  attr_accessor :external_id, :title,:subtitle,:url,:provider,:field,:description,:keyword,:category,:start,:end,:sponsor,:venue,:city,:county,
-      :country,:postcode,:latitude,:longitude,:id, :content_provider_id
+  attr_accessor :external_id, :title,:subtitle,:url,:provider,:field,:description,:keywords,:category,
+      :start,:end,:sponsor,:venue,:city,:county, :country,:postcode,:latitude,:longitude,:id, 
+      :content_provider_id
 
   def initialize(id=nil, content_provider_id=nil, external_id=nil,title=nil,subtitle=nil,url=nil,provider=nil,
-                 field=nil, description=nil,keyword=nil,category=nil,start_date=nil,end_date=nil,sponsor=nil,
+                 field=nil, description=nil,keywords=nil,category=nil,start_date=nil,end_date=nil,sponsor=nil,
                  venue=nil,city=nil,county=nil,country=nil,postcode=nil,latitude=nil,longitude=nil)
 
     @id = id
@@ -15,7 +16,7 @@ class Event
     @provider = provider
     @field = field
     @description = description
-    @keyword = keyword
+    @keywords = keywords
     @category = category
     @start = start_date
     @end = end_date
