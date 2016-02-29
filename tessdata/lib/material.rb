@@ -1,6 +1,6 @@
 class Material
   attr_accessor :title, :url, :short_description, :doi, :remote_updated_date, :remote_created_date, :content_provider_id,
-                :scientific_topic, :keywords, :id
+                :scientific_topic_names, :keywords, :id
 
   def initialize(title=nil, url=nil, short_description=nil, doi=nil, remote_updated_date=nil, remote_created_date=nil,
                  content_provider_id=nil, scientific_topic=[], keywords=[], licence=nil, difficulty_level=nil,
@@ -12,7 +12,7 @@ class Material
     @remote_updated_date = remote_updated_date 
     @remote_created_date = remote_created_date 
     @content_provider_id = content_provider_id 
-    @scientific_topic = scientific_topic 
+    @scientific_topic_names = scientific_topic
     @keywords = keywords 
     @licence = licence 
     @difficulty_level = difficulty_level 
