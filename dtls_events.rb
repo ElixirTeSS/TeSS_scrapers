@@ -28,27 +28,41 @@ end
 
 docs = Nokogiri::XML(dtls_content).xpath('//item')
 
-docs.first.element_children.each{|x| x.name}
+#fields = docs.first.element_children.collect{|x| x.name}
+#locations = docs.collect{|x| x.element_children.collect{|x| x.text if x.name == 'location'}.compact}.flatten  
 
 docs.each do |event_item|
   event = Event.new
   event_item.element_children.each do |element|
     event.content_provider_id = cp['id']
   	event.category = 'course'
-  	event.provider = 'DTLS'
   	case element.name
       when 'title'
         event.title = element.text
       when 'link'
-      	event.link = element.text
+        #Use GUID field as probably more stable
+      	#event.url = element.text
+      when 'creator'
+        #event.creator = element.text
+        # no creator field. Not sure needs one
+      when 'guid'
+        event.url = element.text
       when 'description'
       	event.description = element.text
-      when 'creator'
-      	# no creator field. Not sure needs one
-      when 'guid'
-      	# Same as link?
+      when 'location'
+        event.venue = element.text
+      when 'organizer'
+        event.provider = element.text
+      when 'courseDate'
+        event.start = element.text
+        event.end = element.text
+      when 'latitude'
+        event.latitude = element.text
+      when 'longitude'
+        event.longitude = element.text
       when 'pubDate'
-      	# Not really needed
+
+        # Not really needed
       else
       	#chuck away
     end
