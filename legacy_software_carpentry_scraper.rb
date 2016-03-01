@@ -37,9 +37,9 @@ def parse_data
             # We have a lesson, and need to save the URL, title, and tags.
             title = line.chomp.gsub(/title: /,'')
             url = "#{$git_url}#{k}/#{value}/#{basename}"
-            tags = [{'name' => k.capitalize}, {'name' => value.capitalize}]
             $lessons[url] = {}
-            $lessons[url]['tags'] = tags
+            $lessons[url]['tags'] = [value.capitalize]
+            $lessons[url]['audience'] = [k.capitalize]
             $lessons[url]['title'] = title
             break
           end
@@ -78,8 +78,14 @@ $lessons.each_key do |key|
                           remote_created_date = nil,
                           content_provider_id = cp['id'],
                           scientific_topic = [],
-                          keywords = $lessons[key]['tags'])
-
+                          keywords = $lessons[key]['tags'],
+                          licence = nil, 
+                          difficulty_level = nil, 
+                          contributors = nil,
+                          authors = nil,
+                          target_audience = $lessons[key]['audience'],
+                          id = id
+                          )
   Uploader.create_or_update_material(material)
 end
 
