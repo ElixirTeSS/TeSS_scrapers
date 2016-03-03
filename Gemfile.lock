@@ -58,6 +58,3 @@ DEPENDENCIES
   net
   nokogiri
   rdf-rdfa
-
-BUNDLED WITH
-   1.10.6
