@@ -6,6 +6,10 @@ Then install the tessdata gem. From the root directory, run:
 
 `sh build.sh`
 
+Note that you may have to install the gems listed in the Gemfile, e.g.:
+
+`gem install nokogiri`
+
 From the root directory copy the example_uploader_config.txt into uploader_config.txt with the command:
 
 `cp example_uploader_config.txt uploader_config.txt`
