@@ -58,15 +58,11 @@ $lessons.each do |lesson|
           material.target_audience = ngs_material['full'][audience_index+2]
         end
 
-=begin
-#Not sure about this. Maybe should just use the FULL description rather than succinct.
+	#Not sure about this. Maybe should just use the FULL description rather than succinct.
       description_index = ngs_material['full'].find_index(sections[2])
       if !description_index.nil?
-        material.short_description = ngs_material['full'][description_index+1]
-      else
-        material.short_description = ngs_material['full'].join('')
-      end
-=end
+        material.long_description = ngs_material['full'][description_index+1]
+      end      
         material.short_description = ngs_material['full'].join('')
 
         material.authors = ngs_material['authors']
