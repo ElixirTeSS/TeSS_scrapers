@@ -61,10 +61,11 @@ $lessons.each do |lesson|
 	#Not sure about this. Maybe should just use the FULL description rather than succinct.
       description_index = ngs_material['full'].find_index(sections[2])
       if !description_index.nil?
-        material.long_description = ngs_material['full'][description_index+1]
+        material.short_description = ngs_material['full'][description_index+1]
+      else 
+        material.short_description = 'No description available'
       end      
-        material.short_description = ngs_material['full'].join('')
-
+        material.long_description = ngs_material['full'].join(' ')
         material.authors = ngs_material['authors']
 
         material.scientific_topic_names = [ngs_material['ontologies'] + material.keywords].flatten
