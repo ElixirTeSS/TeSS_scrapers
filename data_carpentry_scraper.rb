@@ -20,7 +20,7 @@ def parse_data(page)
     title = lesson.css('h1').text
     unless $exclude.include?(title)
       if title.empty?
-        title = lesson.css('p').first.text.gsub('<p>#','').gsub('</p>','')
+        title = lesson.css('p').first.text.gsub('<p>#','').gsub('</p>','').gsub('#','')
         $description = lesson.css('p')[2]
       else
         $description = lesson.css('p').first
@@ -32,7 +32,7 @@ def parse_data(page)
         descriptions << lesson.css('p')[index]
       end
       $lessons[lesson_url] = {}
-      $lessons[lesson_url]['short_description'] = descriptions.join('\n')
+      $lessons[lesson_url]['short_description'] = descriptions.join(' ')
       $lessons[lesson_url]['long_description'] = lesson.css('p h1 a')
       $lessons[lesson_url]['title'] = title
     end
