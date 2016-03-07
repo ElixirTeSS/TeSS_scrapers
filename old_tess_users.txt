@@ -1,0 +1,32 @@
+anenadic            | a.nenadic@manchester.ac.uk                   | Aleksandra Nenadic
+hedip               | hedi.peterson@ut.ee                          | Hedi Peterson
+peterjuv            | peter.juvan@mf.uni-lj.si                     | Peter Juvan
+staaln              | staaln@ifi.uio.no                            | Ståle Nygård
+allegra             | allegra.via@uniroma1.it                      | Allegra Via
+gabry               | gr231@cam.ac.uk                              | Gabriella Rustici
+ugur                | Ugur.Sezerman@acibadem.edu.tr                | Osman Ugur Sezerman
+henryk69            | psiedlecki@gmail.com                         | Pawel Siedlecki
+test_spain          | aupton@uma.es                                | test account spain
+ritahendricusdottir | rita.hendricusdottir@dpag.ox.ac.uk           | Rita Hendricusdottir
+tarketta            | tanya.dickie@tgac.ac.uk                      | Tanya Dickie
+celia               | celia.vangelder@radboudumc.nl                | Celia van Gelder
+jison               | jison@cbs.dtu.dk                             | Jon Ison
+ekorpela            | eija.korpelainen@csc.fi                      | Eija Korpelainen
+pfern               | pfern@igc.pt                                 | Pedro Fernandes
+emilyangiolini      | emilyj.angiolini@googlemail.com              | Emily Angiolini
+vickyschneider      | vicky.schneider@tgac.ac.uk                   | Vicky Schneider
+milo                | milo.thurston@oerc.ox.ac.uk                  | Milo Thurston
+palagi              | patricia.palagi@isb-sib.ch                   | Patricia Palagi
+niallbeard          | niall.beard@manchester.ac.uk                 | Niall Beard
+richargr001         | rcg@ebi.ac.uk                                | Richard Grandison
+spiwokv             | spiwokv@vscht.cz                             | Vojtech Spiwok
+niall               | niallbeard@gmail.com                         | Niall Beard
+attwood             | teresa.k.attwood@manchester.ac.uk            | Terri Attwood
+walkerv             | victoria.walker@tgac.ac.uk                   | Victoria Walker
+singha              | ajit.singh@rothamsted.ac.uk                  | Ajit Singh
+jttkim              | jttkim@gmail.com                             | Jan T Kim
+nsoranzo            | nicola.soranzo@tgac.ac.uk                    | Nicola Soranzo
+ralfweber           | r.j.weber@bham.ac.uk                         | Ralf Weber
+vasilis             | vpl@aber.ac.uk                               | Vasilis Lenis
+tgac                | paul.yorke@tgac.ac.uk                        | The Genome Analysis Centre
+sbourgeois          | s.bourgeois@qmul.ac.uk                       | Stephane Bourgeois
