@@ -126,6 +126,7 @@ else
   end
 end
 
+
 cp = ContentProvider.new(
     "GOBLET",
     "http://www.mygoblet.org",
