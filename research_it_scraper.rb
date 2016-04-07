@@ -28,7 +28,7 @@ def parse_data(page)
   end
 
   # Doesn't work, of course. Surprise!
-  doc.xpath('//section[@class = "course-details-table"]').each do |record|
+  doc.xpath('//section').each do |record|
     puts record.inspect
   end
 
