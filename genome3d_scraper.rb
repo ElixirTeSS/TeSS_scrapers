@@ -65,7 +65,7 @@ cp = Uploader.create_or_update_content_provider(cp)
 $lessons.each_key do |key|
   material = Material.new(title = $lessons[key]['name'],
                           url = $root_url + key,
-                          short_description = $lessons[key]['description'], #"#{$lessons[key]['name']} from #{$root_url + key}, added automatically.",
+                          short_description = $lessons[key]['description'],
                           doi = nil,
                           remote_updated_date = Time.now,
                           remote_created_date = $lessons[key]['last_modified'],

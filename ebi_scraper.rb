@@ -68,7 +68,7 @@ $lessons.each_key do |key|
 
   material = Material.new(title = $lessons[key]['text'],
                           url = $root_url + key,
-                          short_description = "#{$lessons[key]['text']} from #{$root_url + key}, added automatically.",
+                          short_description = "#{$lessons[key]['text']} from #{$root_url + key}.",
                           doi = nil,
                           remote_updated_date = Time.now,
                           remote_created_date = $lessons[key]['last_modified'],
