@@ -17,11 +17,12 @@ def parse_data()
   if $debug
     puts 'Opening local file.'
     begin
-      f = File.open("bitsvib.html")
+      f = File.open("html/bitsvib.html")
       doc = Nokogiri::HTML(f)
       f.close
     rescue
       puts "Failed to open bitsvib.html file."
+      exit
     end
   else
     puts "Opening: #{$root_url}"
@@ -60,12 +61,13 @@ cp = Uploader.create_or_update_content_provider(cp)
 $lessons.each_key do |key|
   material = Material.new(title = $lessons[key],
                           url = $root_url + key,
-                          short_description = "#{$lessons[key]} from #{$root_url + key}, added automatically.",
+                          short_description = "#{$lessons[key]} from #{$root_url + key}.",
                           doi = nil,
                           remote_updated_date = Time.now,
                           remote_created_date = nil,
                           content_provider_id = cp['id'],
                           scientific_topic = [],
                           keywords = [])
+  puts "URL: #{$root_url}#{key}"
   Uploader.create_or_update_material(material)
 end

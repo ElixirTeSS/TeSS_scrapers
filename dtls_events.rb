@@ -7,7 +7,7 @@ $debug = Config.debug?
 
 cp = ContentProvider.new(
     "DTLS - Dutch Techcentre For Life Sciences",
-    "https://www.dtls.nl",
+    "http://www.dtls.nl",
     "http://www.dtls.nl/wp-content/themes/dtls/images/logo.png",
     "DTL focuses on the great potential of high-end technologies in pioneering life science research, and on the skills and solutions to professionally use computers to deal with the ever-growing data streams in research."
     )

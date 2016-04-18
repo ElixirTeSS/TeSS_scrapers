@@ -6,6 +6,6 @@ gem 'nokogiri'
 gem 'net'
 gem 'httparty'
 gem 'json'
-
 gem 'json-ld'
 gem 'rdf-rdfa'
+gem 'redcarpet'
