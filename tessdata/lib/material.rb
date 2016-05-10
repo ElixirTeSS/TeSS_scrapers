@@ -3,7 +3,7 @@ class Material
                 :scientific_topic_names, :keywords, :id, :authors, :long_description
 
   def initialize(title=nil, url=nil, short_description=nil, doi=nil, remote_updated_date=nil, remote_created_date=nil,
-                 content_provider_id=nil, scientific_topic=[], keywords=[], licence=nil, difficulty_level=nil,
+                 content_provider_id=nil, scientific_topics=[], keywords=[], licence=nil, difficulty_level=nil,
                  contributors=[], authors=[], target_audience=[], id=nil, long_description=nil)
     @title = title
     @url = url
@@ -12,7 +12,7 @@ class Material
     @remote_updated_date = remote_updated_date 
     @remote_created_date = remote_created_date 
     @content_provider_id = content_provider_id 
-    @scientific_topic_names = scientific_topic
+    @scientific_topic_names = scientific_topics
     @keywords = keywords 
     @licence = licence 
     @difficulty_level = difficulty_level 
