@@ -10,7 +10,7 @@ require 'digest/sha1'
 #$courses = 'http://www.mygoblet.org/training-portal/courses-xml'
 $materials = 'https://www.bits.vib.be/training'
 $root_url = 'https://www.bits.vib.be'
-$owner_org = 'goblet'
+$owner_org = 'bitsvib'
 $lessons = {}
 $debug = false
 
