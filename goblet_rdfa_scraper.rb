@@ -64,9 +64,7 @@ get_urls($materials,'materials').each do |url|
   end
 
   material = RdfaExtractor.parse_rdfa(rdfa, 'CreativeWork')
-  material['url'] = url
-
-
+  material.each{|mat| mat['url'] = url}
   #write out to JSON for debug mode.
   if $debug
     material.each do |material|
@@ -74,6 +72,7 @@ get_urls($materials,'materials').each do |url|
     end
   end
 
+  material = material.first
   # Create the new record
   upload_material = Material.new(
       title = material['schema:name'],
