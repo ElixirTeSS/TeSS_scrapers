@@ -48,7 +48,7 @@ cp = ContentProvider.new(
     "VBCF BioComp",
     "http://biocomp.vbcf.ac.at/training/index.html",
     "http://biocomp.vbcf.ac.at/training/biocomp.jpg",
-    "BioComp is one of the core facilities at the VBCF (http://vbcf.ac.at) in Vienna. We offer data analysis services for next-generation sequencing data and develop software solutions for biological experiments, with an emphasis on image and video processing and hardware control. We also provide custom-made data management solutions to research groups. BioComp offers trainings and consultations in the areas of bioinformatics, statistics and computational skills."
+    "BioComp is one of the core facilities at the Vienna BioCenter Core Facilities (VBCF). We offer data analysis services for next-generation sequencing data and develop software solutions for biological experiments, with an emphasis on image and video processing and hardware control. We also provide custom-made data management solutions to research groups. BioComp offers trainings and consultations in the areas of bioinformatics, statistics and computational skills."
     )
 cp = Uploader.create_or_update_content_provider(cp)
 
