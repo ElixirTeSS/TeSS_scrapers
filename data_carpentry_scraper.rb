@@ -13,7 +13,7 @@ def parse_data(page)
   doc = Nokogiri::HTML(open($root_url + page))
   doc = Nokogiri::HTML(open('http://www.datacarpentry.org/lessons'))
   #first = doc.css('div.item-list').search('li')
-  lesson_urls = doc.css('ul > li > a').collect{|x| x.values}.flatten.select{|x| x.include?('github.io')}
+  lesson_urls = doc.css('td > a').collect{|x| x.values}.flatten.select{|x| x.include?('github.io')}
 
   lesson_urls.each do |lesson_url|
     lesson = Nokogiri::HTML(open(lesson_url))
@@ -23,7 +23,10 @@ def parse_data(page)
         title = lesson.css('p').first.text.gsub('<p>#','').gsub('</p>','').gsub('#','')
         $description = lesson.css('p')[2]
       else
-        $description = lesson.css('p').first
+        $description = lesson.css('p')[0].text
+        if $description.text == '======='
+          $description = lesson.css('p')[1].text
+        end
       end
       descriptions = []
       index = 0
