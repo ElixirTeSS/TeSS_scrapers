@@ -46,7 +46,7 @@ end
 
 cp = ContentProvider.new(
     "VIB Bioinformatics Training and Services",
-    "https://www.bits.vib.be",
+    "https://www.bits.vib.be/index.php/training",
     "http://www.vib.be/VIBMediaLibrary/Logos/Service_facilities/BITS_website.jpg",
     "Belgian provider of Bioinformatics and Software Training, plus informatics services and resource management support."
     )
