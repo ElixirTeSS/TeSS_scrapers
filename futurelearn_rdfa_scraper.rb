@@ -6,10 +6,24 @@ require 'tess_api'
 require 'digest/sha1'
 
 
-url = "https://www.futurelearn.com/courses/collections/genomics"
+url = "http://www.futurelearn.com/courses/collections/genomics"
 rdfa = RDF::Graph.load(url, format: :rdfa)
 events = RdfaExtractor.parse_rdfa(rdfa, 'Event')
 
+
+#Format such as P4W
+def duration_in_days duration
+    parsed = /P(?<value>\d+)(?<unit>\w+)/.match(duration)
+    if parsed 
+        case parsed['unit']
+        when 'W'
+            return parsed['value'].to_i * 7 #no of days
+        when 'D'
+            return parsed['value'].to_i
+        end
+    end
+    return nil
+end
 
 cp = ContentProvider.new(
     "Future Learn",
@@ -25,6 +39,8 @@ events.each do |event|
     event = RdfaExtractor.parse_rdfa(rdfa, 'Event')
     begin
         event = event.first
+        puts event
+        start_date = DateTime.parse(event['schema:startDate'])
         upload_event = Event.new(
             id=nil,
             content_provider_id = cp['id'],
@@ -37,9 +53,10 @@ events.each do |event|
             description = event['schema:description'],
             keywords = [],
             category = nil,
-            start_date = event['schema:startDate'],
-            end_date = event['schema:startDate'] # + event['schema:duration']
+            start_date = start_date,
+            end_date = (start_date + duration_in_days(event['schema:duration'])).to_s
           ) 
+
         Uploader.create_or_update_event(upload_event)
         rescue => ex
           puts ex.message
