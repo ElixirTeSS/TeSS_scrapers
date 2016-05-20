@@ -10,6 +10,9 @@ url = "http://www.futurelearn.com/courses/collections/genomics"
 rdfa = RDF::Graph.load(url, format: :rdfa)
 events = RdfaExtractor.parse_rdfa(rdfa, 'Event')
 
+bioinformatics_search = 'https://www.futurelearn.com/search?utf8=%E2%9C%93&q=bioinformatics'
+rdfa = RDF::Graph.load(bioinformatics_search, format: :rdfa)
+events.concat(RdfaExtractor.parse_rdfa(rdfa, 'Event'))
 
 #Format such as P4W
 def duration_in_days duration
@@ -33,32 +36,75 @@ cp = ContentProvider.new(
     )
 cp = Uploader.create_or_update_content_provider(cp)
 
-
 events.each do |event|
-    rdfa = RDF::Graph.load(event['schema:url'], format: :rdfa)
-    event = RdfaExtractor.parse_rdfa(rdfa, 'Event')
     begin
+        rdfa = RDF::Graph.load(event['schema:url'], format: :rdfa)
+        event = RdfaExtractor.parse_rdfa(rdfa, 'Event')
         event = event.first
-        puts event
-        start_date = DateTime.parse(event['schema:startDate'])
-        upload_event = Event.new(
-            id=nil,
-            content_provider_id = cp['id'],
-            external_id = nil,
-            title = event['schema:name'], 
-            subtitle = nil,
-            url = event['schema:url'],
-            provider = event['schema:organizer'],
-            field = nil,
-            description = event['schema:description'],
-            keywords = [],
-            category = nil,
-            start_date = start_date,
-            end_date = (start_date + duration_in_days(event['schema:duration'])).to_s
-          ) 
-
-        Uploader.create_or_update_event(upload_event)
-        rescue => ex
-          puts ex.message
-       end
+        
+        unless event['schema:startDate'].nil? or event['schema:startDate'].empty?
+            start_date = DateTime.parse(event['schema:startDate'])     
+            if start_date and start_date.is_a?(DateTime)
+                upload_event = Event.new(
+                    id=nil,
+                    content_provider_id = cp['id'],
+                    external_id = nil,
+                    title = event['schema:name'], 
+                    subtitle = nil,
+                    url = event['schema:url'],
+                    provider = event['schema:organizer'],
+                    field = nil,
+                    description = event['schema:description'],
+                    keywords = [],
+                    category = nil,
+                    start_date = start_date,
+                    end_date = (start_date + duration_in_days(event['schema:duration'])).to_s
+                  ) 
+            end
+            Uploader.create_or_update_event(upload_event)
+        end
+    rescue => ex
+      puts ex.message
+   end
 end
+
+
+
+
+
+
+=begin
+
+puts events.count
+events.each do |event|
+ #   begin
+        rdfa = RDF::Graph.load(event['schema:url'], format: :rdfa)
+        event = RdfaExtractor.parse_rdfa(rdfa, 'Event')
+        event = event.first
+        
+        unless event['schema:startDate'].nil? or event['schema:startDate'].empty?
+            start_date = DateTime.parse(event['schema:startDate'])             
+            if start_date and start_date.is_a?(DateTime)
+                upload_event = Event.new(
+                    id=nil,
+                    content_provider_id = cp['id'],
+                    external_id = nil,
+                    title = event['schema:name'], 
+                    subtitle = nil,
+                    url = event['schema:url'],
+                    provider = event['schema:organizer'],
+                    field = nil,
+                    description = event['schema:description'],
+                    keywords = [],
+                    category = nil,
+                    start_date = start_date,
+                    end_date = (start_date + duration_in_days(event['schema:duration'])).to_s
+                  ) 
+            Uploader.create_or_update_event(upload_event)
+            end
+        end
+   # rescue => ex
+  #    puts ex.message
+  #  end
+end
+=end
