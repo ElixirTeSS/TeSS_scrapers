@@ -55,17 +55,21 @@ docs.each do |event_item|
         event.provider = element.text
       when 'courseDate'
         event.start = element.text
+      when 'courseEndDate'
         event.end = element.text
       when 'latitude'
         event.latitude = element.text
       when 'longitude'
         event.longitude = element.text
       when 'pubDate'
-
         # Not really needed
       else
       	#chuck away
     end
+    if event.end.nil? or event.end.empty?
+      event.end = event.start
+    end
+
   end
   Uploader.create_or_update_event(event)
 end
