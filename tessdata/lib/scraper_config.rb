@@ -1,4 +1,4 @@
-class Config
+class ScraperConfig
 
   def self.get_config
     host, port, protocol, user_email, user_token = nil

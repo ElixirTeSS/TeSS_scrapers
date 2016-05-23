@@ -1,7 +1,7 @@
 class Uploader
 
   def self.check_material(material)
-    conf = Config.get_config
+    conf = ScraperConfig.get_config
     action = '/materials/check_exists.json'
     data_type = 'material'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
@@ -10,7 +10,7 @@ class Uploader
   end
 
   def self.create_material(material)
-    conf = Config.get_config
+    conf = ScraperConfig.get_config
     action = '/materials.json'
     data_type = 'material'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
@@ -19,7 +19,7 @@ class Uploader
   end
 
   def self.update_material(material)
-    conf = Config.get_config
+    conf = ScraperConfig.get_config
     action = "/materials/#{material['id']}.json"
     data_type = 'material'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
@@ -40,7 +40,7 @@ class Uploader
   end
  
   def self.check_event(event)
-    conf = Config.get_config
+    conf = ScraperConfig.get_config
     action = '/events/check_exists.json'
     data_type = 'event'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
@@ -49,7 +49,7 @@ class Uploader
   end
 
   def self.create_event(event)
-    conf = Config.get_config
+    conf = ScraperConfig.get_config
     action = '/events.json'
     data_type = 'event'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
@@ -58,7 +58,7 @@ class Uploader
   end
 
   def self.update_event(event)
-    conf = Config.get_config
+    conf = ScraperConfig.get_config
     action = "/events/#{event['id']}.json"
     data_type = 'event'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
@@ -80,7 +80,7 @@ class Uploader
 
 
   def self.check_content_provider(data)
-    conf = Config.get_config
+    conf = ScraperConfig.get_config
     action = '/content_providers/check_exists.json'
     data_type = 'content_provider'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
@@ -89,7 +89,7 @@ class Uploader
   end
 
   def self.create_content_provider(data)
-    conf = Config.get_config
+    conf = ScraperConfig.get_config
     action = '/content_providers.json'
     data_type = 'content_provider'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
@@ -99,7 +99,7 @@ class Uploader
 
   def self.update_content_provider(data)
     puts "Updating Content Provider #{data.id} - #{data.title}"
-    conf = Config.get_config
+    conf = ScraperConfig.get_config
     action = "/content_providers/#{data['id']}.json"
     data_type = 'content_provider'
     url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + action
@@ -118,7 +118,7 @@ class Uploader
   end
 
   def self.get_content_provider_id(cp_name)
-    conf = Config.get_config
+    conf = ScraperConfig.get_config
     content_provider_url = conf['protocol'] + '://' + conf['host'] + ':' + conf['port'].to_s + "/content_providers/#{cp_name}.json"
     HTTParty::Basement.default_options.update(verify: false)
     response = HTTParty.get(content_provider_url)

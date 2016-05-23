@@ -7,7 +7,7 @@ class TessApi
   require 'event'
   require 'json'
   require 'uploader'
-  require 'config'
+  require 'scraper_config'
   require 'httparty'
   require 'rdfa_extractor'
   require 'json/ld'
