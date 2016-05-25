@@ -9,7 +9,7 @@ require 'geocoder'
 $root_url = 'http://www.elixir-europe.org'
 $owner_org = 'elixir'
 $events = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 def parse_data(page)
 

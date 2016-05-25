@@ -9,7 +9,7 @@ require 'geocoder'
 $root_url = 'https://www.csc.fi/web/training/'
 $owner_org = 'csc'
 $events = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 def parse_data()
 

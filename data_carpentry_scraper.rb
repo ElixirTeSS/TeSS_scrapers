@@ -6,7 +6,7 @@ require 'tess_api'
 
 $root_url = 'http://www.datacarpentry.org'
 $lessons = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 $exclude = [' Feeling Responsive']
 
 def parse_data(page)

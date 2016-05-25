@@ -4,7 +4,7 @@ require 'tess_api'
 
 
 $lessons = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 $git_dir = "#{ENV['HOME']}/Work/Web/bc/"
 $owner_org = 'software-carpentry'
 $git_url = "https://github.com/swcarpentry/bc/tree/gh-pages/"

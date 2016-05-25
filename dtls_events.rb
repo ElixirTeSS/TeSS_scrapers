@@ -3,7 +3,7 @@
 require 'tess_api'
 require 'Nokogiri'
 
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 cp = ContentProvider.new(
     "DTLS - Dutch Techcentre For Life Sciences",

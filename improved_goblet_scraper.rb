@@ -13,7 +13,7 @@ $courses = 'http://www.mygoblet.org/training-portal/courses-xml'
 $materials = 'http://www.mygoblet.org/training-portal/materials-xml'
 $owner_org = 'goblet'
 $lessons = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 # Get all URLs from XML
 def get_urls(page,type)

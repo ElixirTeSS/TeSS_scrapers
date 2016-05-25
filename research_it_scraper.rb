@@ -8,7 +8,7 @@ require 'tess_api'
 $root_url = 'https://www.ucl.ac.uk/isd/services/research-it/training'
 $owner_org = 'research-it'
 $lessons = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 
 # Do the parsing...
