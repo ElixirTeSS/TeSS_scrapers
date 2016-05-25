@@ -12,4 +12,7 @@ class TessApi
   require 'rdfa_extractor'
   require 'json/ld'
   require 'nokogiri'
+  require 'open-uri'
+  require 'digest/sha1'
+  require 'rdf/rdfa'
 end

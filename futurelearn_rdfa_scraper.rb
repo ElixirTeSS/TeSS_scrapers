@@ -1,12 +1,6 @@
-
-require 'rdf/rdfa'
-require 'open-uri'
-require 'nokogiri'
 require 'tess_api'
-require 'digest/sha1'
 
-
-url = "http://www.futurelearn.com/courses/collections/genomics"
+url = "https://www.futurelearn.com/courses/collections/genomics"
 rdfa = RDF::Graph.load(url, format: :rdfa)
 events = RdfaExtractor.parse_rdfa(rdfa, 'Event')
 

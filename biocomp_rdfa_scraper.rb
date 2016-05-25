@@ -1,8 +1,5 @@
-require 'rdf/rdfa'
-require 'open-uri'
-require 'nokogiri'
+
 require 'tess_api'
-require 'digest/sha1'
 
 # This scraper should use the XML API to get the URL of each course, then go to each individual
 # course page to parse embedded RDFa data.
@@ -12,7 +9,7 @@ $materials = 'http://biocomp.vbcf.ac.at/training/index.html'
 $root_url = 'http://biocomp.vbcf.ac.at/training/'
 $owner_org = 'biocomp'
 $lessons = {}
-$debug = false
+$debug = ScraperConfig.debug?
 
 # Get all URLs from XML
 def get_urls(index_page)

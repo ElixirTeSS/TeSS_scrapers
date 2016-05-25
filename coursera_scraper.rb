@@ -1,7 +1,4 @@
 #!/usr/bin/env ruby
-
-require 'open-uri'
-require 'json'
 require 'tess_api'
 
 # For more details of the API and available terms, see:
