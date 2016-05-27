@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'tess_api'
+require 'tess_api_client'
 
 # For more details of the API and available terms, see:
 # https://building.coursera.org/app-platform/catalog/

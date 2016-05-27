@@ -1,6 +1,6 @@
 # This doesn't actually scrape anything, but does perform an upload.
 
-require 'tess_api'
+require 'tess_api_client'
 
 event = Event.new(external_id='ae10fc5c-ba6a-4be8-85c6-24e5310c96b3',
                   title='Cambridge Computational Biology Institute Annual Symposium',

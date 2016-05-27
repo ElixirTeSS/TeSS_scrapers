@@ -2,7 +2,7 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 
 $root_url = 'http://edu.isb-sib.ch/'
 $owner_org = 'swiss-institute-of-bioinformatics'

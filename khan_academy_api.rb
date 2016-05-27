@@ -1,5 +1,5 @@
 require 'json'
-require 'tess_api'
+require 'tess_api_client'
 require 'open-uri'
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'tess_api'
+require 'tess_api_client'
 
 $root_url = 'http://www.vib.be/en/training/research-training/courses/Pages/default.aspx'
 $owner_org = 'bioinformatics-training-and-services'

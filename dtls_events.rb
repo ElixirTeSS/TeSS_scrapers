@@ -1,6 +1,6 @@
 # This doesn't actually scrape anything, but does perform an upload.
 
-require 'tess_api'
+require 'tess_api_client'
 require 'Nokogiri'
 
 $debug = ScraperConfig.debug?

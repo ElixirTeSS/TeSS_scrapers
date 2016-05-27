@@ -2,7 +2,7 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 
 $root_url = 'http://www.ebi.ac.uk'
 $owner_org = 'european-bioinformatics-institute-ebi'
