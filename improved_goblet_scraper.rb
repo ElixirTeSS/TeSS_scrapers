@@ -2,7 +2,7 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 
 # This scraper should use the XML API to get the URL of each course, then go to each individual
 # course page to scrape the details. This will be improved when proper markup is added to

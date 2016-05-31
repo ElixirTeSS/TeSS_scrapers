@@ -2,7 +2,7 @@
 require 'rdf/rdfa'
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 require 'digest/sha1'
 
 def get_materials_for_page(page)

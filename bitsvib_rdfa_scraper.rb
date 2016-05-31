@@ -1,7 +1,7 @@
 require 'rdf/rdfa'
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 require 'digest/sha1'
 
 # This scraper should use the XML API to get the URL of each course, then go to each individual

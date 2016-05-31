@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'tess_api'
+require 'tess_api_client'
 
 
 $lessons = {}

@@ -2,7 +2,7 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 
 
 $courses = 'http://www.mygoblet.org/training-portal/courses-xml'
