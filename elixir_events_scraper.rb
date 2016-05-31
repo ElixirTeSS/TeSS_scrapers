@@ -6,7 +6,7 @@ require 'tess_api'
 require 'geocoder'
 
 
-$root_url = 'http://www.elixir-europe.org'
+$root_url = 'https://www.elixir-europe.org'
 $owner_org = 'elixir'
 $events = {}
 $debug = ScraperConfig.debug?
