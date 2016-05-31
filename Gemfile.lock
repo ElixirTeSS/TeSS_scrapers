@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/ElixirUK/TeSS_api_client.git
+  revision: 5ebcfe659cd9732e08c5d5a9511e77093bec6551
+  specs:
+    tess_api_client (0.0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -62,3 +68,7 @@ DEPENDENCIES
   rdf-rdfa
   redcarpet
   simple-rss
+  tess_api_client!
+
+BUNDLED WITH
+   1.12.5
