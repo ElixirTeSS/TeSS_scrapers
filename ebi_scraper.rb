@@ -66,15 +66,15 @@ cp = Uploader.create_or_update_content_provider(cp)
 # Create the new record
 $lessons.each_key do |key|
 
-  material = Material.new(title = $lessons[key]['text'],
-                          url = $root_url + key,
-                          short_description = "#{$lessons[key]['text']} from #{$root_url + key}.",
-                          doi = nil,
-                          remote_updated_date = Time.now,
-                          remote_created_date = $lessons[key]['last_modified'],
-                          content_provider_id = cp['id'],
-                          scientific_topic = $lessons[key]['topics'],
-                          keywords = $lessons[key]['topics'])
+  material = Material.new({title: $lessons[key]['text'],
+                          url: $root_url + key,
+                          short_description: "#{$lessons[key]['text']} from #{$root_url + key}.",
+                          doi: nil,
+                          remote_updated_date: Time.now,
+                          remote_created_date: $lessons[key]['last_modified'],
+                          content_provider_id: cp['id'],
+                          scientific_topic: $lessons[key]['topics'],
+                          keywords: $lessons[key]['topics']})
 
   Uploader.create_or_update_material(material)
 

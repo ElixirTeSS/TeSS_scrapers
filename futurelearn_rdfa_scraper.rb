@@ -39,21 +39,21 @@ events.each do |event|
         unless event['schema:startDate'].nil? or event['schema:startDate'].empty?
             start_date = DateTime.parse(event['schema:startDate'])     
             if start_date and start_date.is_a?(DateTime)
-                upload_event = Event.new(
-                    id=nil,
-                    content_provider_id = cp['id'],
-                    external_id = nil,
-                    title = event['schema:name'], 
-                    subtitle = nil,
-                    url = event['schema:url'],
-                    provider = event['schema:organizer'],
-                    field = nil,
-                    description = event['schema:description'],
-                    keywords = [],
-                    category = nil,
-                    start_date = start_date,
-                    end_date = (start_date + duration_in_days(event['schema:duration'])).to_s
-                  ) 
+                upload_event = Event.new({
+                    id: nil,
+                    content_provider_id: cp['id'],
+                    external_id: nil,
+                    title: event['schema:name'],
+                    subtitle: nil,
+                    url: event['schema:url'],
+                    provider: event['schema:organizer'],
+                    field: nil,
+                    description: event['schema:description'],
+                    keywords: [],
+                    category: nil,
+                    start_date: start_date,
+                    end_date: (start_date + duration_in_days(event['schema:duration'])).to_s
+                })
             end
             Uploader.create_or_update_event(upload_event)
         end

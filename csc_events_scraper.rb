@@ -97,9 +97,23 @@ $events.each_key do |key|
     lon = loc[0].data['geometry']['location']['lng']
   end
 
+#  :external_id, :title,:subtitle,:url,:provider,:field,:description,:keywords,:category,
+#      :start,:end,:sponsor,:venue,:city,:county, :country,:postcode,:latitude,:longitude,:id,
+#      :content_provider_id
 
-  event = Event.new(nil,cp['id'],nil,$events[key]['title'],nil,key,'CSC',nil,$events[key]['description'],$events[key]['category'],
-                    $events[key]['category'],start_date,end_date,nil,venue,nil,nil,nil,nil,lat,lon)
+  event = Event.new({
+      content_provider_id: cp['id'],
+      content_provider: 'CSC',
+      title: $events[key]['title'],
+      url: key,
+      description: $events[key]['description'],
+      category: $events[key]['category'],
+      start: start_date,
+      end: end_date,
+      venue: venue,
+      latitude: lat,
+      longitude: lon
+  })
 
   Uploader.create_or_update_event(event)
 

@@ -32,21 +32,21 @@ parse_data(course_url)['elements'].each do |course|
   next unless course['primaryLanguages'].include?('en') # There are some Russian courses turning up...
   topics = [course['domainTypes'].collect {|x| x['domainId'] }, course['domainTypes'].collect {|x| x['subdomainId'] }].flatten.uniq
   begin
-    material = Material.new(title = course['name'],
-                            url = $friendly_url + course['slug'],
-                            short_description = course['description'],
-                            doi = nil,
-                            remote_updated_date = Time.now,
-                            remote_created_date = nil,
-                            content_provider_id = cp['id'],
-                            scientific_topic_names = [],
-                            keywords = topics,
-                            licence = nil,
-                            difficulty_level = nil,
-                            contributors = [],
-                            authors = nil,
-                            target_audience = nil
-    )
+    material = Material.new({title: course['name'],
+                            url: $friendly_url + course['slug'],
+                            short_description: course['description'],
+                            doi: nil,
+                            remote_updated_date: Time.now,
+                            remote_created_date: nil,
+                            content_provider_id: cp['id'],
+                            scientific_topic_names: [],
+                            keywords: topics,
+                            licence: nil,
+                            difficulty_level: nil,
+                            contributors: [],
+                            authors: nil,
+                            target_audience: nil
+                           })
     puts material.inspect
     Uploader.create_or_update_material(material)
   rescue => ex
