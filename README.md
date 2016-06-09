@@ -1,4 +1,14 @@
-Install all depending gems for the tessdata gem using bundler by running this command in the root directory:
+# TeSS Scrapers
+
+## About
+
+These are a collection of Ruby scripts designed to scrape web pages (or other useful resources) and create Events or Materials on the TeSS website, https://tess.elixir-uk.org. They require the TeSS API client
+in order to function: https://github.com/ElixirUK/TeSS_api_client.
+
+## Running
+
+
+Install all depending gems for the tess_api_client gem using bundler by running this command in the root directory:
 
 `bundle install`
 
@@ -22,7 +32,52 @@ To run a scraper simply run `ruby <scraper_name>.rb`. For example:
 
 `ruby ebi_scraper.rb`
 
-To run all scrapers you can use the run script
+## Writing
 
-`sh run.sh`
+The scraper scripts all follow a very similar format:
+
+1. A page or pages are supplied to the scraper, which are downloaded and parsed.
+2. The data from (1) are added to a $lessons object.
+3. Once the parsing is finished then $lessons from (2) are converted into Materials or Events and uploaded.
+
+Looking at the source of any of the scripts contained in this repository ought to give a good indication of their function.
+
+### Parsing
+
+Here's an example of some basic parsing code:
+
+    doc = Nokogiri::HTML(open($root_url + page))
+    doc.xpath('//h3').each do |record|
+        url = record['href']
+        name = record.content
+        $lessons[url] = {}
+        $lessons[url]['name'] = name
+    end
+
+This uses the URL of a training material as the key in a hash which is used to store its parameters; in this example only the material's name is stored,
+but the same principle should be used for any other fields.
+
+
+
+### Uploading
+
+The $lessons hash can be used to construct data objects suitable for posting to TeSS:
+
+    $lessons.each_key do |key|
+        material = Material.new({title: $lessons[key]['name'],
+                                 url: key,
+                                 short_description: $lessons[key]['short_description'],
+                                 doi: nil,
+                                 remote_updated_date: Time.now,
+                                 remote_created_date: nil,
+                                 content_provider_id: cp['id'],
+                                 scientific_topic: [],
+                                 keywords:[]})
+
+          Uploader.create_or_update_material(material)
+    end
+
+Please refer to the further examples in the TeSS API repository:
+
+https://github.com/ElixirUK/TeSS_api_client
 
