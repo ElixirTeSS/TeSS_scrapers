@@ -42,6 +42,22 @@ The scraper scripts all follow a very similar format:
 
 Looking at the source of any of the scripts contained in this repository ought to give a good indication of their function.
 
+
+### Variables
+
+The following variables are defined in each scraper script:
+
+    $root_url = 'https://awesome-training-materials/biosciences'
+    $owner_org = 'awesome-training'
+    $lessons = {}
+    $debug = ScraperConfig.debug?
+
+
+The $root_url is the main page listing training materials. After parsing this it may be necessary to follow each of the
+links on it during the parsing step to get additional information from them. The $debug variable can be used in testing by
+downloading the html page to be parsed and opening that rather than hitting the remote site, to avoid bothering content
+providers with spurious log entries. The value is defined in the uploader_config.txt file.
+
 ### Parsing
 
 Here's an example of some basic parsing code:
