@@ -2,12 +2,12 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 
 $root_url = 'https://www.bits.vib.be/training'
 $owner_org = 'bioinformatics-training-and-services'
 $lessons = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 def parse_data()
   #upcoming_match = Regexp.new('upcoming-trainings')
@@ -59,15 +59,14 @@ cp = Uploader.create_or_update_content_provider(cp)
 
 
 $lessons.each_key do |key|
-  material = Material.new(title = $lessons[key],
-                          url = $root_url + key,
-                          short_description = "#{$lessons[key]} from #{$root_url + key}.",
-                          doi = nil,
-                          remote_updated_date = Time.now,
-                          remote_created_date = nil,
-                          content_provider_id = cp['id'],
-                          scientific_topic = [],
-                          keywords = [])
+  material = Material.new({title: $lessons[key],
+                          url: $root_url + key,
+                          short_description: "#{$lessons[key]} from #{$root_url + key}.",
+                          doi: nil,
+                          remote_updated_date: Time.now,
+                          remote_created_date: nil,
+                          content_provider_id: cp['id'],
+                          keywords: []})
   puts "URL: #{$root_url}#{key}"
   Uploader.create_or_update_material(material)
 end

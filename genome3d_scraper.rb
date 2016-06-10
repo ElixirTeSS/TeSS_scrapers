@@ -2,12 +2,12 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 
 $root_url = 'http://genome3d.eu/'
 $owner_org = 'genome-3d'
 $lessons = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 
 def parse_data(page)
@@ -63,15 +63,15 @@ cp = Uploader.create_or_update_content_provider(cp)
 
 # Create the new record
 $lessons.each_key do |key|
-  material = Material.new(title = $lessons[key]['name'],
-                          url = $root_url + key,
-                          short_description = $lessons[key]['description'],
-                          doi = nil,
-                          remote_updated_date = Time.now,
-                          remote_created_date = $lessons[key]['last_modified'],
-                          content_provider_id = cp['id'],
-                          scientific_topic = [],
-                          keywords = [])
+  material = Material.new({title: $lessons[key]['name'],
+                          url: $root_url + key,
+                          short_description: $lessons[key]['description'],
+                          doi: nil,
+                          remote_updated_date: Time.now,
+                          remote_created_date: $lessons[key]['last_modified'],
+                          content_provider_id: cp['id'],
+                          scientific_topic: [],
+                          keywords: []})
 
   check = Uploader.check_material(material)
   puts check.inspect

@@ -2,14 +2,14 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 require 'geocoder'
 
 
-$root_url = 'http://www.elixir-europe.org'
+$root_url = 'https://www.elixir-europe.org'
 $owner_org = 'elixir'
 $events = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 def parse_data(page)
 
@@ -124,8 +124,19 @@ $events.each_key do |key|
     end
   end
 
-  event = Event.new(nil,cp['id'],nil,$events[key]['title'],nil,$root_url + key,'Elixir',nil,nil,nil,$events[key]['category'],
-                    $events[key]['start_date'], $events[key]['end_date'],nil,venue,nil,nil,nil,nil,lat,lon)
+  event = Event.new({
+      content_provider_id: cp['id'],
+      content_provider: 'Elixir',
+      title: $events[key]['title'],
+      url: $root_url + key,
+      category: $events[key]['category'],
+      start: $events[key]['start_date'],
+      end: $events[key]['end_date'],
+      venue: venue,
+      latitude: lat,
+      longitude: lon
+  })
+
 
   #puts "E: #{event.inspect}"
 

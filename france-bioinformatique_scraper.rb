@@ -1,13 +1,15 @@
+'http://www.france-bioinformatique.fr/en/formations'
+
 
 require 'tess_api_client'
 
 # This scraper should use the XML API to get the URL of each course, then go to each individual
 # course page to parse embedded RDFa data.
 
-#$courses = 'http://www.mygoblet.org/training-portal/courses-xml'
-$materials = 'http://biocomp.vbcf.ac.at/training/index.html'
-$root_url = 'http://biocomp.vbcf.ac.at/training/'
-$owner_org = 'biocomp'
+$materials = 'http://www.france-bioinformatique.fr/en/training_material'
+$events = 'http://www.france-bioinformatique.fr/en/formations'
+$root_url = 'http://www.france-bioinformatique.fr/en/'
+$owner_org = 'ifb'
 $lessons = {}
 $debug = ScraperConfig.debug?
 
@@ -42,38 +44,29 @@ def get_urls(index_page)
 end
 
 cp = ContentProvider.new(
-    "VBCF BioComp",
-    "http://biocomp.vbcf.ac.at/training/index.html",
-    "http://biocomp.vbcf.ac.at/training/biocomp.jpg",
-    "BioComp is one of the core facilities at the Vienna BioCenter Core Facilities (VBCF). We offer data analysis services for next-generation sequencing data and develop software solutions for biological experiments, with an emphasis on image and video processing and hardware control. We also provide custom-made data management solutions to research groups. BioComp offers trainings and consultations in the areas of bioinformatics, statistics and computational skills."
+    "IFB French Institute of Bioinformatics",
+    "http://www.france-bioinformatique.fr/en",
+    "http://www.france-bioinformatique.fr/sites/default/files/ifb-logo_1.png",
+    "The French Institute of Bioinformatics (referred to as IFB hereafter) is a national service infrastructure in bioinformatics that was created following the call for proposals, “National Infrastructures in Biology and Health”, of the “Investments for the Future” initiative (ANR-11-INBS-0013)."
     )
 cp = Uploader.create_or_update_content_provider(cp)
 
 
-dump_file = File.open('parsed_biocomp.json', 'w') if $debug
+dump_file = File.open('parsed_ifb.json', 'w') if $debug
 
 #Go through each Training Material, load RDFa, dump to JSON, interogate data, and upload to TeSS. 
-get_urls($materials).each do |url|
-  #f = open(url)
-  if true #Load from file for now
-    if File.exists?("html/biocomp_pages/#{Digest::SHA1.hexdigest(url)}")
-      rdfa = RDF::Graph.load("html/biocomp_pages/#{Digest::SHA1.hexdigest(url)}", format: :rdfa)
-      puts 'Opened from Filesystem'
-    else
-      File.open("html/biocomp_pages/#{Digest::SHA1.hexdigest(url)}", 'w') do |file|
-        file.write(open(url).read)
-      end
-      rdfa = RDF::Graph.load("html/biocomp_pages/#{Digest::SHA1.hexdigest(url)}", format: :rdfa)
-        puts 'Opened from Web'
-    end
-  else
-    rdfa = RDF::Graph.load(url, format: :rdfa)
-  end
-
-
+  rdfa = RDF::Graph.load($materials, format: :microdata)
   material = RdfaExtractor.parse_rdfa(rdfa, 'CreativeWork')
   #article = RdfaExtractor.parse_rdfa(rdfa, 'Article')
-  material.each{|mat| mat['url'] = url}
+
+  material.each do |mat| 
+    begin
+    	if url_xml = Nokogiri::XML(mat['schema:url'][2]).element_children.first
+          mat['url'] = url_xml.attributes['href'] || nil 
+        end
+    end
+  end
+
 
 
   #write out to JSON for debug mode.
@@ -107,3 +100,4 @@ get_urls($materials).each do |url|
       puts ex.message
    end
 end
+

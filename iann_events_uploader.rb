@@ -1,9 +1,9 @@
 # This doesn't actually scrape anything, but does perform an upload.
 
-require 'tess_api'
-require 'Nokogiri'
+require 'tess_api_client'
+require 'nokogiri'
 
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 cp = ContentProvider.new(
     "iAnn",

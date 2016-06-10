@@ -1,5 +1,5 @@
 require 'json'
-require 'tess_api'
+require 'tess_api_client'
 require 'open-uri'
 
 
@@ -24,22 +24,22 @@ broad_topics.each do |topic|
 		subtopic['url']
 		keyword = topic['title']
 		begin
-        	upload_material = Material.new(
-              title = subtopic['title'],
-              url = subtopic['url'],
-              short_description = description, 
-              doi = nil,
-              remote_updated_date = Time.now,
-              remote_created_date = nil,
-              content_provider_id = cp['id'],
-              scientific_topic_names = ['Statistics and probability'],
-              keywords = [topics['title']],
-              licence = nil,
-              difficulty_level = nil,
-              contributors = [],
-              authors = nil,
-              target_audience = nil
-            ) 
+        	upload_material = Material.new({
+              title: subtopic['title'],
+              url: subtopic['url'],
+              short_description: description,
+              doi: nil,
+              remote_updated_date: Time.now,
+              remote_created_date: nil,
+              content_provider_id: cp['id'],
+              scientific_topic_names: ['Statistics and probability'],
+              keywords: [topics['title']],
+              licence: nil,
+              difficulty_level: nil,
+              contributors: [],
+              authors: nil,
+              target_audience: nil
+           })
         	Uploader.create_or_update_material(upload_material)
 	    rescue => ex
 	      puts ex.message

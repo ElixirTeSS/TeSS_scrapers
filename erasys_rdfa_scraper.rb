@@ -2,7 +2,7 @@
 require 'rdf/rdfa'
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 require 'digest/sha1'
 
 def get_materials_for_page(page)
@@ -41,22 +41,22 @@ materials = get_materials_for_page(page)
 while materials.count > 0 
     materials.each do |material| 
       begin
-        upload_material = Material.new(
-              title = trim_characters(material['schema:name']),
-              url = material['schema:url'],
-              short_description = material['description'],
-              doi = nil,
-              remote_updated_date = Time.now,
-              remote_created_date = material['schema:dateCreated'],
-              content_provider_id = cp['id'],
-              scientific_topic = nil,
-              keywords = trim_characters(material['schema:keywords']),
-              licence = nil,
-              difficulty_level = nil,
-              contributors = [],
-              authors = trim_characters(material['schema:author']),
-              target_audience = nil
-          ) 
+        upload_material = Material.new({
+              title: trim_characters(material['schema:name']),
+              url: material['schema:url'],
+              short_description: material['description'],
+              doi: nil,
+              remote_updated_date: Time.now,
+              remote_created_date: material['schema:dateCreated'],
+              content_provider_id: cp['id'],
+              scientific_topic: nil,
+              keywords: trim_characters(material['schema:keywords']),
+              licence: nil,
+              difficulty_level: nil,
+              contributors: [],
+              authors: trim_characters(material['schema:author']),
+              target_audience: nil
+         })
         Uploader.create_or_update_material(upload_material)
         rescue => ex
           puts ex.message

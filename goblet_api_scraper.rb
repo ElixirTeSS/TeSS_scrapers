@@ -2,14 +2,14 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 
 
 $courses = 'http://www.mygoblet.org/training-portal/courses-xml'
 $materials = 'http://www.mygoblet.org/training-portal/materials-xml'
 $owner_org = 'goblet'
 $lessons = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 def parse_data(page)
   doc = Nokogiri::XML(open(page))
@@ -71,15 +71,15 @@ cp = Uploader.create_or_update_content_provider(cp)
 
 # Create the new record
 $lessons.each_key do |key|
-  material = Material.new(title = $lessons[key]['title'],
-                          url = key,
-                          short_description = "#{$lessons[key]['title']} from #{$materials}.",
-                          doi = nil,
-                          remote_updated_date = $lessons[key]['updated'],
-                          remote_created_date = nil,
-                          content_provider_id = cp['id'],
-                          scientific_topic = $lessons[key]['topics'],
-                          keywords = $lessons[key]['topics'])
+  material = Material.new({title: $lessons[key]['title'],
+                          url: key,
+                          short_description: "#{$lessons[key]['title']} from #{$materials}.",
+                          doi: nil,
+                          remote_updated_date: $lessons[key]['updated'],
+                          remote_created_date: nil,
+                          content_provider_id: cp['id'],
+                          scientific_topic: $lessons[key]['topics'],
+                          keywords: $lessons[key]['topics']})
   Uploader.create_or_update_material(material)
 end
 

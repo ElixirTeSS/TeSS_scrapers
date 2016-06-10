@@ -2,11 +2,11 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 
 $root_url = 'http://www.datacarpentry.org'
 $lessons = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 $exclude = [' Feeling Responsive']
 
 def parse_data(page)
@@ -56,17 +56,17 @@ cp = Uploader.create_or_update_content_provider(cp)
 # Create the new record
 $lessons.each_key do |key|
 
-  material = Material.new(title = $lessons[key]['title'],
-                          url = key,
-                          short_description = $lessons[key]['short_description'],
-                          doi = nil,
-                          remote_updated_date = Time.now,
-                          remote_created_date = nil,
-                          content_provider_id = cp['id'],
-                          scientific_topic = nil,
-                          keywords = nil,
+  material = Material.new({title: $lessons[key]['title'],
+                          url: key,
+                          short_description: $lessons[key]['short_description'],
+                          doi: nil,
+                          remote_updated_date: Time.now,
+                          remote_created_date: nil,
+                          content_provider_id: cp['id'],
+                          scientific_topic: nil,
+                          keywords: nil,
                           licence=nil, difficulty_level=nil, contributors=[], authors=[], target_audience=[], id=nil,
-                          long_description = $lessons[key]['long_description'])
+                          long_description: $lessons[key]['long_description']})
 
   Uploader.create_or_update_material(material)
 

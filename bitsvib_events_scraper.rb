@@ -1,14 +1,11 @@
 #!/usr/bin/env ruby
-
-require 'open-uri'
-require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 
 $root_url = 'http://www.vib.be/en/training/research-training/courses/Pages/default.aspx'
 $owner_org = 'bioinformatics-training-and-services'
 $events = {}
 $categories = %w{Bioinformatics, Skills, Science, Coaching}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 cp = ContentProvider.new(
     "VIB Bioinformatics Training and Services",

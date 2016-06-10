@@ -2,12 +2,12 @@
 
 require 'open-uri'
 require 'nokogiri'
-require 'tess_api'
+require 'tess_api_client'
 
 $root_url = 'http://edu.isb-sib.ch/'
 $owner_org = 'swiss-institute-of-bioinformatics'
 $lessons = {}
-$debug = Config.debug?
+$debug = ScraperConfig.debug?
 
 
 def parse_data(page)
@@ -58,15 +58,15 @@ cp = ContentProvider.new(
 cp = Uploader.create_or_update_content_provider(cp)
 # Create the new record
 $lessons.each_key do |key|
-  material = Material.new(title = $lessons[key]['name'],
-                          url = key,
-                          short_description = $lessons[key]['description'],
-                          doi = nil,
-                          remote_updated_date = $lessons[key]['updated'],
-                          remote_created_date = nil,
-                          content_provider_id = cp['id'],
-                          scientific_topic = [],
-                          keywords = [])
+  material = Material.new({title: $lessons[key]['name'],
+                          url: key,
+                          short_description: $lessons[key]['description'],
+                          doi: nil,
+                          remote_updated_date: $lessons[key]['updated'],
+                          remote_created_date: nil,
+                          content_provider_id: cp['id'],
+                          scientific_topic: [],
+                          keywords: []})
 
   Uploader.create_or_update_material(material)
 end
