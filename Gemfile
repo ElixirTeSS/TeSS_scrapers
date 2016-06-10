@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'geocoder'
 gem 'inifile'
-gem 'nokogiri'
+gem 'nokogiri', '1.6.7.2'
 gem 'net'
 gem 'httparty'
 gem 'json'
