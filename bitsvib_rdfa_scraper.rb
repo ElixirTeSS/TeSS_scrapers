@@ -97,7 +97,7 @@ get_urls($materials).each do |url|
         remote_updated_date: Time.now,
         remote_created_date: material['dc:date'],
         content_provider_id: cp['id'],
-        scientific_topic: material['schema:genre'],
+        scientific_topics: material['schema:genre'],
         keywords: material['schema:keywords'],
         licence: nil,
         difficulty_level: nil,
