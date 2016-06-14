@@ -1,21 +1,24 @@
 GIT
   remote: git://github.com/ElixirUK/TeSS_api_client.git
-  revision: 5ebcfe659cd9732e08c5d5a9511e77093bec6551
+  revision: 3153ff8b92d8efda12a015be899eb39783ccae30
   specs:
-    tess_api_client (0.0.1)
+    tess_api_client (0.0.2)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.2.5.1)
+    activesupport (4.2.6)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    geocoder (1.3.0)
+    concurrent-ruby (1.0.2)
+    geocoder (1.3.7)
     haml (4.0.7)
       tilt
+    hamster (3.0.0)
+      concurrent-ruby (~> 1.0)
     htmlentities (4.3.4)
     httparty (0.13.7)
       json (~> 1.8)
@@ -23,34 +26,35 @@ GEM
     i18n (0.7.0)
     inifile (3.0.0)
     json (1.8.3)
-    json-ld (1.99.0)
+    json-ld (2.0.0.1)
       multi_json (~> 1.11)
-      rdf (~> 1.99)
+      rdf (~> 2.0)
     link_header (0.0.8)
     mini_portile2 (2.0.0)
-    minitest (5.8.4)
-    multi_json (1.11.2)
+    minitest (5.9.0)
+    multi_json (1.12.1)
     multi_xml (0.5.5)
     net (0.3.3)
       activesupport
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
-    rdf (1.99.1)
+    rdf (2.0.1)
+      hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
-    rdf-aggregate-repo (1.99.0)
-      rdf (~> 1.99)
-    rdf-rdfa (1.99.0)
+    rdf-aggregate-repo (2.0.0)
+      rdf (~> 2.0)
+    rdf-rdfa (2.0.1)
       haml (~> 4.0)
       htmlentities (~> 4.3)
-      rdf (~> 1.99)
-      rdf-aggregate-repo (~> 1.1)
-      rdf-xsd (~> 1.1)
-    rdf-xsd (1.99.0)
-      rdf (~> 1.99)
+      rdf (~> 2.0)
+      rdf-aggregate-repo (~> 2.0)
+      rdf-xsd (~> 2.0)
+    rdf-xsd (2.0.0)
+      rdf (~> 2.0)
     redcarpet (3.3.4)
     simple-rss (1.3.1)
     thread_safe (0.3.5)
-    tilt (2.0.1)
+    tilt (2.0.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
 
@@ -64,7 +68,7 @@ DEPENDENCIES
   json
   json-ld
   net
-  nokogiri
+  nokogiri (= 1.6.7.2)
   rdf-rdfa
   redcarpet
   simple-rss

@@ -19,6 +19,15 @@ def duration_offset text
   return match_data[1].to_i * 3600 #86400 if days
 end
 
+#Found in the description. Parsing should account for different list styles
+ #Presented by Richard D. Morey
+ #Presented by Geert Verbeke and Geert Molenberghs
+ #Presented by Tim Morris, Michael Crowther &amp; Ian White
+ #Presented by -&nbsp;Ellen Marshall (University of Sheffield)&nbsp;and Jenny Freeman (University of Leeds)
+def presented_by text
+  match_data = text.match('CPD\s[-\s]*([0-9])*\s(hours|days)')
+end
+
 
 def parse_data(page)
   rss_feed = open page
@@ -28,8 +37,8 @@ def parse_data(page)
     title_element = item.children.find{|x| x.name == 'title'}
     description = item.children.find{|x| x.name == 'description'}.text
     date, title = parse_title title_element.text
-    start_date =  DateTime.parse(date)
-    end_date =  (start_date.to_time + duration_offset(description)).to_datetime
+    start_date =  Time.parse(date)
+    end_date = (start_date + duration_offset(description))
     $events[url] = {
       :title => title,
       :description => description,
@@ -37,6 +46,8 @@ def parse_data(page)
       :end_date => end_date.to_s,
       :country => 'United Kingdom'
     }
+    puts  end_date.to_s
+    puts  start_date.to_s
   end
 end
 
@@ -52,16 +63,16 @@ cp = Uploader.create_or_update_content_provider(cp)
 parse_data($events_url)
 
 $events.each_key do |key| 
-  puts $events[key] if ScraperConfig.debug?
   event = Event.new({
       content_provider_id: cp['id'],
       title: $events[key][:title],
       url: key,
       category: 'course',
-      start: $events[key][:start_date],
-      end: $events[key][:end_date],
+      start_date: $events[key][:start_date],
+      end_date: $events[key][:end_date],
       short_description: $events[key][:description],
       country: $events[key][:country]
     })  
+  puts event.inspect if ScraperConfig.debug?
   Uploader.create_or_update_event(event)
 end
