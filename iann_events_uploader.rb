@@ -52,7 +52,7 @@ docs.each do |event_item|
       end
     end
   end
-
+  puts event.inspect if ScraperConfig.debug?
   Uploader.create_or_update_event(event)
 end
 

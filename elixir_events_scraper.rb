@@ -130,8 +130,8 @@ $events.each_key do |key|
       title: $events[key]['title'],
       url: $root_url + key,
       category: $events[key]['category'],
-      start: $events[key]['start_date'],
-      end: $events[key]['end_date'],
+      start_date: $events[key]['start_date'],
+      end_date: $events[key]['end_date'],
       venue: venue,
       latitude: lat,
       longitude: lon
