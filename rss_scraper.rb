@@ -4,6 +4,16 @@ require 'tess_api_client'
 
 $events_url = "https://www.statslife.org.uk/index.php?option=com_jevents&task=modlatest.rss&format=feed&type=rss&modid=284"
 $events = {}
+# The majority of events are here and their RSS does not contain location so use this set location data for each event.
+$location = {
+      :provider => 'Royal Statistical Society',
+      :venue => 'The Royal Statistical Society',
+      :city => 'London',
+      :country => 'United Kingdom',
+      :postcode => 'EC1Y 8LX',
+      :latitude => 51.5225237,
+      :longitude => -0.0909223
+}
 
 #separate date and title
 #presented in format: "23 Jun 2016 10:00 : Presenting Data"
@@ -43,15 +53,14 @@ def parse_data(page)
       :title => title,
       :description => description,
       :start_date => start_date.to_s,
-      :end_date => end_date.to_s,
-      :country => 'United Kingdom'
+      :end_date => end_date.to_s
     }
   end
 end
 
 
 cp = ContentProvider.new(
-    "Royal Society of Statistics",
+    "Royal Statistical Society",
     "https://www.statslife.org.uk/",
     "https://www2.warwick.ac.uk/fac/sci/statistics/courses/rss/rss-strapline-logo-360x180.jpg",
     "We are a world-leading organisation promoting the importance of statistics and data - and a professional body for all statisticians and data analysts."
@@ -68,10 +77,9 @@ $events.each_key do |key|
       category: 'course',
       start_date: $events[key][:start_date],
       end_date: $events[key][:end_date],
-      description: $events[key][:description],
-      country: $events[key][:country],
-      provider: 'Royal Society of Statistics'
-    })  
+      description: $events[key][:description]
+    }.merge($location)
+    )  
   puts event.inspect if ScraperConfig.debug?
   Uploader.create_or_update_event(event)
 end
