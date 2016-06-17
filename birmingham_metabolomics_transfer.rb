@@ -9,7 +9,7 @@ materials = provider['packages']
 cp = ContentProvider.new(
   provider['display_name'], #name
   provider['homepage'], #url
-  'https://pbs.twimg.com/profile_images/620946986070601728/nI-nK5xj_400x400.jpg', #logo
+  'http://preview.birmingham.ac.uk/Images/College-LES-only/biosciences/facilities/bmtc/12106-BMTC-lock-up-AW-02-small.png', #logo
   provider['description'], #description
 )
 cp = Uploader.create_or_update_content_provider(cp)
