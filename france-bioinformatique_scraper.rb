@@ -1,6 +1,3 @@
-'http://www.france-bioinformatique.fr/en/formations'
-
-
 require 'tess_api_client'
 require 'linkeddata'
 
