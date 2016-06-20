@@ -71,24 +71,25 @@ get_urls($materials,'materials').each do |url|
       dump_file.write("#{material.to_json}")
     end
   end
-
+  
   material = material.first
   # Create the new record
+
   upload_material = Material.new({
-      title: material['schema:name'],
+      title: material['http://schema.org/name'],
         url: url,
-        short_description: material['schema:description'],
+        short_description: material['http://schema.org/description'],
         doi: nil,
         remote_updated_date: Time.now,
-        remote_created_date: material['dc:date'],
+        remote_created_date: material['http://purl.org/dc/terms/date'],
         content_provider_id: cp['id'],
-        scientific_topic: material['schema:genre'],
-        keywords: material['schema:keywords'],
+        scientific_topic: material['http://schema.org/genre'],
+        keywords: material['http://schema.org/keywords'],
         licence: nil,
         difficulty_level: nil,
         contributors: [],
-        authors: material['sioc:has_creator'],
-        target_audience: material['schema:audience']
+        authors: material['http://rdfs.org/sioc/ns#has_creator'],
+        target_audience: material['http://schema.org/audience']
    })
    Uploader.create_or_update_material(upload_material)
 end
