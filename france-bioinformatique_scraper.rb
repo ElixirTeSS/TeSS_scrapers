@@ -31,78 +31,74 @@ rdfa = RDF::Graph.load($materials, format: :rdfa)
 materials = RdfaExtractor.parse_rdfa(rdfa, 'CreativeWork')
 #article = RdfaExtractor.parse_rdfa(rdfa, 'Article')
 
-=begin
-rdfa = RDF::Graph.load($events, format: :rdfa)
-events = RdfaExtractor.parse_rdfa(rdfa, 'Event')
-=end
 
-
-
-  #write out to JSON for debug mode.
-  if $debug
+#write out to JSON for debug mode.
+if $debug
     material.each do |material|
-      dump_file.write("#{material.to_json}")
+        dump_file.write("#{material.to_json}")
     end
-  end
+end
 
   
   # Create the new record
 materials.each do |material|
-	begin
-		keywords = material['schema:keywords'] 
-		keywords.delete('en') #Each has en meaning english in. Remove these
-		upload_material = Material.new({
-	          title: material['schema:name'],
-	          url: material['schema:url'],
-	          short_description: material['schema:about'],
-	          doi: nil,
-	          remote_updated_date: Time.now,
-	          remote_created_date: material['dc:date'],
-	          content_provider_id: cp['id'],
-	          scientific_topic_names: keywords,
-	          keywords: keywords, #material['schema:learningResourceType'],
-	          licence: nil,
-	          difficulty_level: nil,
-	          contributors: [],
-	          authors: material['schema:author'],
-	          target_audience: material['schema:audience']
-	    })
-	    Uploader.create_or_update_material(upload_material)
-	rescue => ex
-		puts ex.message
-	end
+    begin
+        keywords = material['schema:keywords'] 
+        keywords.delete('en') #Each has en meaning english in. Remove these
+        upload_material = Material.new({
+              title: material['schema:name'],
+              url: material['schema:url'],
+              short_description: material['schema:about'],
+              doi: nil,
+              remote_updated_date: Time.now,
+              remote_created_date: material['dc:date'],
+              content_provider_id: cp['id'],
+              scientific_topic_names: keywords,
+              keywords: keywords, #material['schema:learningResourceType'],
+              licence: nil,
+              difficulty_level: nil,
+              contributors: [],
+              authors: material['schema:author'],
+              target_audience: material['schema:audience']
+        })
+        Uploader.create_or_update_material(upload_material)
+    rescue => ex
+        puts ex.message
+    end
 end
 
 
 
 =begin  
+rdfa = RDF::Graph.load($events, format: :rdfa)
+events = RdfaExtractor.parse_rdfa(rdfa, 'Event')
   # Create the new record
 events.each do |event|
-	begin
-		puts event
-		keywords = material['schema:keywords']
-		keywords.delete('en') #Each has en meaning english in. Remove these
-		upload_material = Material.new({
-	          title: material['schema:name'],
-	          url: material['schema:url'],
-	          short_description: material['schema:about'],
-	          doi: nil,
-	          remote_updated_date: Time.now,
-	          remote_created_date: material['dc:date'],
-	          content_provider_id: cp['id'],
-	          scientific_topic_names: keywords,
-	          keywords: keywords.uniq, #material['schema:learningResourceType'],
-	          licence: nil,
-	          difficulty_level: nil,
-	          contributors: [],
-	          authors: material['schema:author'],
-	          target_audience: material['schema:audience']
-	    })
-	    Uploader.create_or_update_material(upload_material)
+    begin
+        puts event
+        keywords = material['schema:keywords']
+        keywords.delete('en') #Each has en meaning english in. Remove these
+        upload_material = Material.new({
+              title: material['schema:name'],
+              url: material['schema:url'],
+              short_description: material['schema:about'],
+              doi: nil,
+              remote_updated_date: Time.now,
+              remote_created_date: material['dc:date'],
+              content_provider_id: cp['id'],
+              scientific_topic_names: keywords,
+              keywords: keywords.uniq, #material['schema:learningResourceType'],
+              licence: nil,
+              difficulty_level: nil,
+              contributors: [],
+              authors: material['schema:author'],
+              target_audience: material['schema:audience']
+        })
+        Uploader.create_or_update_material(upload_material)
 
-	rescue => ex
-		puts ex.message
-	end
+    rescue => ex
+        puts ex.message
+    end
 end
 =end
 
