@@ -58,7 +58,7 @@ dump_file = File.open('parsed_bitsvib.json', 'w') if $debug
 #Go through each Training Material, load RDFa, dump to JSON, interogate data, and upload to TeSS. 
 get_urls($materials).each do |url|
   #f = open(url)
-  if true #Load from file for now
+  if ScraperConfig.debug? #Load from file for now
     if File.exists?("html/bitsvib_pages/#{Digest::SHA1.hexdigest(url)}")
       rdfa = RDF::Graph.load("html/bitsvib_pages/#{Digest::SHA1.hexdigest(url)}", format: :rdfa)
       puts 'Opened from Filesystem'
@@ -76,9 +76,6 @@ get_urls($materials).each do |url|
 
   material = RdfaExtractor.parse_rdfa(rdfa, 'CreativeWork')
   #article = RdfaExtractor.parse_rdfa(rdfa, 'Article')
-  material.each{|mat| mat['url'] = url}
-
-
   #write out to JSON for debug mode.
   if $debug
     material.each do |material|
@@ -90,20 +87,20 @@ get_urls($materials).each do |url|
   # Create the new record
   begin
     upload_material = Material.new({
-        title: material['schema:name'],
+        title: material['http://schema.org/name'],
         url: url,
-        short_description: material['schema:description'],
+        short_description: material['http://schema.org/description'],
         doi: nil,
         remote_updated_date: Time.now,
-        remote_created_date: material['dc:date'],
+        remote_created_date: material['http://purl.org/dc/terms/date'],
         content_provider_id: cp['id'],
-        scientific_topics: material['schema:genre'],
-        keywords: material['schema:keywords'],
+        scientific_topics: material['http://schema.org/genre'],
+        keywords: material['http://schema.org/keywords'],
         licence: nil,
         difficulty_level: nil,
         contributors: [],
-        authors: material['sioc:has_creator'],
-        target_audience: material['schema:audience']
+        authors: material['http://rdfs.org/sioc/ns#has_creator'],
+        target_audience: material['http://schema.org/audience']
       })
     Uploader.create_or_update_material(upload_material)
     rescue => ex

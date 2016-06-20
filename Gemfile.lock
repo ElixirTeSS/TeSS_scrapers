@@ -1,8 +1,12 @@
 GIT
   remote: git://github.com/ElixirUK/TeSS_api_client.git
-  revision: 3153ff8b92d8efda12a015be899eb39783ccae30
+  revision: be68787dae6bf25f5c4de4684e2caa71f1a5cf62
   specs:
-    tess_api_client (0.0.2)
+    tess_api_client (0.0.5)
+      httparty (~> 0.13)
+      json (~> 1.8)
+      linkeddata (~> 2.0)
+      net (~> 0.3)
 
 GEM
   remote: https://rubygems.org/
@@ -184,17 +188,11 @@ PLATFORMS
 
 DEPENDENCIES
   geocoder
-  httparty
   inifile
-  json
-  json-ld
-  linkeddata
-  net
   nokogiri (= 1.6.7.2)
-  rdf-rdfa
   redcarpet
   simple-rss
-  tess_api_client!
+  tess_api_client (= 0.0.5)!
 
 BUNDLED WITH
    1.12.5
