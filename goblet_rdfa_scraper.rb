@@ -71,7 +71,7 @@ get_urls($materials,'materials').each do |url|
       dump_file.write("#{material.to_json}")
     end
   end
-  
+  puts material
   material = material.first
   # Create the new record
 
@@ -83,7 +83,7 @@ get_urls($materials,'materials').each do |url|
         remote_updated_date: Time.now,
         remote_created_date: material['http://purl.org/dc/terms/date'],
         content_provider_id: cp['id'],
-        scientific_topic: material['http://schema.org/genre'],
+        scientific_topics: material['http://schema.org/genre'],
         keywords: material['http://schema.org/keywords'],
         licence: nil,
         difficulty_level: nil,
