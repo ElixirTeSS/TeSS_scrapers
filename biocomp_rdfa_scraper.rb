@@ -41,12 +41,13 @@ def get_urls(index_page)
   return urls
 end
 
-cp = ContentProvider.new(
-    "VBCF BioComp",
-    "http://biocomp.vbcf.ac.at/training/index.html",
-    "http://biocomp.vbcf.ac.at/training/biocomp.jpg",
-    "BioComp is one of the core facilities at the Vienna BioCenter Core Facilities (VBCF). We offer data analysis services for next-generation sequencing data and develop software solutions for biological experiments, with an emphasis on image and video processing and hardware control. We also provide custom-made data management solutions to research groups. BioComp offers trainings and consultations in the areas of bioinformatics, statistics and computational skills."
-    )
+cp = ContentProvider.new({
+                             title: "VBCF BioComp",
+                             url: "http://biocomp.vbcf.ac.at/training/index.html",
+                             image_url: "http://biocomp.vbcf.ac.at/training/biocomp.jpg",
+                             description: "BioComp is one of the core facilities at the Vienna BioCenter Core Facilities (VBCF). We offer data analysis services for next-generation sequencing data and develop software solutions for biological experiments, with an emphasis on image and video processing and hardware control. We also provide custom-made data management solutions to research groups. BioComp offers trainings and consultations in the areas of bioinformatics, statistics and computational skills.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION]
+                         })
 cp = Uploader.create_or_update_content_provider(cp)
 
 
@@ -64,7 +65,7 @@ get_urls($materials).each do |url|
         file.write(open(url).read)
       end
       rdfa = RDF::Graph.load("html/biocomp_pages/#{Digest::SHA1.hexdigest(url)}", format: :rdfa)
-        puts 'Opened from Web'
+      puts 'Opened from Web'
     end
   else
     rdfa = RDF::Graph.load(url, format: :rdfa)
@@ -87,23 +88,23 @@ get_urls($materials).each do |url|
   # Create the new record
   begin
     upload_material = Material.new({
-          title: material['schema:name'],
-          url: url,
-          short_description: material['schema:description'],
-          doi: nil,
-          remote_updated_date: Time.now,
-          remote_created_date: material['dc:date'],
-          content_provider_id: cp['id'],
-          scientific_topic_names: [], #material['schema:genre'],
-          keywords: [], #material['schema:learningResourceType'],
-          licence: nil,
-          difficulty_level: nil,
-          contributors: [],
-          authors: material['schema:author'].uniq,
-          target_audience: material['schema:audience']
-     })
+                                       title: material['schema:name'],
+                                       url: url,
+                                       short_description: material['schema:description'],
+                                       doi: nil,
+                                       remote_updated_date: Time.now,
+                                       remote_created_date: material['dc:date'],
+                                       content_provider_id: cp['id'],
+                                       scientific_topic_names: [], #material['schema:genre'],
+                                       keywords: [], #material['schema:learningResourceType'],
+                                       licence: nil,
+                                       difficulty_level: nil,
+                                       contributors: [],
+                                       authors: material['schema:author'].uniq,
+                                       target_audience: material['schema:audience']
+                                   })
     Uploader.create_or_update_material(upload_material)
-    rescue => ex
-      puts ex.message
-   end
+  rescue => ex
+    puts ex.message
+  end
 end

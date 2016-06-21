@@ -44,12 +44,14 @@ def get_urls(index_page)
   return urls
 end
 
-cp = ContentProvider.new(
-    "VIB Bioinformatics Training and Services",
-    "https://www.bits.vib.be/index.php/training",
-    "http://www.vib.be/VIBMediaLibrary/Logos/Service_facilities/BITS_website.jpg",
-    "Belgian provider of Bioinformatics and Software Training, plus informatics services and resource management support."
-    )
+cp = ContentProvider.new({
+                             title: "VIB Bioinformatics Training and Services",
+                             url: "https://www.bits.vib.be/",
+                             image_url: "http://www.vib.be/VIBMediaLibrary/Logos/Service_facilities/BITS_website.jpg",
+                             description: "Provider of Bioinformatics and software training, plus informatics services and resource management support.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
+                             node: Node::NODE_NAMES[:BE]
+                         })
 cp = Uploader.create_or_update_content_provider(cp)
 
 
