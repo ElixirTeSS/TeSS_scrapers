@@ -46,14 +46,16 @@ end
 # Main body of the script below, functions above #
 ##################################################
 
-cp = ContentProvider.new(
-    "CSC - IT Center for Science",
-    "https://www.csc.fi",
-    "https://www.csc.fi/documents/10180/161914/CSC_2012_LOGO_RGB_72dpi.jpg/c65ddc42-63fc-44da-8d0f-9f88c54779d7?t=1411391121769",
-    "CSC - IT Center for Science Ltd. is a non-profit, state-owned company administered by the Finnish Ministry of Education and Culture. CSC maintains and develops the state-owned centralised IT infrastructure and uses it to provide nationwide IT services for research, libraries, archives, museums and culture as well as information, education and research management. 
+cp = ContentProvider.new({
+                             title: "CSC - IT Center for Science",
+                             url: "https://www.csc.fi",
+                             image_url: "https://www.csc.fi/documents/10180/161914/CSC_2012_LOGO_RGB_72dpi.jpg/c65ddc42-63fc-44da-8d0f-9f88c54779d7?t=1411391121769",
+                             description: "CSC - IT Center for Science Ltd. is a non-profit, state-owned company administered by the Finnish Ministry of Education and Culture. CSC maintains and develops the state-owned centralised IT infrastructure and uses it to provide nationwide IT services for research, libraries, archives, museums and culture as well as information, education and research management.
     CSC has the task of promoting the operational framework of Finnish research, education, culture and administration. As a non-profit, government organisation, it is our duty to foster exemplary transparency, honesty and responsibility. Trust is the foundation of CSC's success. Customers, suppliers, owners and personnel alike must feel certain that we will fulfil our commitments and promises in an ethically sustainable manner.
-    CSC has offices in Espoo's Keilaniemi and in the Renforsin Ranta business park in Kajaani."
-    )
+    CSC has offices in Espoo's Keilaniemi and in the Renforsin Ranta business park in Kajaani.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
+                             node: Node::NODE_NAMES[:FI],
+                         })
 cp = Uploader.create_or_update_content_provider(cp)
 
 # Actually run the code here...
