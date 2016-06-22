@@ -15,7 +15,7 @@ cp = ContentProvider.new({
                              title: "IFB French Institute of Bioinformatics",
                              url: "http://www.france-bioinformatique.fr/en",
                              image_url: "http://www.france-bioinformatique.fr/sites/default/files/ifb-logo_1.png",
-                             description: "The French Institute of Bioinformatics (referred to as IFB hereafter) is a national service infrastructure in bioinformatics that was created following the call for proposals, \“National Infrastructures in Biology and Health\”, of the \“Investments for the Future\” initiative (ANR-11-INBS-0013).",
+                             description: "The French Institute of Bioinformatics (IFB) is a national service infrastructure in bioinformatics that gathers together the bioinformatics platforms of the main French research organizations: CNRS, INRA, INRIA, CEA and INSERM, as well as CIRAD, the Pasteur and Curie Institutes, and the French universities. There are currently 30 platforms grouped into six regional centers that span the whole of France. IFB's principal mission is to provide basic services and resources in bioinformatics for scientists and engineers working in the life sciences.",
                              content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
                              node: Node::NODE_NAMES[:FR]
                          })
