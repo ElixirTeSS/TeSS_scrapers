@@ -4,7 +4,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'tess_api_client'
 
-$root_url = 'https://www.bits.vib.be/training'
+$root_url = 'https://www.bits.vib.be/training-list'
 $owner_org = 'bioinformatics-training-and-services'
 $lessons = {}
 $debug = ScraperConfig.debug?

@@ -8,7 +8,7 @@ require 'digest/sha1'
 # course page to parse embedded RDFa data.
 
 #$courses = 'http://www.mygoblet.org/training-portal/courses-xml'
-$materials = 'https://www.bits.vib.be/training'
+$materials = 'https://www.bits.vib.be/training-list'
 $root_url = 'https://www.bits.vib.be'
 $owner_org = 'bitsvib'
 $lessons = {}
