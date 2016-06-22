@@ -49,12 +49,15 @@ end
 # parse the data
 parse_data('course/index.php?categoryid=2')
 
-cp = ContentProvider.new(
-    "Swiss Institute of Bioinformatics",
-    "http://edu.isb-sib.ch/",
-    "http://bcf.isb-sib.ch/img/sib.png",
-    "The SIB Swiss Institute of Bioinformatics is an academic, non-profit foundation recognised of public utility and established in 1998. SIB coordinates research and education in bioinformatics throughout Switzerland and provides high quality bioinformatics services to the national and international research community."
-    )
+cp = ContentProvider.new({
+                             title: "Swiss Institute of Bioinformatics",
+                             url: "http://edu.isb-sib.ch/",
+                             image_url: "http://bcf.isb-sib.ch/img/sib.png",
+                             description: "The SIB Swiss Institute of Bioinformatics is an academic, non-profit foundation recognised of public utility and established in 1998. SIB coordinates research and education in bioinformatics throughout Switzerland and provides high quality bioinformatics services to the national and international research community.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
+                             node: Node::NODE_NAMES[:CH]
+                         })
+
 cp = Uploader.create_or_update_content_provider(cp)
 # Create the new record
 $lessons.each_key do |key|
