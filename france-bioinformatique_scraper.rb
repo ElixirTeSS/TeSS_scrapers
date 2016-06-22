@@ -11,15 +11,16 @@ $owner_org = 'ifb'
 $lessons = {}
 $debug = ScraperConfig.debug?
 
+cp = ContentProvider.new({
+                             title: "IFB French Institute of Bioinformatics",
+                             url: "http://www.france-bioinformatique.fr/en",
+                             image_url: "http://www.france-bioinformatique.fr/sites/default/files/ifb-logo_1.png",
+                             description: "The French Institute of Bioinformatics (referred to as IFB hereafter) is a national service infrastructure in bioinformatics that was created following the call for proposals, \“National Infrastructures in Biology and Health\”, of the \“Investments for the Future\” initiative (ANR-11-INBS-0013).",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
+                             node: Node::NODE_NAMES[:FR]
+                         })
 
-cp = ContentProvider.new(
-    "IFB French Institute of Bioinformatics",
-    "http://www.france-bioinformatique.fr/en",
-    "http://www.france-bioinformatique.fr/sites/default/files/ifb-logo_1.png",
-    "The French Institute of Bioinformatics (referred to as IFB hereafter) is a national service infrastructure in bioinformatics that was created following the call for proposals, \“National Infrastructures in Biology and Health\”, of the \“Investments for the Future\” initiative (ANR-11-INBS-0013)."
-    )
 cp = Uploader.create_or_update_content_provider(cp)
-
 
 dump_file = File.open('parsed_ifb.json', 'w') if $debug
 
@@ -40,7 +41,7 @@ end
   # Create the new record
 materials.each do |material|
     begin
-        keywords = material['schema:keywords'] 
+        keywords = material['schema:keywords']
         keywords.delete('en') #Each has en meaning english in. Remove these
         upload_material = Material.new({
               title: material['schema:name'],

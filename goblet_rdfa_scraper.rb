@@ -34,13 +34,14 @@ def get_urls(page,type)
   return urls
 end
 
+cp = ContentProvider.new({
+                             title: "GOBLET",
+                             url: "http://www.mygoblet.org",
+                             image_url: "http://www.mygoblet.org/sites/default/files/logo_goblet_trans.png",
+                             description: "GOBLET, the Global Organisation for Bioinformatics Learning, Education and Training, is a legally registered foundation providing a global, sustainable support and networking structure for bioinformatics educators/trainers and students/trainees.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:PORTAL]
+                         })
 
-cp = ContentProvider.new(
-    "GOBLET",
-    "http://www.mygoblet.org",
-    "http://www.mygoblet.org/sites/default/files/logo_goblet_trans.png",
-    "GOBLET, the Global Organisation for Bioinformatics Learning, Education and Training, is a legally registered foundation providing a global, sustainable support and networking structure for bioinformatics educators/trainers and students/trainees."
-    )
 cp = Uploader.create_or_update_content_provider(cp)
 
 dump_file = File.open('parsed_goblet.json', 'w') if $debug

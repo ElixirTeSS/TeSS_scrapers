@@ -5,12 +5,14 @@ require 'nokogiri'
 
 $debug = ScraperConfig.debug?
 
-cp = ContentProvider.new(
-    "iAnn",
-    "https://iann.pro",
-    "http://iann.pro/sites/default/files/itico_logo.png",
-    "Enabling Collaborative Announcement Dissemination"
-    )
+cp = ContentProvider.new({
+                             title: "iAnn",
+                             url: "http://iann.pro",
+                             image_url: "http://iann.pro/sites/default/files/itico_logo.png",
+                             description: "iAnn is a portal for enabling collaborative announcement dissemination by providing providing relevant scientific announcements data and software tools to help annotation and curation of scientific announcements.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:PORTAL]
+                         })
+
 cp = Uploader.create_or_update_content_provider(cp)
 
 iann_dir = 'iann'

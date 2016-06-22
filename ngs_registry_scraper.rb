@@ -18,11 +18,15 @@ markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tabl
 $lessons = JSON.parse(open($json_file).read)
 
 # Create or update the organisation.
-cp = ContentProvider.new(
-    "NGS Registry",
-    "https://microasp.upsc.se/ngs_trainers/Materials/wikis/home",
-    "",
-    "Git repository that contains various teaching materials and describes the usages of them")
+cp = ContentProvider.new({
+                             title: "NGS Registry",
+                             url: "https://microasp.upsc.se/ngs_trainers/Materials/wikis/home",
+                             image_url: "",
+                             description: "GitLab repository and its Wiki companion containing a collection of training materials for teaching next generation sequencing data analysis.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:PROJECT],
+                             node: Node::NODE_NAMES[:GB]
+                         })
+
 cp = Uploader.create_or_update_content_provider(cp)
 
 

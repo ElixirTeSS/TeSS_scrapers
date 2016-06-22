@@ -61,11 +61,14 @@ end
 
 parse_data
 
-cp = ContentProvider.new(
-    "Software Carpentry",
-    "http://software-carpentry.org/",
-    "http://software-carpentry.org/img/software-carpentry-banner.png",
-    "The Software Carpentry Foundation is a non-profit organization whose members teach researchers basic software skills.")
+cp = ContentProvider.new({
+                             title: "Software Carpentry",
+                             url: "http://software-carpentry.org/",
+                             image_url: "http://software-carpentry.org/img/software-carpentry-banner.png",
+                             description: "The Software Carpentry Foundation is a non-profit organization whose members teach researchers basic software skills.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION]
+                         })
+
 cp = Uploader.create_or_update_content_provider(cp)
 
 # Create the new record

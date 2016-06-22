@@ -27,13 +27,14 @@ def trim_characters(attribute)
   end
 end
 
+cp = ContentProvider.new({
+                             title: "ERASysAPP", #name
+                             url: "http://www.sbedu.eu/", #url
+                             image_url: "http://www.sbedu.eu/images/erasysapp.PNG", #logo
+                             description: "A platform for the exchange of educational material on systems biology.", #description
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:PROJECT]
+                         })
 
-cp = ContentProvider.new(
-    "Erasys App",
-    "http://www.sbedu.eu/",
-    "http://www.sbedu.eu/images/erasysapp.PNG",
-    "A platform for the exchange of educational material on Systems Biology."
-    )
 cp = Uploader.create_or_update_content_provider(cp)
 
 page = 0

@@ -22,12 +22,14 @@ def duration_in_days duration
     return nil
 end
 
-cp = ContentProvider.new(
-    "Future Learn",
-    "https://www.futurelearn.com/courses/collections/genomics",
-    "http://static.tumblr.com/1f4d7873a6ff8a8c0d571adf0d4e867f/ejyensv/ubIn1b1rl/tumblr_static_fl_logo_white.jpg",
-    "Discover the growing importance of genomics in healthcare research, diagnosis and treatment, with these free online courses. Learn with researchers and clinicians from leading universities and medical schools."
-    )
+cp = ContentProvider.new({
+                             title: "Future Learn",
+                             url: "https://www.futurelearn.com/courses/collections/genomics",
+                             image_url: "http://static.tumblr.com/1f4d7873a6ff8a8c0d571adf0d4e867f/ejyensv/ubIn1b1rl/tumblr_static_fl_logo_white.jpg",
+                             description: "Discover the growing importance of genomics in healthcare research, diagnosis and treatment, with these free online courses. Learn with researchers and clinicians from leading universities and medical schools.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:PORTAL]
+                         })
+
 cp = Uploader.create_or_update_content_provider(cp)
 
 events.each do |event|

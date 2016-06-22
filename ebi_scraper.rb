@@ -54,12 +54,14 @@ parse_data(first_page)
     parse_data(page)
 end
 
-cp = ContentProvider.new(
- "European Bioinformatics Institute (EBI)",
- "http://www.ebi.ac.uk",
- "http://www.ebi.ac.uk/miriam/static/main/img/EBI_logo.png",
- "EMBL-EBI provides freely available data from life science experiments, performs basic research in computational biology and offers an extensive user training programme, supporting researchers in academia and industry."
-)
+cp = ContentProvider.new({
+                             title: "European Bioinformatics Institute (EBI)", #name
+                             url: "http://www.ebi.ac.uk", #url
+                             image_url: "http://www.ebi.ac.uk/miriam/static/main/img/EBI_logo.png", #logo
+                             description: "EMBL-EBI provides freely available data from life science experiments, performs basic research in computational biology and offers an extensive user training programme, supporting researchers in academia and industry.", #description
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
+                             node: Node::NODE_NAMES[:'EMBL-EBI']
+                         })
 
 cp = Uploader.create_or_update_content_provider(cp)
 

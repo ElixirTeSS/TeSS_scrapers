@@ -69,17 +69,17 @@ else
   end
 end
 
-
-cp = ContentProvider.new(
-    "ELIXIR",
-    "https://www.elixir-europe.org/",
-    "http://media.eurekalert.org/multimedia_prod/pub/web/38675_web.jpg",
-    "Building a sustainable European infrastructure for biological information, supporting life science research and its translation to medicine, agriculture, bioindustries and society.
+cp = ContentProvider.new({
+                             title: "ELIXIR", #name
+                             url: "https://www.elixir-europe.org/", #url
+                             image_url: "http://media.eurekalert.org/multimedia_prod/pub/web/38675_web.jpg", #logo
+                             description: "Building a sustainable European infrastructure for biological information, supporting life science research and its translation to medicine, agriculture, bioindustries and society.
 ELIXIR unites Europe’s leading life science organisations in managing and safeguarding the massive amounts of data being generated every day by publicly funded research. It is a pan-European research infrastructure for biological information.
-ELIXIR provides the facilities necessary for life science researchers - from bench biologists to cheminformaticians - to make the most of our rapidly growing store of information about living systems, which is the foundation on which our understanding of life is built."
-    )
-cp = Uploader.create_or_update_content_provider(cp)
+ELIXIR provides the facilities necessary for life science researchers - from bench biologists to cheminformaticians - to make the most of our rapidly growing store of information about living systems, which is the foundation on which our understanding of life is built.", #description
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION]
+                         })
 
+cp = Uploader.create_or_update_content_provider(cp)
 
 # Create the new record
 coord_match = Regexp.new('\"coordinates\":\[([\-\.\d]+),([\-\.\d]+)\]')

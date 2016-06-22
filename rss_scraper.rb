@@ -58,13 +58,14 @@ def parse_data(page)
   end
 end
 
+cp = ContentProvider.new({
+                             title: "Royal Statistical Society",
+                             url: "https://www.statslife.org.uk/",
+                             image_url: "https://www2.warwick.ac.uk/fac/sci/statistics/courses/rss/rss-strapline-logo-360x180.jpg",
+                             description: "Royal Statistical Society is a world-leading organisation promoting the importance of statistics and data - and a professional body for all statisticians and data analysts.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION]
+                         })
 
-cp = ContentProvider.new(
-    "Royal Statistical Society",
-    "https://www.statslife.org.uk/",
-    "https://www2.warwick.ac.uk/fac/sci/statistics/courses/rss/rss-strapline-logo-360x180.jpg",
-    "We are a world-leading organisation promoting the importance of statistics and data - and a professional body for all statisticians and data analysts."
-    )
 cp = Uploader.create_or_update_content_provider(cp)
 
 parse_data($events_url)

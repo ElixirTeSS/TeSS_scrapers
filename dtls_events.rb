@@ -5,12 +5,14 @@ require 'Nokogiri'
 
 $debug = ScraperConfig.debug?
 
-cp = ContentProvider.new(
-    "DTLS - Dutch Techcentre For Life Sciences",
-    "http://www.dtls.nl",
-    "http://www.dtls.nl/wp-content/themes/dtls/images/logo.png",
-    "DTL focuses on the great potential of high-end technologies in pioneering life science research, and on the skills and solutions to professionally use computers to deal with the ever-growing data streams in research."
-    )
+cp = ContentProvider.new({
+                             title: "DTLS - Dutch Techcentre For Life Sciences", #name
+                             url: "http://www.dtls.nl", #url
+                             image_url: "http://www.dtls.nl/wp-content/themes/dtls/images/logo.png", #logo
+                             description: "DTL focuses on the great potential of high-end technologies in pioneering life science research, and on the skills and solutions to professionally use computers to deal with the ever-growing data streams in research.", #description
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
+                             node: Node::NODE_NAMES[:NL]
+                         })
 cp = Uploader.create_or_update_content_provider(cp)
 
 dtls_dir = 'dtls'

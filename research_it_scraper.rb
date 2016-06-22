@@ -50,12 +50,14 @@ parse_data($root_url)
 
 
 # Update the records...
-cp = ContentProvider.new(
-    "Research IT Training",
-    "http://www.ucl.ac.uk",
-    "https://www.ucl.ac.uk/cpc/wp-content/uploads/ucl-logo.jpg",
-    "The Research IT Services (RITS) department develops, delivers and operates services to assist UCL researchers in meeting their objectives at each stage of the research lifecycle. These pages are here to help UCL researchers and other users to take full advantage of our services and include comprehensive user guides, contact information for support queries, and details about forthcoming training and events."
-)
+cp = ContentProvider.new({
+                             title: "Research IT Training",
+                             url: "http://www.ucl.ac.uk",
+                             image_url: "https://www.ucl.ac.uk/cpc/wp-content/uploads/ucl-logo.jpg",
+                             description: "The Research IT Services (RITS) department develops, delivers and operates services to assist UCL researchers in meeting their objectives at each stage of the research lifecycle. These pages are here to help UCL researchers and other users to take full advantage of our services and include comprehensive user guides, contact information for support queries, and details about forthcoming training and events.",
+                             content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION]
+                         })
+
 cp = Uploader.create_or_update_content_provider(cp)
 
 
