@@ -1,7 +1,7 @@
 PATH
   remote: /Users/alex/work/ELIXIR/TeSS/code/TeSS_api_client
   specs:
-    tess_api_client (0.0.6)
+    tess_api_client (0.0.7)
       httparty (~> 0.13)
       json (~> 1.8)
       linkeddata (~> 2.0)
@@ -191,7 +191,7 @@ DEPENDENCIES
   nokogiri (= 1.6.7.2)
   redcarpet
   simple-rss
-  tess_api_client (= 0.0.6)!
+  tess_api_client (= 0.0.7)!
 
 BUNDLED WITH
    1.12.5
