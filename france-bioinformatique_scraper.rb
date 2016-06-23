@@ -18,7 +18,7 @@ cp = ContentProvider.new({
                              description: "The French Institute of Bioinformatics (CNRS IFB) is a national service infrastructure in bioinformatics. IFB’s principal mission is to provide basic services and resources in bioinformatics for scientists and engineers working in the life sciences. IFB is the French node of the European research infrastructure, ELIXIR.",
                              content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
                              node: Node::NODE_NAMES[:FR],
-                             keywords: ['bioinformatics', 'infrastructure', 'big data', 'NGS']
+                             keywords: ['bioinformatics', 'infrastructure', 'Big Data', 'NGS']
                          })
 
 cp = Uploader.create_or_update_content_provider(cp)
