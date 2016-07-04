@@ -13,7 +13,7 @@ materials = provider['packages']
 cp = ContentProvider.new({
                              title: provider['display_name'],
                              url: provider['homepage'],
-                             image_url: provider['image_display_url'],
+                             image_url: https://6lli539m39y3hpkelqsm3c2fg-wpengine.netdna-ssl.com/wp-content/uploads/2015/10/tgac_logo_single.png,
                              description: provider['description'],
                              content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
                              node: Node::NODE_NAMES[:GB]
