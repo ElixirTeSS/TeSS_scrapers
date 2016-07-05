@@ -33,7 +33,7 @@ materials = RdfaExtractor.parse_rdfa(rdfa, 'CreativeWork')
 
 #write out to JSON for debug mode.
 if $debug
-    material.each do |material|
+    materials.each do |material|
         dump_file.write("#{material.to_json}")
     end
 end
@@ -60,6 +60,7 @@ materials.each do |material|
               authors: material['schema:author'],
               target_audience: material['schema:audience']
         })
+        print "MATERIAL: #{material.inspect}"
         Uploader.create_or_update_material(upload_material)
     rescue => ex
         puts ex.message

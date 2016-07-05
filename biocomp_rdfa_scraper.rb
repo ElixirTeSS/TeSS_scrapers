@@ -85,12 +85,13 @@ get_urls($materials).each do |url|
   end
 
   material = material.first
+
   # Create the new record
   begin
     upload_material = Material.new({
-                                       title: material['schema:name'],
+                                       title: material['http://schema.org/name'],
                                        url: url,
-                                       short_description: material['schema:description'],
+                                       short_description: material['http://schema.org/description'],
                                        doi: nil,
                                        remote_updated_date: Time.now,
                                        remote_created_date: material['dc:date'],
@@ -100,8 +101,8 @@ get_urls($materials).each do |url|
                                        licence: nil,
                                        difficulty_level: nil,
                                        contributors: [],
-                                       authors: material['schema:author'].uniq,
-                                       target_audience: material['schema:audience']
+                                       authors: material[''],
+                                       target_audience: material['http://schema.org/audience']
                                    })
     Uploader.create_or_update_material(upload_material)
   rescue => ex
