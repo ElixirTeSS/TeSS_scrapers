@@ -40,22 +40,22 @@ cp = Uploader.create_or_update_content_provider(cp)
 page = 0
 materials = get_materials_for_page(page)
 while materials.count > 0 
-    materials.each do |material| 
+    materials.each do |material|
       begin
         upload_material = Material.new({
-              title: trim_characters(material['schema:name']),
-              url: material['schema:url'],
-              short_description: material['description'],
+              title: trim_characters(material['http://schema.org/name']),
+              url: material['http://schema.org/url'],
+              short_description: "No description available.",
               doi: nil,
               remote_updated_date: Time.now,
-              remote_created_date: material['schema:dateCreated'],
+              remote_created_date: material['http://schema.org/dateCreated'],
               content_provider_id: cp['id'],
               scientific_topic: nil,
-              keywords: trim_characters(material['schema:keywords']),
+              keywords: trim_characters(material['http://schema.org/keywords']),
               licence: nil,
               difficulty_level: nil,
               contributors: [],
-              authors: trim_characters(material['schema:author']),
+              authors: trim_characters(material['http://schema.org/author']),
               target_audience: nil
          })
         Uploader.create_or_update_material(upload_material)
