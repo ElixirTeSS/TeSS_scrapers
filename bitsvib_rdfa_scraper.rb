@@ -29,12 +29,13 @@ def get_urls(index_page)
   else
     puts "Opening: #{index_page}"
     doc = Nokogiri::HTML(open(index_page))
+    #puts "DOC: #{doc.inspect}"
   end
 
   # <div class="moduletable-collapsible">
   # List of all materials
   urls = []
-  first = doc.css('div.moduletable-collapsible')
+  first = doc.css('div.moduletable')
   first.each do |f|
     links = f.search('a')
     links.each do |l|
