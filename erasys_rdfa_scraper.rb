@@ -10,9 +10,10 @@ def get_materials_for_page(page)
     rdfa = RDF::Graph.load(url, format: :rdfa)
     materials = RdfaExtractor.parse_rdfa(rdfa, 'BlogPosting')
     materials.each do |material|
-        if material['schema:url']
-            page = Nokogiri::HTML(open(material['schema:url']))
+        if material['http://schema.org/url']
+            page = Nokogiri::HTML(open(material['http://schema.org/url']))
             material['description'] = page.css('div.item-page p').first.text
+            puts page.css('div.item-page p').first.text
         end
     end unless materials.empty?
     return materials
@@ -45,7 +46,7 @@ while materials.count > 0
         upload_material = Material.new({
               title: trim_characters(material['http://schema.org/name']),
               url: material['http://schema.org/url'],
-              short_description: "No description available.",
+              short_description: material['description'],
               doi: nil,
               remote_updated_date: Time.now,
               remote_created_date: material['http://schema.org/dateCreated'],
