@@ -49,7 +49,7 @@ dump_file = File.open('parsed_goblet.json', 'w') if $debug
 #Go through each Training Material, load RDFa, dump to JSON, interogate data, and upload to TeSS. 
 get_urls($materials,'materials').each do |url|
   #f = open(url)
-  if true #Load from file for now
+  if $debug #Load from file for now
     if File.exists?("html/goblet_pages/#{Digest::SHA1.hexdigest(url)}")
       rdfa = RDF::Graph.load("html/goblet_pages/#{Digest::SHA1.hexdigest(url)}", format: :rdfa)
       puts 'Opened from Filesystem'
@@ -72,7 +72,7 @@ get_urls($materials,'materials').each do |url|
       dump_file.write("#{material.to_json}")
     end
   end
-  puts material
+  puts material if $debug
   material = material.first
   # Create the new record
 
