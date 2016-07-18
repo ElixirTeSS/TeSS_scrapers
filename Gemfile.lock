@@ -1,5 +1,5 @@
 PATH
-  remote: /Users/alex/work/ELIXIR/TeSS/code/TeSS_api_client
+  remote: /Users/Beardface/Projects/TeSS_api_client
   specs:
     tess_api_client (0.0.7)
       httparty (~> 0.13)
