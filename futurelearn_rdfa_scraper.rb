@@ -33,35 +33,31 @@ cp = ContentProvider.new({
 cp = Uploader.create_or_update_content_provider(cp)
 
 events.each do |event|
-    begin
-        rdfa = RDF::Graph.load(event['schema:url'], format: :rdfa)
+        rdfa = RDF::Graph.load(event['http://schema.org/url'], format: :rdfa)
         event = RdfaExtractor.parse_rdfa(rdfa, 'Event')
         event = event.first
         
-        unless event['schema:startDate'].nil? or event['schema:startDate'].empty?
-            start_date = DateTime.parse(event['schema:startDate'])     
+        unless event['http://schema.org/startDate'].nil? or event['http://schema.org/startDate'].empty?
+            start_date = DateTime.parse(event['http://schema.org/startDate'])     
             if start_date and start_date.is_a?(DateTime)
                 upload_event = Event.new({
                     id: nil,
                     content_provider_id: cp['id'],
                     external_id: nil,
-                    title: event['schema:name'],
+                    title: event['http://schema.org/name'],
                     subtitle: nil,
-                    url: event['schema:url'],
-                    provider: event['schema:organizer'],
+                    url: event['http://schema.org/url'],
+                    provider: event['http://schema.org/organizer'],
                     field: nil,
-                    description: event['schema:description'],
+                    description: event['http://schema.org/description'],
                     keywords: [],
                     category: nil,
                     start_date: start_date,
-                    end_date: (start_date + duration_in_days(event['schema:duration'])).to_s
+                    end_date: (start_date + duration_in_days(event['http://schema.org/duration'])).to_s
                 })
             end
             Uploader.create_or_update_event(upload_event)
         end
-    rescue => ex
-      puts ex.message
-   end
 end
 
 
