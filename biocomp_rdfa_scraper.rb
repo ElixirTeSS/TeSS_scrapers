@@ -13,21 +13,8 @@ $debug = ScraperConfig.debug?
 
 # Get all URLs from XML
 def get_urls(index_page)
-
-  if $debug
-    puts 'Opening local file.'
-    begin
-      f = File.open("biocomp.html")
-      doc = Nokogiri::HTML(f)
-      f.close
-    rescue
-      puts "Failed to open biocomp.html file."
-    end
-  else
-    puts "Opening: #{index_page}"
-    doc = Nokogiri::HTML(open(index_page))
-  end
-
+  puts "Opening: #{index_page}"
+  doc = Nokogiri::HTML(open(index_page))
   # <div class="moduletable-collapsible">
   # List of all materials
   urls = []
@@ -40,6 +27,7 @@ def get_urls(index_page)
   end
   return urls
 end
+get_urls($materials)
 
 cp = ContentProvider.new({
                              title: "VBCF BioComp",
@@ -56,7 +44,7 @@ dump_file = File.open('parsed_biocomp.json', 'w') if $debug
 #Go through each Training Material, load RDFa, dump to JSON, interogate data, and upload to TeSS. 
 get_urls($materials).each do |url|
   #f = open(url)
-  if true #Load from file for now
+  if $debug #Load from file for now
     if File.exists?("html/biocomp_pages/#{Digest::SHA1.hexdigest(url)}")
       rdfa = RDF::Graph.load("html/biocomp_pages/#{Digest::SHA1.hexdigest(url)}", format: :rdfa)
       puts 'Opened from Filesystem'
