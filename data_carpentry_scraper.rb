@@ -47,7 +47,7 @@ parse_data('/lessons')
 cp = ContentProvider.new({
                              title: "Data Carpentry",
                              url: "http://www.datacarpentry.org",
-                             image_url: "http://www.software.ac.uk/sites/default/files/images/content/DC1_logo.jpg",
+                             image_url: "http://www.datacarpentry.org/assets/img/DC_logo_vision.png",
                              description: "Data Carpentry's aim is to teach researchers basic concepts, skills, and tools for working with data so that they can get more done in less time, and with less pain.",
                              content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION]
                          })
