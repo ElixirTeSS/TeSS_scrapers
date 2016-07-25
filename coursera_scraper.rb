@@ -21,7 +21,7 @@ end
 cp = ContentProvider.new({
                              title: "Coursera",
                              url: "http://www.coursera.org",
-                             image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e5/Coursera_logo.PNG",
+                             image_url: "http://logonoid.com/images/coursera-logo.png",
                              description: "Coursera is an education platform that partners with top universities and organizations worldwide, to offer courses online for anyone to take, for free.",
                              content_provider_type: ContentProvider::PROVIDER_TYPE[:PORTAL]
                          })
