@@ -46,7 +46,7 @@ materials.each do |material|
         keywords.delete('en') #Each has en meaning english in. Remove these
         upload_material = Material.new({
               title: material['schema:name'],
-              url: material['schema:url'],
+              url: material['@id'],
               short_description: material['schema:about'],
               doi: nil,
               remote_updated_date: Time.now,
@@ -60,7 +60,7 @@ materials.each do |material|
               authors: material['schema:author'],
               target_audience: material['schema:audience']
         })
-        print "MATERIAL: #{material.inspect}"
+        print "MATERIAL: #{material.inspect}" if $debug
         Uploader.create_or_update_material(upload_material)
     rescue => ex
         puts ex.message
