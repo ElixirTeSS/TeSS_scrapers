@@ -56,7 +56,7 @@ cp = ContentProvider.new({
                              content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
                              node: Node::NODE_NAMES[:FI],
                          })
-cp = Uploader.create_or_update_content_provider(cp)
+#cp = Uploader.create_or_update_content_provider(cp)
 
 # Actually run the code here...
 parse_data
@@ -110,13 +110,13 @@ $events.each_key do |key|
       url: key,
       description: $events[key]['description'],
       category: $events[key]['category'],
-      start: start_date,
-      end: end_date,
+      start_date: start_date,
+      end_date: end_date,
       venue: venue,
       latitude: lat,
       longitude: lon
   })
-
+  #puts event.inspect
   Uploader.create_or_update_event(event)
 
 end
