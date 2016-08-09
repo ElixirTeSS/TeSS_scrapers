@@ -5,6 +5,9 @@ require 'tess_api_client'
 require 'linkeddata'
 require 'geocoder'
 
+$base_url = 'http://www.birmingham.ac.uk'
+$index_page = 'http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/index.aspx'
+
 cp = ContentProvider.new({
                              title: "Birmingham metabolomics Training Centre",
                              url: "http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/index.aspx",
@@ -16,9 +19,11 @@ cp = ContentProvider.new({
 
 cp = Uploader.create_or_update_content_provider(cp)
 
-def get_urls base_url
-  return ['http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/courses/sample-analysis.aspx',
-  		  'http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/courses/q-exactive.aspx']
+def get_urls index
+    page = Nokogiri::HTML(open(index))
+    links_div = page.search('//*[@id="form1"]/main/div/div/div/div[1]/ul[1]')
+    links = links_div.search('a').collect{|x| $base_url + x['href']}
+    return links
 end
 
 def location(venue)
@@ -31,32 +36,35 @@ def location(venue)
 end
 
 
-urls = get_urls 'blah'
+urls = get_urls $index_page
 
 urls.each do |url|
-	rdfa = RDF::Graph.load(url, format: :rdfa)
-	event = RdfaExtractor.parse_rdfa(rdfa, 'Event')
-	
-	if event and !event.nil? and event.is_a? Array
-    #	begin
-    		event = event.first
-    		lat, lon = location event['schema:location']['schema:postalCode']
-			upload_event = Event.new({
-		      content_provider_id: cp['id'],
-		      title: event['schema:name'],
-		      url: event['schema:url'],
-		      description: event['schema:description'],
-		      category: event['schema:category'],
-		      start_date: event['schema:startDate'],
-		      end_date: event['schema:endDate'],
-		      venue: event['schema:location'],
-		      lat: lat,
-		      lon: lon
-		    })
-	 	   Uploader.create_or_update_event(upload_event)
-    	#rescue => ex
-      #		puts ex.message
-   	#	end
-	end
+    rdfa = RDF::Graph.load(url, format: :rdfa)
+    event = RdfaExtractor.parse_rdfa(rdfa, 'Event') if rdfa
+    puts "No event found at #{url}"
+    if event and !event.nil? and event.is_a? Array and !event.empty?
+        begin
+            event = event.first
+            lat, lon = location event['schema:location']['schema:postalCode']
+            upload_event = Event.new({
+              content_provider_id: cp['id'],
+              title: event['schema:name'],
+              url: event['schema:url'],
+              description: event['schema:description'],
+              category: event['schema:category'],
+              start_date: event['schema:startDate'],
+              end_date: event['schema:endDate'],
+              venue: event['schema:location']['schema:name'],
+              city: event['schema:location']['schema:addressLocality'].split(',')[0],
+              country: event['schema:location']['schema:addressLocality'].split(',')[1],
+              postcode: event['schema:location']['schema:postcode'],
+              latitude: lat,
+              longitude: lon
+            })
+           Uploader.create_or_update_event(upload_event)
+        rescue => ex
+            puts ex.message
+        end
+    end
 end
 
