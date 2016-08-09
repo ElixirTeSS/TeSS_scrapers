@@ -13,13 +13,13 @@ cp = ContentProvider.new({
                              content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
                              node: Node::NODE_NAMES[:UK]
                          })
-#cp = Uploader.create_or_update_content_provider(cp)
 
+cp = Uploader.create_or_update_content_provider(cp)
 
-
-url = 'http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/courses/sample-analysis.aspx'
-rdfa = RDF::Graph.load(url, format: :rdfa)
-event = RdfaExtractor.parse_rdfa(rdfa, 'Event')
+def get_urls base_url
+  return ['http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/courses/sample-analysis.aspx',
+  		  'http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/courses/q-exactive.aspx']
+end
 
 def location(venue)
   loc = Geocoder.search(venue)
@@ -30,24 +30,33 @@ def location(venue)
   return [lat,lon]
 end
 
-if event and !event.nil? and event.is_a? Array
-    begin
-    	lat, lon = location event['schema:location'][2]
-		event = event.first
-		upload_event = Event.new({
-	      content_provider_id: cp['id'],
-	      title: event['schema:name'],
-	      url: event['schema:url'],
-	      description: event['schema:description'],
-	      category: event['schema:category'],
-	      start_date: event['schema:startDate'],
-	      end_date: event['schema:endDate'],
-	      venue: event['schema:location'],
-	      lat: lat,
-	      lon: lon
-	    })
-	    Uploader.create_or_update_event(upload_event)
-    rescue => ex
-      puts ex.message
-   end
+
+urls = get_urls 'blah'
+
+urls.each do |url|
+	rdfa = RDF::Graph.load(url, format: :rdfa)
+	event = RdfaExtractor.parse_rdfa(rdfa, 'Event')
+	
+	if event and !event.nil? and event.is_a? Array
+    #	begin
+    		event = event.first
+    		lat, lon = location event['schema:location']['schema:postalCode']
+			upload_event = Event.new({
+		      content_provider_id: cp['id'],
+		      title: event['schema:name'],
+		      url: event['schema:url'],
+		      description: event['schema:description'],
+		      category: event['schema:category'],
+		      start_date: event['schema:startDate'],
+		      end_date: event['schema:endDate'],
+		      venue: event['schema:location'],
+		      lat: lat,
+		      lon: lon
+		    })
+	 	   Uploader.create_or_update_event(upload_event)
+    	#rescue => ex
+      #		puts ex.message
+   	#	end
+	end
 end
+
