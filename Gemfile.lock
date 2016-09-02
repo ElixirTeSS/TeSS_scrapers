@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/ElixirUK/TeSS_api_client.git
-  revision: 062b9f541fb5a606ae4ae82a9c0af6f5c267a4e0
+  revision: 3b73db85a2c329984323330e6b59262bc0008ad8
   specs:
-    tess_api_client (0.0.9)
+    tess_api_client (0.1.0)
       httparty (~> 0.13)
       json (~> 1.8)
       linkeddata (~> 2.0)
@@ -11,7 +11,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.0.0)
+    activesupport (5.0.0.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
       minitest (~> 5.1)
@@ -41,9 +41,9 @@ GEM
     i18n (0.7.0)
     inifile (3.0.0)
     json (1.8.3)
-    json-ld (2.0.0.1)
+    json-ld (2.1.0)
       multi_json (~> 1.11)
-      rdf (~> 2.0)
+      rdf (~> 2.1)
     ld-patch (0.3.0)
       ebnf (~> 1.0, >= 1.0.1)
       rdf (~> 2.0)
@@ -82,7 +82,7 @@ GEM
     net-http-persistent (2.9.4)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
-    rdf (2.0.2)
+    rdf (2.1.0)
       hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (2.0.0)
@@ -136,8 +136,8 @@ GEM
     rdf-turtle (2.0.0)
       ebnf (~> 1.0, >= 1.0.1)
       rdf (~> 2.0)
-    rdf-vocab (2.0.2)
-      rdf (~> 2.0)
+    rdf-vocab (2.1.0)
+      rdf (~> 2.1)
     rdf-xsd (2.0.0)
       rdf (~> 2.0)
     redcarpet (3.3.4)
@@ -145,7 +145,7 @@ GEM
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
       rspec-mocks (~> 3.5.0)
-    rspec-core (3.5.2)
+    rspec-core (3.5.3)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -190,7 +190,7 @@ DEPENDENCIES
   nokogiri (= 1.6.7.2)
   redcarpet
   simple-rss
-  tess_api_client (= 0.0.9)!
+  tess_api_client (= 0.1.0)!
 
 BUNDLED WITH
    1.12.5
