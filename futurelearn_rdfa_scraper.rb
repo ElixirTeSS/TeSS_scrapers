@@ -53,7 +53,8 @@ events.each do |event|
                     keywords: [],
                     category: nil,
                     start_date: start_date,
-                    end_date: (start_date + duration_in_days(event['http://schema.org/duration'])).to_s
+                    end_date: (start_date + duration_in_days(event['http://schema.org/duration'])).to_s,
+		    online: true
                 })
             end
             Uploader.create_or_update_event(upload_event)
