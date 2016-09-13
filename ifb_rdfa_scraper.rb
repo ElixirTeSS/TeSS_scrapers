@@ -54,7 +54,7 @@ materials.each do |material|
               remote_updated_date: Time.now,
               remote_created_date: material['schema:dateCreated'],
               content_provider_id: cp['id'],
-              scientific_topic_names: keywords,
+              scientific_topics: keywords,
               keywords: keywords, #material['schema:learningResourceType'],
               licence: material['schema:License'],
               difficulty_level: nil,
