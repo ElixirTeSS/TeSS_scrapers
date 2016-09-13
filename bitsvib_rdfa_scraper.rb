@@ -12,7 +12,7 @@ $materials = 'https://www.bits.vib.be/training-list'
 $root_url = 'https://www.bits.vib.be'
 $owner_org = 'bitsvib'
 $lessons = {}
-$debug = false
+$debug = false#ScraperConfig.debug?
 
 # Get all URLs from XML
 def get_urls(index_page)
@@ -75,8 +75,6 @@ get_urls($materials).each do |url|
   else
     rdfa = RDF::Graph.load(url, format: :rdfa)
   end
-
-
   material = RdfaExtractor.parse_rdfa(rdfa, 'CreativeWork')
   #article = RdfaExtractor.parse_rdfa(rdfa, 'Article')
   #write out to JSON for debug mode.
@@ -97,14 +95,15 @@ get_urls($materials).each do |url|
         remote_updated_date: Time.now,
         remote_created_date: material['http://purl.org/dc/terms/date'],
         content_provider_id: cp['id'],
-        scientific_topics: material['http://schema.org/genre'],
-        keywords: material['http://schema.org/keywords'],
+        scientific_topics: [material['http://schema.org/genre'].collect{|x| x['rdfs:label']['@value']}].flatten,
+        keywords:[material['http://schema.org/keywords']].flatten,
         licence: nil,
         difficulty_level: nil,
         contributors: [],
-        authors: material['http://rdfs.org/sioc/ns#has_creator'],
-        target_audience: material['http://schema.org/audience']
+        authors: material['http://rdfs.org/sioc/ns#has_creator'].values.first['@value'],
+        target_audience: material['http://schema.org/audience'].collect{|x| x['rdfs:label']['@value']}
       })
+    puts "MATERIAL: #{upload_material.inspect}\n" if $debug
     Uploader.create_or_update_material(upload_material)
     rescue => ex
       puts ex.message
