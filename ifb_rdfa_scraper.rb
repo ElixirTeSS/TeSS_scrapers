@@ -42,25 +42,27 @@ end
   # Create the new record
 materials.each do |material|
     begin
-        keywords = material['schema:keywords']
+        keywords = [material['schema:keywords']].flatten
         keywords.delete('en') #Each has en meaning english in. Remove these
+        authors = [material['schema:author']].flatten
+        authors.delete('en')
         upload_material = Material.new({
               title: material['schema:name'],
               url: material['@id'],
               short_description: material['schema:about'],
               doi: nil,
               remote_updated_date: Time.now,
-              remote_created_date: material['dc:date'],
+              remote_created_date: material['schema:dateCreated'],
               content_provider_id: cp['id'],
-              scientific_topic_names: [keywords].flatten,
-              keywords: [keywords].flatten, #material['schema:learningResourceType'],
-              licence: nil,
+              scientific_topic_names: keywords,
+              keywords: keywords, #material['schema:learningResourceType'],
+              licence: material['schema:License'],
               difficulty_level: nil,
               contributors: [],
-              authors: material['schema:author'],
-              target_audience: material['schema:audience']
+              authors: authors,
+              target_audience: [material['schema:audience']].flatten
         })
-        print "MATERIAL: #{material.inspect}" if $debug
+        print "MATERIAL: #{upload_material.inspect}" if $debug
         Uploader.create_or_update_material(upload_material)
     rescue => ex
         puts ex.message
