@@ -100,8 +100,8 @@ get_urls($materials).each do |url|
         licence: nil,
         difficulty_level: nil,
         contributors: [],
-        authors: material['http://rdfs.org/sioc/ns#has_creator'].values.first['@value'],
-        target_audience: material['http://schema.org/audience'].collect{|x| x['rdfs:label']['@value']}
+        authors: [material['http://rdfs.org/sioc/ns#has_creator'].values.first['@value']].flatten,
+        target_audience: [material['http://schema.org/audience'].collect{|x| x['rdfs:label']['@value']}].flatten
       })
     puts "MATERIAL: #{upload_material.inspect}\n" if $debug
     Uploader.create_or_update_material(upload_material)
