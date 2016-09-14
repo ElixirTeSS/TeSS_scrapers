@@ -51,7 +51,7 @@ while materials.count > 0
               remote_updated_date: Time.now,
               remote_created_date: material['http://schema.org/dateCreated'],
               content_provider_id: cp['id'],
-              scientific_topic: nil,
+              scientific_topic: trim_characters(material['http://schema.org/keywords']),
               keywords: trim_characters(material['http://schema.org/keywords']),
               licence: nil,
               difficulty_level: nil,
