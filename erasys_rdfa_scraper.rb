@@ -10,10 +10,10 @@ def get_materials_for_page(page)
     rdfa = RDF::Graph.load(url, format: :rdfa)
     materials = RdfaExtractor.parse_rdfa(rdfa, 'BlogPosting')
     materials.each do |material|
-        if material['http://schema.org/url']
-            page = Nokogiri::HTML(open(material['http://schema.org/url']))
+        if material['https://schema.org/url']
+            page = Nokogiri::HTML(open(material['https://schema.org/url']))
             material['description'] = page.css('div.item-page p').first.text
-            puts page.css('div.item-page p').first.text
+            #puts page.css('div.item-page p').first.text
         end
     end unless materials.empty?
     return materials
@@ -44,22 +44,23 @@ while materials.count > 0
     materials.each do |material|
       begin
         upload_material = Material.new({
-              title: trim_characters(material['http://schema.org/name']),
-              url: material['http://schema.org/url'],
+              title: trim_characters(material['https://schema.org/name']),
+              url: material['https://schema.org/url'],
               short_description: material['description'],
               doi: nil,
               remote_updated_date: Time.now,
-              remote_created_date: material['http://schema.org/dateCreated'],
+              remote_created_date: material['https://schema.org/dateCreated'],
               content_provider_id: cp['id'],
-              scientific_topic: trim_characters(material['http://schema.org/keywords']),
-              keywords: trim_characters(material['http://schema.org/keywords']),
+              scientific_topic: trim_characters(material['https://schema.org/keywords']),
+              keywords: trim_characters(material['https://schema.org/keywords']),
               licence: nil,
               difficulty_level: nil,
               contributors: [],
-              authors: trim_characters(material['http://schema.org/author']),
+              authors: "#{trim_characters(material['https://schema.org/author'].values) unless material['https://schema.org/author'].nil?}",
               target_audience: nil
          })
         Uploader.create_or_update_material(upload_material)
+        #puts "MATERIAL: #{upload_material.inspect}\n" if true#$debug
         rescue => ex
           puts ex.message
        end
