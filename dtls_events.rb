@@ -37,7 +37,7 @@ docs.each do |event_item|
   event = Event.new
   event_item.element_children.each do |element|
     event.content_provider_id = cp['id']
-  	event.category = 'course'
+  	event.event_types = [Event::EVENT_TYPE[:workshops_and_courses]]
   	case element.name
       when 'title'
         event.title = element.text
@@ -53,8 +53,8 @@ docs.each do |event_item|
       	event.description = element.text
       when 'location'
         event.venue = element.text
-      when 'organizer'
-        event.provider = element.text
+      when 'provider'
+        event.organizer = element.text
       when 'courseDate'
         event.start = element.text
       when 'courseEndDate'
@@ -73,6 +73,7 @@ docs.each do |event_item|
     end
 
   end
-  Uploader.create_or_update_event(event)
+   Uploader.create_or_update_event(event)
+   #puts event.inspect
 end
 

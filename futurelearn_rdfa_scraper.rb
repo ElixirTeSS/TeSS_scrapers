@@ -41,20 +41,15 @@ events.each do |event|
             start_date = DateTime.parse(event['http://schema.org/startDate'])     
             if start_date and start_date.is_a?(DateTime)
                 upload_event = Event.new({
-                    id: nil,
                     content_provider_id: cp['id'],
-                    external_id: nil,
                     title: event['http://schema.org/name'],
-                    subtitle: nil,
                     url: event['http://schema.org/url'],
-                    provider: event['http://schema.org/organizer'],
-                    field: nil,
+                    organizer: event['http://schema.org/organizer'],
                     description: event['http://schema.org/description'],
-                    keywords: [],
-                    category: nil,
                     start_date: start_date,
                     end_date: (start_date + duration_in_days(event['http://schema.org/duration'])).to_s,
-		    online: true
+                    event_type: [Event::EVENT_TYPE[:workshops_and_courses]],
+		            online: true
                 })
             end
             Uploader.create_or_update_event(upload_event)
