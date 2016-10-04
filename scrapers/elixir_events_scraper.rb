@@ -4,12 +4,14 @@ require 'open-uri'
 require 'nokogiri'
 require 'tess_api_client'
 require 'geocoder'
+require 'google_places'
 
 
 $root_url = 'https://www.elixir-europe.org'
 $owner_org = 'elixir'
 $events = {}
 $debug = ScraperConfig.debug?
+
 
 def parse_data(page)
 
@@ -65,14 +67,14 @@ if $debug
   parse_data('a random string')
 else
   0.upto(1) do |p|
-    parse_data('/events/upcoming?page=' + p.to_s)
+    parse_data('//events/workshops/upcoming?page=' + p.to_s)
   end
 end
 
 cp = ContentProvider.new({
                              title: "ELIXIR", #name
                              url: "https://www.elixir-europe.org/", #url
-                             image_url: "http://media.eurekalert.org/multimedia_prod/pub/web/38675_web.jpg", #logo
+                             image_url: "https://media.eurekalert.org/multimedia_prod/pub/web/38675_web.jpg",
                              description: "Building a sustainable European infrastructure for biological information, supporting life science research and its translation to medicine, agriculture, bioindustries and society.
 ELIXIR unites Europe’s leading life science organisations in managing and safeguarding the massive amounts of data being generated every day by publicly funded research. It is a pan-European research infrastructure for biological information.
 ELIXIR provides the facilities necessary for life science researchers - from bench biologists to cheminformaticians - to make the most of our rapidly growing store of information about living systems, which is the foundation on which our understanding of life is built.", #description
@@ -85,42 +87,12 @@ cp = Uploader.create_or_update_content_provider(cp)
 coord_match = Regexp.new('\"coordinates\":\[([\-\.\d]+),([\-\.\d]+)\]')
 
 $events.each_key do |key|
-  loc = Geocoder.search($events[key]['location'])
-  puts "LOC: #{$events[key]['location']}, #{loc.inspect}"
-
-  # Open another page mainly to look for the coordinates of the venue,
-  # and hack one's way through it:
-
-  if $debug
-    puts 'Opening local file.'
-    begin
-      f = File.open("html/elixir_single_event.html")
-      newpage = Nokogiri::HTML(f)
-      f.close
-    rescue
-      puts "Failed to open elixir_events.html file."
-    end
-  else
-    newpage = Nokogiri::HTML(open($root_url + key))
-  end
-  lat,lon = nil
-  newpage.css('script').each do |script|
-    begin
-      lat,lon = coord_match.match(script).captures
-      if lat and lon
-        break
-      end
-      print "LAT: #{lat}, LON: #{lon}"
-    rescue
-    end
-  end
-
-  # Attempts to clean up the venue string
-  venue = nil
+  @client = GooglePlaces::Client.new(ScraperConfig.google_api_key)
   if $events[key]['location']
-    venue = $events[key]['location'].gsub(/-/,'').gsub(/,,/,',')
-    if venue =~ /Wellcome Trust Conference Centre/
-      venue = 'Wellcome Trust Conference Centre, Wellcome Genome Campus, Hinxton, CB10 1SD, United Kingdom.'
+    location = $events[key]['location']
+    if location and !location.empty?
+      google_place = @client.spots_by_query(location, :language => 'en')
+      google_place = google_place.first || nil
     end
   end
 
@@ -132,16 +104,20 @@ $events.each_key do |key|
       category: $events[key]['category'],
       start_date: $events[key]['start_date'],
       end_date: $events[key]['end_date'],
-      venue: venue,
-      latitude: lat,
-      longitude: lon
+      event_types: [Event::EVENT_TYPE[:workshops_and_courses]]
   })
-
-
-  #puts "E: #{event.inspect}"
+  if google_place 
+      event.venue = google_place.name
+      event.latitude = google_place.lat
+      event.longitude = google_place.lng
+      event.city = google_place.city
+      event.country = google_place.country
+      event.postcode = google_place.postal_code
+    else
+      event.venue = $events[key]['location']
+  end
 
   Uploader.create_or_update_event(event)
-
 end
 
 

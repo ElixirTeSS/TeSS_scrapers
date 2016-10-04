@@ -26,7 +26,12 @@ end
 def duration_offset text
   match_data = text.match('CPD\s[-\s]*([0-9])*\s(hours|days)')
   #unit = match_data[2]  All are in hours - you can use this if they change to using days.
-  return match_data[1].to_i * 3600 #86400 if days
+  if match_data
+    return match_data[1].to_i * 3600 #86400 if days
+   else
+     0
+   end
+
 end
 
 #Found in the description. Parsing should account for different list styles
@@ -78,9 +83,10 @@ $events.each_key do |key|
       category: 'course',
       start_date: $events[key][:start_date],
       end_date: $events[key][:end_date],
-      description: $events[key][:description]
-    }.merge($location)
-    )  
-  puts event.inspect if ScraperConfig.debug?
+      description: $events[key][:description],
+      organizer: 'Royal Statistical Society',
+      event_types: [Event::EVENT_TYPE[:workshops_and_courses]]
+    }.merge($location))
+  puts event.inspect 
   Uploader.create_or_update_event(event)
 end
