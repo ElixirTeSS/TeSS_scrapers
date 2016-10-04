@@ -6,7 +6,7 @@ $events_url = "https://www.statslife.org.uk/index.php?option=com_jevents&task=mo
 $events = {}
 # The majority of events are here and their RSS does not contain location so use this set location data for each event.
 $location = {
-      :provider => 'Royal Statistical Society',
+      :organizer => 'Royal Statistical Society',
       :venue => 'The Royal Statistical Society',
       :city => 'London',
       :country => 'United Kingdom',

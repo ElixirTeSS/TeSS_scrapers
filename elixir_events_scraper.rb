@@ -89,16 +89,14 @@ coord_match = Regexp.new('\"coordinates\":\[([\-\.\d]+),([\-\.\d]+)\]')
 $events.each_key do |key|
   @client = GooglePlaces::Client.new(ScraperConfig.google_api_key)
   if $events[key]['location']
-    location = $events[key]['location']
+    location = $events[key]['location'].split(',').first
     if location and !location.empty?
       google_place = @client.spots_by_query(location, :language => 'en')
       google_place = google_place.first || nil
     end
   end
-
   event = Event.new({
       content_provider_id: cp['id'],
-      content_provider: 'Elixir',
       title: $events[key]['title'],
       url: $root_url + key,
       category: $events[key]['category'],

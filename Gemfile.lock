@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/ElixirUK/TeSS_api_client.git
-  revision: 2cd4bd1e44a5e0a20cd8b3283401a71f1e0224f8
+  revision: 582064c3e7f241e77a3c2371765405117ff27fca
   specs:
-    tess_api_client (0.1.11)
+    tess_api_client (0.1.12)
       httparty (~> 0.13)
       json (~> 1.8)
       linkeddata (~> 2.0)
@@ -193,7 +193,7 @@ DEPENDENCIES
   nokogiri (= 1.6.7.2)
   redcarpet
   simple-rss
-  tess_api_client (= 0.1.11)!
+  tess_api_client (= 0.1.12)!
 
 BUNDLED WITH
    1.12.5
