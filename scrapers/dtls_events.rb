@@ -52,7 +52,10 @@ docs.each do |event_item|
       when 'description'
       	event.description = element.text
       when 'location'
-        event.venue = element.text
+        event.venue = element.text 
+        loc = element.text.split(',')
+        event.city = loc.first.strip
+        event.country = loc.last.strip
       when 'provider'
         event.organizer = element.text
       when 'courseDate'
