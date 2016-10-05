@@ -57,7 +57,6 @@ $lessons.each do |lesson|
       else
         keywords_index = ngs_material['full'].find_index(sections[0])
         if !keywords_index.nil?
-          puts ngs_material['full'][keywords_index+1]
           a = ngs_material['full'][keywords_index+1].split(',')
           material.keywords = a
         end
@@ -79,9 +78,6 @@ $lessons.each do |lesson|
 
         material.scientific_topic_names = [ngs_material['ontologies'] + material.keywords].flatten
       end
-      material['title']
-
-    puts "MATERIAL: #{material.inspect}"
 
     Uploader.create_or_update_material(material)
   end
