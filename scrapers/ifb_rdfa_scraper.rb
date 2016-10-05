@@ -4,6 +4,8 @@ require 'linkeddata'
 # This scraper should use the XML API to get the URL of each course, then go to each individual
 # course page to parse embedded RDFa data.
 
+require 'openssl'
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 $materials = 'http://www.france-bioinformatique.fr/en/training_material'
 $events = 'http://www.france-bioinformatique.fr/en/formations'
 $root_url = 'http://www.france-bioinformatique.fr/en/'
@@ -45,20 +47,17 @@ materials.each do |material|
         keywords = [material['schema:keywords']].flatten
         keywords.delete('en') #Each has en meaning english in. Remove these
         authors = [material['schema:author']].flatten
+        licence = material['schema:License'] == 'CeCILL' ? 'CECILL-2.1' : nil
         authors.delete('en')
         upload_material = Material.new({
               title: material['schema:name'],
               url: material['@id'],
               short_description: material['schema:about'],
-              doi: nil,
               remote_updated_date: Time.now,
               remote_created_date: material['schema:dateCreated'],
               content_provider_id: cp['id'],
-              scientific_topics: keywords,
               keywords: keywords, #material['schema:learningResourceType'],
-              licence: material['schema:License'],
-              difficulty_level: nil,
-              contributors: [],
+              licence: licence,
               authors: authors,
               target_audience: [material['schema:audience']].flatten
         })
