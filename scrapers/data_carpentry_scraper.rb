@@ -60,18 +60,9 @@ $lessons.each_key do |key|
   material = Material.new({title: $lessons[key]['title'],
                            url: key,
                            short_description: $lessons[key]['short_description'],
-                           doi: nil,
                            remote_updated_date: Time.now,
                            remote_created_date: nil,
                            content_provider_id: cp['id'],
-                           scientific_topic: nil,
-                           keywords: nil,
-                           licence: nil,
-                           difficulty_level: nil,
-                           contributors: [],
-                           authors: [],
-                           target_audience: [],
-                           id: nil,
                            long_description: $lessons[key]['long_description']})
 
   Uploader.create_or_update_material(material)

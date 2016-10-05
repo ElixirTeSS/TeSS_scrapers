@@ -80,15 +80,9 @@ get_urls($materials).each do |url|
                                        title: material['http://schema.org/name'],
                                        url: url,
                                        short_description: material['http://schema.org/description'],
-                                       doi: nil,
                                        remote_updated_date: Time.now,
                                        remote_created_date: material['dc:date'],
                                        content_provider_id: cp['id'],
-                                       scientific_topic_names: [], #material['schema:genre'],
-                                       keywords: [], #material['schema:learningResourceType'],
-                                       licence: nil,
-                                       difficulty_level: nil,
-                                       contributors: [],
                                        authors: material[''],
                                        target_audience: material['http://schema.org/audience']
                                    })

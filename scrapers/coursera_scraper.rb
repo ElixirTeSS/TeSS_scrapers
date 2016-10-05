@@ -36,17 +36,10 @@ parse_data(course_url)['elements'].each do |course|
     material = Material.new({title: course['name'],
                             url: $friendly_url + course['slug'],
                             short_description: course['description'],
-                            doi: nil,
                             remote_updated_date: Time.now,
                             remote_created_date: nil,
                             content_provider_id: cp['id'],
-                            scientific_topic_names: [],
-                            keywords: topics,
-                            licence: nil,
-                            difficulty_level: nil,
-                            contributors: [],
-                            authors: nil,
-                            target_audience: nil
+                            keywords: topics
                            })
     puts material.inspect
     Uploader.create_or_update_material(material)

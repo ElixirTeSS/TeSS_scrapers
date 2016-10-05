@@ -91,15 +91,11 @@ get_urls($materials).each do |url|
         title: material['http://schema.org/name'],
         url: url,
         short_description: material['http://schema.org/description'],
-        doi: nil,
         remote_updated_date: Time.now,
         remote_created_date: material['http://purl.org/dc/terms/date'],
         content_provider_id: cp['id'],
-        scientific_topics: [material['http://schema.org/genre'].collect{|x| x['rdfs:label']['@value']}].flatten,
+        scientific_topic_names: [material['http://schema.org/genre'].collect{|x| x['rdfs:label']['@value']}].flatten,
         keywords:[material['http://schema.org/keywords']].flatten,
-        licence: nil,
-        difficulty_level: nil,
-        contributors: [],
         authors: [material['http://rdfs.org/sioc/ns#has_creator'].values.first['@value']].flatten,
         target_audience: [material['http://schema.org/audience'].collect{|x| x['rdfs:label']['@value']}].flatten
       })

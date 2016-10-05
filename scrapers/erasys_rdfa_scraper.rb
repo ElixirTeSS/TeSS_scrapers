@@ -47,17 +47,12 @@ while materials.count > 0
               title: trim_characters(material['https://schema.org/name']),
               url: material['https://schema.org/url'],
               short_description: material['description'],
-              doi: nil,
               remote_updated_date: Time.now,
               remote_created_date: material['https://schema.org/dateCreated'],
               content_provider_id: cp['id'],
               scientific_topic: trim_characters(material['https://schema.org/keywords']),
               keywords: trim_characters(material['https://schema.org/keywords']),
-              licence: nil,
-              difficulty_level: nil,
-              contributors: [],
-              authors: "#{trim_characters(material['https://schema.org/author'].values) unless material['https://schema.org/author'].nil?}",
-              target_audience: nil
+              authors: "#{trim_characters(material['https://schema.org/author'].values) unless material['https://schema.org/author'].nil?}"
          })
         Uploader.create_or_update_material(upload_material)
         #puts "MATERIAL: #{upload_material.inspect}\n" if true#$debug
