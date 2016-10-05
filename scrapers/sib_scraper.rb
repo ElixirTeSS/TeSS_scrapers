@@ -64,7 +64,7 @@ $lessons.each_key do |key|
   material = Material.new({title: $lessons[key]['name'],
                           url: key,
                           short_description: $lessons[key]['description'],
-                          remote_updated_date: $lessons[key]['updated']
+                          remote_updated_date: $lessons[key]['updated'],
                           content_provider_id: cp['id']
                           })
 

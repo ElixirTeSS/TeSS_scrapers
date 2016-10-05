@@ -80,13 +80,11 @@ $events.each_key do |key|
       content_provider_id: cp['id'],
       title: $events[key][:title],
       url: key,
-      category: 'course',
       start_date: $events[key][:start_date],
       end_date: $events[key][:end_date],
       description: $events[key][:description],
       organizer: 'Royal Statistical Society',
       event_types: [Event::EVENT_TYPE[:workshops_and_courses]]
     }.merge($location))
-  puts event.inspect 
   Uploader.create_or_update_event(event)
 end
