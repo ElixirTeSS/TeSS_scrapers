@@ -29,17 +29,10 @@ broad_topics.each do |topic|
               title: subtopic['title'],
               url: subtopic['url'],
               short_description: description,
-              doi: nil,
               remote_updated_date: Time.now,
-              remote_created_date: nil,
               content_provider_id: cp['id'],
               scientific_topic_names: ['Statistics and probability'],
-              keywords: [topics['title']],
-              licence: nil,
-              difficulty_level: nil,
-              contributors: [],
-              authors: nil,
-              target_audience: nil
+              keywords: [topics['title']]
            })
         	Uploader.create_or_update_material(upload_material)
 	    rescue => ex

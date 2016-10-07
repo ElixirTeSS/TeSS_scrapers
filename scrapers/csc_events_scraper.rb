@@ -105,11 +105,9 @@ $events.each_key do |key|
 
   event = Event.new({
       content_provider_id: cp['id'],
-      content_provider: 'CSC',
       title: $events[key]['title'],
       url: key,
       description: $events[key]['description'],
-      category: $events[key]['category'],
       start_date: start_date,
       end_date: end_date,
       venue: venue,
