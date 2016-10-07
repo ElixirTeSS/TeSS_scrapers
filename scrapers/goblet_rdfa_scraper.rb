@@ -83,7 +83,7 @@ get_urls($materials,'materials').each do |url|
         remote_updated_date: Time.now,
         remote_created_date: material['http://purl.org/dc/terms/date'],
         content_provider_id: cp['id'],
-        scientific_topics: material['http://schema.org/genre'],
+        scientific_topic_names: material['http://schema.org/genre'],
         keywords: material['http://schema.org/keywords'],
         authors: material['http://rdfs.org/sioc/ns#has_creator'],
         target_audience: material['http://schema.org/audience']
