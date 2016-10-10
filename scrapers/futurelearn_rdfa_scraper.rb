@@ -48,7 +48,7 @@ events.each do |event|
                     description: event['http://schema.org/description'],
                     start_date: start_date,
                     end_date: (start_date + duration_in_days(event['http://schema.org/duration'])).to_s,
-                    event_type: [Event::EVENT_TYPE[:workshops_and_courses]],
+                    event_types: [Event::EVENT_TYPE[:workshops_and_courses]],
 		            online: true
                 })
             end
