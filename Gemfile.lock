@@ -1,8 +1,10 @@
-PATH
-  remote: /Users/Beardface/Projects/TeSS_api_client
+GIT
+  remote: git://github.com/ElixirUK/TeSS_api_client.git
+  revision: efb896cce45d34c4ea3eb33416974ab88f0e9c79
   specs:
     tess_api_client (0.1.13)
       httparty (~> 0.13)
+      inifile (~> 3.0.0)
       json (~> 1.8)
       linkeddata (~> 2.0)
       net (~> 0.3)
