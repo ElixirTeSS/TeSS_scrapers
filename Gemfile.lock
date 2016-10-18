@@ -1,13 +1,12 @@
 GIT
   remote: git://github.com/ElixirUK/TeSS_api_client.git
-  revision: ab6201bfc2c3dc57c5b1d3e894d2abfce8bc179d
+  revision: 804a232c7f8230f93a23fae1be2249f9bac56061
   branch: 0.2.0
   specs:
     tess_api_client (0.2.0)
       httparty (~> 0.13)
       inifile (~> 3.0.0)
       json (~> 1.8)
-      linkeddata (~> 2.0)
       net (~> 0.3)
 
 GEM
@@ -194,6 +193,7 @@ DEPENDENCIES
   google_places
   icalendar
   inifile
+  linkeddata (~> 2.0)
   nokogiri (= 1.6.7.2)
   redcarpet
   simple-rss
