@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative 'tess_scraper.rb'
+require_relative '../tess_scraper.rb'
 require 'nokogiri'
 require 'geocoder'
 
