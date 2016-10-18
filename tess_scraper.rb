@@ -54,10 +54,10 @@ class TessScraper
 
   # If in online mode, returns the content of the URL
   # If in offline mode, either skips the URL or opens the corresponding file for that URL, as defined in
-  #   `OFFLINE_URL_MAPPING`
+  #   `config[:offline_url_mapping]`
   def open_url(url)
     if @offline
-      if OFFLINE_URL_MAPPING.key?(url)
+      if self.class.config[:offline_url_mapping].key?(url)
         puts "Reading from local file: #{self.class.config[:offline_url_mapping][url]}"
         File.open(self.class.config[:offline_url_mapping][url])
       else
