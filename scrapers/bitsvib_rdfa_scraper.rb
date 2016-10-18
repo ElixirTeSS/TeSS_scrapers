@@ -3,6 +3,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'tess_api_client'
 require 'digest/sha1'
+require_relative '../rdfa_extractor.rb'
 
 # This scraper should use the XML API to get the URL of each course, then go to each individual
 # course page to parse embedded RDFa data.

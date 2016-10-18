@@ -4,6 +4,7 @@ require 'nokogiri'
 require 'tess_api_client'
 require 'linkeddata'
 require 'geocoder'
+require_relative '../rdfa_extractor.rb'
 
 $base_url = 'http://www.birmingham.ac.uk'
 $index_page = 'http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/index.aspx'

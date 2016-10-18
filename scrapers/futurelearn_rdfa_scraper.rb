@@ -1,4 +1,5 @@
 require 'tess_api_client'
+require_relative '../rdfa_extractor.rb'
 
 url = "https://www.futurelearn.com/courses/collections/genomics"
 rdfa = RDF::Graph.load(url, format: :rdfa)

@@ -1,5 +1,6 @@
 require 'tess_api_client'
 require 'linkeddata'
+require_relative '../rdfa_extractor.rb'
 
 # This scraper should use the XML API to get the URL of each course, then go to each individual
 # course page to parse embedded RDFa data.

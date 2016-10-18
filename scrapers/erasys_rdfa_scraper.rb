@@ -4,6 +4,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'tess_api_client'
 require 'digest/sha1'
+require_relative '../rdfa_extractor.rb'
 
 def get_materials_for_page(page)
     url = "http://www.sbedu.eu/index.php?start=#{page}"
