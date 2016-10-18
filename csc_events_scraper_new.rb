@@ -1,0 +1,93 @@
+#!/usr/bin/env ruby
+
+require_relative 'tess_scraper.rb'
+require 'nokogiri'
+require 'geocoder'
+
+class CscEventsScraperNew < TessScraper
+
+  def self.config
+    {
+        name: 'CSC Events Scraper',
+        offline_url_mapping: {
+            'https://www.csc.fi/web/training/' => 'html/csc_events.html',
+            'https://www.csc.fi/web/training/-/python-in-hpc-2016' => 'html/csc_event_detail.html'
+        },
+        root_url: 'https://www.csc.fi/web/training/'
+    }
+  end
+
+  def scrape
+    events = {}
+
+    doc = Nokogiri::HTML(open_url(self.class.config[:root_url]))
+
+    doc.css('div.csc-article').each do |article|
+      categories = article.search('.koulutus-category').collect {|x| x.text.strip}.reject(&:empty?)
+      header = article.search('h3 > a')[0]
+      link = header['href']
+      title = header.text
+      description = article.search('.article-summary')[0].text
+
+      events[link] = {'title' => title,
+                      'description' => description,
+                      'event_types' => categories,
+                      'keywords' => categories}
+    end
+
+    cp = add_content_provider(
+        { title: "CSC - IT Center for Science",
+          url: "https://www.csc.fi",
+          image_url: "https://www.csc.fi/documents/10180/161914/CSC_2012_LOGO_RGB_72dpi.jpg/c65ddc42-63fc-44da-8d0f-9f88c54779d7?t=1411391121769",
+          description: "CSC - IT Center for Science Ltd. is a non-profit, state-owned company administered by the Finnish Ministry of Education and Culture. CSC maintains and develops the state-owned centralised IT infrastructure and uses it to provide nationwide IT services for research, libraries, archives, museums and culture as well as information, education and research management.
+    CSC has the task of promoting the operational framework of Finnish research, education, culture and administration. As a non-profit, government organisation, it is our duty to foster exemplary transparency, honesty and responsibility. Trust is the foundation of CSC's success. Customers, suppliers, owners and personnel alike must feel certain that we will fulfil our commitments and promises in an ethically sustainable manner.
+    CSC has offices in Espoo's Keilaniemi and in the Renforsin Ranta business park in Kajaani.",
+          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION],
+          node: Tess::API::Node::NODE_NAMES[:FI] })
+
+    events.each do |url, event_info|
+      lat,lon = nil # Can't seem to get these out of the Google maps URL
+      start_date, end_date, venue = nil
+
+      newpage = Nokogiri::HTML(open_url(url))
+
+      newpage.search('table > tr').each do |row|
+        fieldname = row.css('td')[0].text.strip
+        if fieldname == 'Date:'
+          datefield = row.css('td')[1].text.strip
+          start_date,end_date = datefield.split(/ - /)
+        elsif fieldname == 'Location details:'
+          venue = row.css('td')[1].text.strip
+          # Strip out certain long strings we don't need in the venue.
+          venue.gsub!(/^The event is organised at the /,"")
+          venue.gsub!(/^The event is organised at /,"")
+          venue.gsub!(/ The best way to reach us is by public transportation; more detailed travel tips(\)?) are available.$/,"")
+        end
+      end
+
+      loc = Geocoder.search(venue)
+      unless loc.empty?
+        lat = loc[0].data['geometry']['location']['lat']
+        lon = loc[0].data['geometry']['location']['lng']
+      end
+
+      add_event({ content_provider: cp,
+                  title: event_info['title'],
+                  url: url,
+                  description: event_info['description'],
+                  event_types: event_info['event_types'],
+                  start_date: start_date,
+                  end_date: end_date,
+                  venue: venue,
+                  latitude: lat,
+                  longitude: lon
+                })
+    end
+  end
+
+  # This code makes the scraper execute when run from the command line
+  if __FILE__ == $0
+    self.new(debug: true, verbose: true).run
+  end
+
+end
