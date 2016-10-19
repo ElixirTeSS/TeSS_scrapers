@@ -1,12 +1,13 @@
 require 'fileutils'
 require 'open-uri'
 require 'tess_api_client'
+require 'digest'
 
 class TessScraper
 
   CACHE_ROOT_DIR = 'tmp'
 
-  attr_accessor :output_file, :debug, :verbose, :offline
+  attr_accessor :output_file, :debug, :verbose, :offline, :cache
   attr_reader :scraped
 
   def initialize(output_file: nil, debug: false, verbose: false, offline: false, cache: false)
@@ -65,11 +66,12 @@ class TessScraper
   #   `config[:offline_url_mapping]`
   def open_url(url)
     puts "Opening URL: #{url}" if verbose
+    puts Digest::SHA1.hexdigest(url)
     if offline
       if config[:offline_url_mapping].key?(url)
         puts "... using local file: #{config[:offline_url_mapping][url]}" if verbose
         File.open(config[:offline_url_mapping][url])
-      elsif (cache_path = cache_file_path(URI.parse(url).path.chomp('/'))) && File.exists?(cache_path)
+      elsif (cache_path = cache_file_path(Digest::SHA1.hexdigest(url))) && File.exists?(cache_path)
         puts "... using cache: #{cache_path}" if verbose
         File.open(cache_path)
       else
@@ -136,7 +138,7 @@ class TessScraper
   end
 
   def cache_file(url, file)
-    path = URI.parse(url).path.chomp('/')
+    path = Digest::SHA1.hexdigest(url)
 
     cached_file_path = cache_file_path(path, true)
 
