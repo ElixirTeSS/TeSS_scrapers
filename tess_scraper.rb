@@ -1,16 +1,20 @@
+require 'fileutils'
 require 'open-uri'
 require 'tess_api_client'
 
 class TessScraper
 
+  CACHE_ROOT_DIR = 'tmp'
+
   attr_accessor :output_file, :debug, :verbose, :offline
   attr_reader :scraped
 
-  def initialize(output_file: nil, debug: false, verbose: false, offline: false)
+  def initialize(output_file: nil, debug: false, verbose: false, offline: false, cache: false)
     @output_file = output_file
     @debug = debug || Tess::API::ScraperConfig.debug?
     @verbose = verbose
     @offline = offline
+    @cache = cache
     @scraped = { content_providers: [], events: [], materials: [] }
   end
 
@@ -21,14 +25,18 @@ class TessScraper
     }
   end
 
+  def config
+    self.class.config
+  end
+
   # Run the scraper
   def run
-    puts "[Running #{self.class.config[:name]}]"
+    puts "[Running #{config[:name]}]"
     puts 'Scraping...'
     scrape
-    log(@output_file ? File.open(@output_file) : STDOUT)
+    log(output_file ? File.open(output_file) : STDOUT)
 
-    unless @debug
+    unless debug
       puts 'Persisting...'
       persist
     end
@@ -41,12 +49,12 @@ class TessScraper
   end
 
   def persist
-    @scraped[:content_providers].each do |content_provider|
+    scraped[:content_providers].each do |content_provider|
       content_provider.create_or_update
     end
 
-    [:events, :materials].each do |type|
-      @scraped[type].each do |resource|
+    scraped.except(:content_providers).each do |type|
+      scraped[type].each do |resource|
         resource.create_or_update
       end
     end
@@ -56,45 +64,51 @@ class TessScraper
   # If in offline mode, either skips the URL or opens the corresponding file for that URL, as defined in
   #   `config[:offline_url_mapping]`
   def open_url(url)
-    if @offline
-      if self.class.config[:offline_url_mapping].key?(url)
-        puts "Reading from local file: #{self.class.config[:offline_url_mapping][url]}"
-        File.open(self.class.config[:offline_url_mapping][url])
+    puts "Opening URL: #{url}" if verbose
+    if offline
+      if config[:offline_url_mapping].key?(url)
+        puts "... using local file: #{config[:offline_url_mapping][url]}" if verbose
+        File.open(config[:offline_url_mapping][url])
+      elsif (cache_path = cache_file_path(URI.parse(url).path.chomp('/'))) && File.exists?(cache_path)
+        puts "... using cache: #{cache_path}" if verbose
+        File.open(cache_path)
       else
-        puts "Skipping URL, no offline file found for: #{url}"
+        puts "... skipping! No offline file or cache entry found" if verbose
       end
     else
-      puts "Reading from remote URL: #{url}"
-      open(url)
+      puts "... from remote location" if verbose
+      open(url).tap do |f|
+        cache_file(url, f) if cache
+        f.rewind
+      end
     end
   end
 
   def add_content_provider(params)
     Tess::API::ContentProvider.new(params).tap do |cp|
-      @scraped[:content_providers] << cp
+      scraped[:content_providers] << cp
     end
   end
 
   def add_event(params)
     Tess::API::Event.new(params).tap do |e|
-      @scraped[:events] << e
+      scraped[:events] << e
     end
   end
 
   def add_material(params)
     Tess::API::Material.new(params).tap do |m|
-      @scraped[:materials] << m
+      scraped[:materials] << m
     end
   end
 
   def log(output)
-    output.puts 'Resources scraped:'
-    summary = StringIO.new
-    @scraped.each do |type, resources|
-      if resources.any?
-        output.puts '-' * 40
-        output.puts type.to_s
-        if @verbose
+    if verbose
+      output.puts 'Resources scraped:'
+      scraped.each do |type, resources|
+        if resources.any?
+          output.puts '-' * 40
+          output.puts type.to_s
           resources.each do |resource|
             output.puts '  {'
             resource.dump.each do |attr, value|
@@ -105,19 +119,43 @@ class TessScraper
           end
         end
       end
-      summary.puts "#{resources.length} #{type} scraped"
-      created = resources.select { |r| r.last_action == :create }
-      updated = resources.select { |r| r.last_action == :update }
-      summary.puts "  #{created.length} created"
-      summary.puts "  #{updated.length} updated"
-      summary.puts
+      output.puts
+      output.puts '=' * 40
     end
-    output.puts '=' * 40
     output.puts
     output.puts 'Summary:'
     output.puts
-    summary.rewind
-    output.puts summary.read
+    scraped.each do |type, resources|
+      output.puts "#{resources.length} #{type} scraped"
+      created = resources.select { |r| r.last_action == :create }
+      updated = resources.select { |r| r.last_action == :update }
+      output.puts "  #{created.length} created"
+      output.puts "  #{updated.length} updated"
+    end
+    output.puts
+  end
+
+  def cache_file(url, file)
+    path = URI.parse(url).path.chomp('/')
+
+    cached_file_path = cache_file_path(path, true)
+
+    puts "Caching in: #{cached_file_path}"
+    File.open(cached_file_path, 'w') do |cf|
+      cf.write(file.read)
+    end
+  end
+
+  def cache_file_path(filepath, create_dirs = false)
+    path = File.join(CACHE_ROOT_DIR, self.class.name, filepath)
+
+    if create_dirs
+      # Create the directories needed
+      dirname = File.dirname(path)
+      FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
+    end
+
+    path
   end
 
 end
