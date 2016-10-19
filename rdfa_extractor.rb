@@ -1,3 +1,7 @@
+require 'json/ld'
+require 'nokogiri'
+require 'rdf/rdfa'
+
 class RdfaExtractor
   #Given an RDF:RDFa::Reader and a schema.org Type
   # returns a hash containing all the available fields and values of the given schema (e.g. CreativeWork AggregateRating Person)
