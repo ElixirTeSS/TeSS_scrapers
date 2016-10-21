@@ -35,12 +35,13 @@ class TessScraper
     puts "[Running #{config[:name]}]"
     puts 'Scraping...'
     scrape
-    log(output_file ? File.open(output_file) : STDOUT)
 
     unless debug
       puts 'Persisting...'
       persist
     end
+    
+    log(output_file ? File.open(output_file) : STDOUT)    
 
     puts 'Done'
   end
