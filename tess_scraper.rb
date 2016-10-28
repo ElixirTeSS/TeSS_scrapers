@@ -2,6 +2,7 @@ require 'fileutils'
 require 'open-uri'
 require 'tess_api_client'
 require 'digest'
+require_relative './rdf_material_extractor.rb'
 
 class TessScraper
 
@@ -40,8 +41,8 @@ class TessScraper
       puts 'Persisting...'
       persist
     end
-    
-    log(output_file ? File.open(output_file) : STDOUT)    
+
+    log(output_file ? File.open(output_file) : STDOUT)
 
     puts 'Done'
   end
@@ -67,7 +68,7 @@ class TessScraper
   #   `config[:offline_url_mapping]`
   def open_url(url)
     puts "Opening URL: #{url}" if verbose
-    puts Digest::SHA1.hexdigest(url)
+
     if offline
       if config[:offline_url_mapping].key?(url)
         puts "... using local file: #{config[:offline_url_mapping][url]}" if verbose
@@ -87,22 +88,22 @@ class TessScraper
     end
   end
 
-  def add_content_provider(params)
-    Tess::API::ContentProvider.new(params).tap do |cp|
-      scraped[:content_providers] << cp
-    end
+  def add_content_provider(cp)
+    scraped[:content_providers] << cp
+
+    cp
   end
 
-  def add_event(params)
-    Tess::API::Event.new(params).tap do |e|
-      scraped[:events] << e
-    end
+  def add_event(event)
+    scraped[:events] << event
+
+    event
   end
 
-  def add_material(params)
-    Tess::API::Material.new(params).tap do |m|
-      scraped[:materials] << m
-    end
+  def add_material(material)
+    scraped[:materials] << material
+
+    material
   end
 
   def log(output)

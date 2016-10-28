@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ElixirUK/TeSS_api_client.git
-  revision: 804a232c7f8230f93a23fae1be2249f9bac56061
+  revision: 37779e054d3de2bd5ae1e6c94130625e2b65efe3
   branch: 0.2.0
   specs:
     tess_api_client (0.2.0)

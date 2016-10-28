@@ -10,8 +10,8 @@ class CscEventsScraperNew < TessScraper
     {
         name: 'CSC Events Scraper',
         offline_url_mapping: {
-            'https://www.csc.fi/web/training/' => 'html/csc_events.html',
-            'https://www.csc.fi/web/training/-/python-in-hpc-2016' => 'html/csc_event_detail.html'
+            # 'https://www.csc.fi/web/training/' => 'html/csc_events.html',
+            # 'https://www.csc.fi/web/training/-/python-in-hpc-2016' => 'html/csc_event_detail.html'
         },
         root_url: 'https://www.csc.fi/web/training/'
     }
@@ -20,7 +20,7 @@ class CscEventsScraperNew < TessScraper
   def scrape
     events = {}
 
-    doc = Nokogiri::HTML(open_url(self.class.config[:root_url]))
+    doc = Nokogiri::HTML(open_url(config[:root_url]))
 
     doc.css('div.csc-article').each do |article|
       categories = article.search('.koulutus-category').collect {|x| x.text.strip}.reject(&:empty?)
@@ -35,7 +35,7 @@ class CscEventsScraperNew < TessScraper
                       'keywords' => categories}
     end
 
-    cp = add_content_provider(
+    cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "CSC - IT Center for Science",
           url: "https://www.csc.fi",
           image_url: "https://www.csc.fi/documents/10180/161914/CSC_2012_LOGO_RGB_72dpi.jpg/c65ddc42-63fc-44da-8d0f-9f88c54779d7?t=1411391121769",
@@ -43,7 +43,8 @@ class CscEventsScraperNew < TessScraper
     CSC has the task of promoting the operational framework of Finnish research, education, culture and administration. As a non-profit, government organisation, it is our duty to foster exemplary transparency, honesty and responsibility. Trust is the foundation of CSC's success. Customers, suppliers, owners and personnel alike must feel certain that we will fulfil our commitments and promises in an ethically sustainable manner.
     CSC has offices in Espoo's Keilaniemi and in the Renforsin Ranta business park in Kajaani.",
           content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION],
-          node: Tess::API::Node::NODE_NAMES[:FI] })
+          node: Tess::API::Node::NODE_NAMES[:FI]
+        }))
 
     events.each do |url, event_info|
       lat,lon = nil # Can't seem to get these out of the Google maps URL
@@ -71,17 +72,18 @@ class CscEventsScraperNew < TessScraper
         lon = loc[0].data['geometry']['location']['lng']
       end
 
-      add_event({ content_provider: cp,
-                  title: event_info['title'],
-                  url: url,
-                  description: event_info['description'],
-                  event_types: event_info['event_types'],
-                  start_date: start_date,
-                  end_date: end_date,
-                  venue: venue,
-                  latitude: lat,
-                  longitude: lon
-                })
+      add_event(Tess::API::Event.new(
+          { content_provider: cp,
+            title: event_info['title'],
+            url: url,
+            description: event_info['description'],
+            event_types: event_info['event_types'],
+            start_date: start_date,
+            end_date: end_date,
+            venue: venue,
+            latitude: lat,
+            longitude: lon
+          }))
     end
   end
 

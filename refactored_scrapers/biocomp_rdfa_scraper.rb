@@ -35,15 +35,15 @@ class BiocompRdfaScraper < TessScraper
   def scrape
     #$courses = 'http://www.mygoblet.org/training-portal/courses-xml'
 
-    cp = add_content_provider(
+    cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "VBCF BioComp",
           url: "http://biocomp.vbcf.ac.at/training/index.html",
           image_url: "http://biocomp.vbcf.ac.at/training/biocomp.jpg",
           description: "BioComp is one of the core facilities at the Vienna BioCenter Core Facilities (VBCF). We offer data analysis services for next-generation sequencing data and develop software solutions for biological experiments, with an emphasis on image and video processing and hardware control. We also provide custom-made data management solutions to research groups. BioComp offers trainings and consultations in the areas of bioinformatics, statistics and computational skills.",
           content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION]
-        })
+        }))
 
-    dump_file = File.open(cache_file_path('parsed_biocomp.json', true), 'w') if @debug
+    dump_file = File.open(cache_file_path('parsed_biocomp.json', true), 'w') if debug
 
     #Go through each Training Material, load RDFa, dump to JSON, interogate data, and upload to TeSS.
     get_urls(config[:materials_url]).each do |url|
@@ -54,7 +54,7 @@ class BiocompRdfaScraper < TessScraper
       material.each{|mat| mat['url'] = url}
 
       #write out to JSON for debug mode.
-      if @debug
+      if debug
         material.each do |material|
           dump_file.write("#{material.to_json}")
         end
@@ -63,20 +63,16 @@ class BiocompRdfaScraper < TessScraper
       material = material.first
 
       # Create the new record
-      begin
-        add_material(
-            { title: material['http://schema.org/name'].strip,
-              url: url,
-              short_description: material['http://schema.org/description'].strip,
-              remote_updated_date: Time.now,
-              remote_created_date: material['dc:date'],
-              content_provider: cp,
-              authors: material[''],
-              target_audience: material['http://schema.org/audience']
-            })
-      rescue => ex
-        puts ex.message
-      end
+      add_material(Tess::API::Material.new(
+          { title: material['http://schema.org/name'].strip,
+            url: url,
+            short_description: material['http://schema.org/description'].strip,
+            remote_updated_date: Time.now,
+            remote_created_date: material['dc:date'],
+            content_provider: cp,
+            authors: material[''],
+            target_audience: material['http://schema.org/audience']
+          }))
     end
   end
 
