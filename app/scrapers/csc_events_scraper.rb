@@ -1,10 +1,7 @@
-#!/usr/bin/env ruby
-
-require_relative '../tess_scraper.rb'
 require 'nokogiri'
 require 'geocoder'
 
-class CscEventsScraperNew < TessScraper
+class CscEventsScraper < Tess::Scrapers::Scraper
 
   def self.config
     {
@@ -85,11 +82,6 @@ class CscEventsScraperNew < TessScraper
             longitude: lon
           }))
     end
-  end
-
-  # This code makes the scraper execute when run from the command line
-  if __FILE__ == $0
-    self.new(debug: true, verbose: true).run
   end
 
 end

@@ -1,10 +1,7 @@
-#!/usr/bin/env ruby
-
-require_relative '../tess_scraper.rb'
 require 'rdf/rdfa'
 require 'nokogiri'
 
-class BitsvibRdfaScraper < TessScraper
+class BitsvibRdfaScraper < Tess::Scrapers::Scraper
 
   def self.config
     {
@@ -26,7 +23,7 @@ class BitsvibRdfaScraper < TessScraper
         }))
 
     get_urls(config[:materials_url]).each do |url|
-      materials = RdfMaterialExtractor.new(open_url(url), :rdfa).extract
+      materials = Tess::Scrapers::RdfMaterialExtractor.new(open_url(url), :rdfa).extract
 
       materials.each do |material|
         material.url = url

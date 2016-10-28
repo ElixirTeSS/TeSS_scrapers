@@ -1,11 +1,7 @@
-#!/usr/bin/env ruby
-
-require_relative '../tess_scraper.rb'
-require_relative '../rdfa_extractor.rb'
 require 'nokogiri'
 require 'geocoder'
 
-class BiocompRdfaScraper < TessScraper
+class BiocompRdfaScraper < Tess::Scrapers::Scraper
 
   def self.config
     {

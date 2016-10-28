@@ -1,9 +1,6 @@
-#!/usr/bin/env ruby
-
-require_relative '../tess_scraper.rb'
 require 'nokogiri'
 
-class BitsvibEventsScraper < TessScraper
+class BitsvibEventsScraper < Tess::Scrapers::Scraper
 
   def self.config
     {
