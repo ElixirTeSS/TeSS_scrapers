@@ -39,9 +39,10 @@ cp = Uploader.create_or_update_content_provider(cp)
 
 # Scrape all the pages.
 
-doc = Nokogiri::HTML(open(index_page))
+Nokogiri::XML(open 'http://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events')
 
-table = doc.xpath('//*[@id="content"]/div[2]/div[2]/div[3]/table[1]/tbody/tr')
+doc = Nokogiri::HTML(open(index_page))
+table = doc.xpath('//*[@id="content"]/div/div/div/div[2]/table[1]')
 table.each do |row|
   column = row.children.select{|x| x.name == 'td'}
   url = column[1].children.first['href']
