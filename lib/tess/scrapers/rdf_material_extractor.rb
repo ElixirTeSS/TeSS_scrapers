@@ -21,11 +21,11 @@ module Tess
           params = {}
 
           SINGLETON_ATTRIBUTES.each do |attr|
-            params[attr] = bindings[attr] ? bindings[attr].map(&:object).uniq.first : nil
+            params[attr] = bindings[attr] ? bindings[attr].map { |v| v.object.strip }.uniq.first : nil
           end
 
           ARRAY_ATTRIBUTES.each do |attr|
-            params[attr] = bindings[attr] ? bindings[attr].map(&:object).uniq : []
+            params[attr] = bindings[attr] ? bindings[attr].map { |v| v.object.strip }.uniq : []
           end
 
           Tess::API::Material.new(params)
