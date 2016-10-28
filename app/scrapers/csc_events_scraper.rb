@@ -6,10 +6,7 @@ class CscEventsScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'CSC Events Scraper',
-        offline_url_mapping: {
-            # 'https://www.csc.fi/web/training/' => 'html/csc_events.html',
-            # 'https://www.csc.fi/web/training/-/python-in-hpc-2016' => 'html/csc_event_detail.html'
-        },
+        offline_url_mapping: {},
         root_url: 'https://www.csc.fi/web/training/'
     }
   end

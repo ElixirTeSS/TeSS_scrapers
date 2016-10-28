@@ -39,8 +39,6 @@ class BitsvibRdfaScraper < Tess::Scrapers::Scraper
 
   def get_urls(index_page)
     doc = Nokogiri::HTML(open_url(index_page))
-    # <div class="moduletable-collapsible">
-    # List of all materials
     urls = []
     first = doc.css('div.moduletable')
     first.each do |f|

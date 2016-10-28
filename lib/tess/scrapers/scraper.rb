@@ -19,7 +19,7 @@ module Tess
       def self.config
         {
             name: 'Unnamed Scraper',
-            offline_url_mapping: {}
+            offline_url_mapping: {} # TODO: Decide if this is really needed
         }
       end
 

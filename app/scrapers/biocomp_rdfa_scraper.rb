@@ -13,8 +13,6 @@ class BiocompRdfaScraper < Tess::Scrapers::Scraper
   end
 
   def scrape
-    #$courses = 'http://www.mygoblet.org/training-portal/courses-xml'
-
     cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "VBCF BioComp",
           url: "http://biocomp.vbcf.ac.at/training/index.html",
@@ -23,7 +21,6 @@ class BiocompRdfaScraper < Tess::Scrapers::Scraper
           content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION]
         }))
 
-    #Go through each Training Material, load RDFa, dump to JSON, interogate data, and upload to TeSS.
     get_urls(config[:materials_url]).each do |url|
       materials = Tess::Scrapers::RdfMaterialExtractor.new(open_url(url), :rdfa).extract
 
@@ -41,8 +38,6 @@ class BiocompRdfaScraper < Tess::Scrapers::Scraper
 
   def get_urls(index_page)
     doc = Nokogiri::HTML(open_url(index_page))
-    # <div class="moduletable-collapsible">
-    # List of all materials
     urls = []
     materials = doc.css('ul > li > ul > li')
     materials.each do |material|
