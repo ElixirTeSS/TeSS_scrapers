@@ -44,7 +44,7 @@ $debug = ScraperConfig.debug?
 cp = ContentProvider.new({
                              title: "University of Cambridge", #name
                              url: "http://training.csx.cam.ac.uk/bioinformatics/", #url
-                             image_url: "http://training.csx.cam.ac.uk/campl/images/interface/main-logo-small.png", #logo
+                             image_url: "http://www.crim.cam.ac.uk/global/test/images/logo.png", #logo
                              description: "", #description
                              content_provider_type: ContentProvider::PROVIDER_TYPE[:ORGANISATION],
                              node: Node::NODE_NAMES[:'UK']
