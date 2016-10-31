@@ -49,7 +49,7 @@ module Tess
 
       def persist
         scraped[:content_providers].each do |content_provider|
-          content_provider.create_or_update
+          content_provider.find_or_create
         end
 
         scraped.each do |type, resources|
