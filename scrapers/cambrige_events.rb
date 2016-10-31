@@ -9,7 +9,16 @@ def parse_audience text
     return nil
   else
      # split list, remove weird 3 apostrophe strings, remove extra note text, chuck away the empties 
-     return text.split(',').collect{|x| x.gsub("\'\'\'", "").split('*').first}.reject{|x| x.empty?}
+     parsed_text = text.split(',').collect{|x| x.gsub("\'\'\'", "").split('*').first}.reject{|x| x.empty?}
+     # Remove URLs in target audience
+     parsed_text
+     return parsed_text.collect do |x|
+      if x.match(/\[(http[^\[]+)\s([^\[]+)\]/)
+       x.gsub!(/\[(http[^\[]+)\s([^\[]+)\]/, '\2')
+      else
+       x
+      end
+    end
   end
 end
 
@@ -59,7 +68,8 @@ programmes.each do |programme|
           description: markdownify_urls(event['description']),
           start_date: Time.at(event['startDate'].to_f/1000), #Remove milliseconds before parsing
           end_date: Time.at(event['endDate'].to_f/1000),
-          target_audience: parse_audience(event['target_audience'])
+          target_audience: parse_audience(event['targetAudience']),
+          event_types: [Event::EVENT_TYPE[:workshops_and_courses]]
       })
       event = Uploader.create_or_update_event(event)
   end
