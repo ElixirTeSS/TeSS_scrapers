@@ -27,11 +27,9 @@ def markdownify_urls description
     return description
   else
     #remove weird ''' apostrophe notation
-    description.gsub!("\'\'\'", "")
-    puts description
+     description.gsub!("\'\'\'", "")
     #URLs listed as [http://google.com this is the link text]. Find them and recode as markdown URL
      description.gsub!(/\[(http[^\]\s]+)\s([^\]]+)\]/, '[\2](\1)')
-     puts description
   end
 end
 
