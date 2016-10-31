@@ -62,7 +62,7 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
             short_description: data['short_description'],
             remote_updated_date: Time.now,
             remote_created_date: nil,
-            content_provider_id: cp['id'],
+            content_provider: cp,
             long_description: data['long_description']}))
     end
   end
