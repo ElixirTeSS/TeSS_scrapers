@@ -4,7 +4,7 @@ class BitsvibEventsScraper < Tess::Scrapers::Scraper
 
   def self.config
     {
-        name: 'VIB Bioinformatics Training and Services Scraper',
+        name: 'VIB Bioinformatics Training and Services Events Scraper',
         root_url: 'http://www.vib.be/en/training/research-training/courses/Pages/default.aspx',
         categories: %w{Bioinformatics, Skills, Science, Coaching}
     }
