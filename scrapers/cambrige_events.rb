@@ -4,21 +4,25 @@ require 'open-uri'
 require 'nokogiri'
 require 'tess_api_client'
 
-
-def parse_date(date_string)
-  puts date_string
-   if (match_data = /([0-9]+)\-([0-9]+)\s([a-zA-Z]+)/.match(date_string))
-     start_date = Date.parse(match_data[1].to_s + '-' + match_data[3].to_s + '-' + Time.now.year.to_s)
-     end_date = Date.parse(match_data[2].to_s + '-' + match_data[3].to_s + '-' + Time.now.year.to_s)
-   elsif (match_data = /^([0-9]+)\s([a-zA-Z]+)$/.match(date_string))
-     start_date = Date.parse(match_data[1].to_s + '-' + match_data[2].to_s + '-' + Time.now.year.to_s)
-     end_date = Date.parse(match_data[1].to_s + '-' + match_data[2].to_s + '-' + Time.now.year.to_s)
-    else
-      start_date = nil
-      end_date = nil
-   end    
-   return [start_date, end_date]
+def parse_audience text
+  if text.nil? or text.empty?
+    return nil
+  else
+     # split list, remove weird 3 apostrophe strings, remove extra note text, chuck away the empties 
+     return text.split(',').collect{|x| x.gsub("\'\'\'", "").split('*').first}.reject{|x| x.empty?}
+  end
 end
+
+def markdownify_urls description
+  if description.nil? or description.empty?
+    return description
+  else
+    #URLs listed as [http://google.com this is the link text]. Find them and recode as markdown URL
+    return description.gsub!(/\[(http[^\[]+)\s([^\[]+)\]/, '[\2](\1)')
+  end
+end
+
+
 
 $root_url = 'http://csx.cam.ac.uk'
 index_page = 'http://training.csx.cam.ac.uk/bioinformatics/event-timetable?startDate=02-09-2011&endDate=16-12-2017&group=&period=range'
@@ -39,25 +43,25 @@ cp = Uploader.create_or_update_content_provider(cp)
 
 # Scrape all the pages.
 
-Nokogiri::XML(open 'http://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events')
+root_url = 'http://training.csx.cam.ac.uk/bioinformatics/event/'
+json = JSON.parse(open('http://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions&format=json').read)
+programmes = json['result']['programmes']
 
-doc = Nokogiri::HTML(open(index_page))
-table = doc.xpath('//*[@id="content"]/div/div/div/div[2]/table[1]')
-table.each do |row|
-  column = row.children.select{|x| x.name == 'td'}
-  url = column[1].children.first['href']
-  if url
-       date = parse_date(column[0].text)
-       name = column[1].text
-       city = column[2].text
-       event = Event.new({title: name,
-                          url: $root_url + url,
-                          short_description: nil,
-                          content_provider_id: cp['id'],
-                          start_date: date[0],
-                          end_date: date[1]
-                          })
-
-       Uploader.create_or_update_event(event)
+programme = programmes.first
+event = programme['events'].first
+#Events are separated into years. There are three programmes: bioinfo-2015, bioinfo-2016, bioinfo-2017
+programmes.each do |programme|
+  programme['events'].each do |event|
+       event = Event.new({
+          title: event['title'],
+          content_provider_id: cp['id'],
+          url: root_url + event['eventId'].to_s,
+          description: markdownify_urls(event['description']),
+          start_date: Time.at(event['startDate'].to_f/1000), #Remove milliseconds before parsing
+          end_date: Time.at(event['endDate'].to_f/1000),
+          target_audience: parse_audience(event['target_audience'])
+      })
+      event = Uploader.create_or_update_event(event)
   end
 end
+
