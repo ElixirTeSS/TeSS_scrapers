@@ -54,20 +54,16 @@ cp = ContentProvider.new({
 
 cp = Uploader.create_or_update_content_provider(cp)
 
-# Scrape all the pages.
-
 root_url = 'http://training.csx.cam.ac.uk/bioinformatics/event/'
 json = JSON.parse(open('http://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions&format=json').read)
 programmes = json['result']['programmes']
 
-
 #programmes.each{|y| y['events'].each{|x| puts "#{Time.at(x['startDate'].to_f/1000)}\n"}}
 
-#Events are separated into years. There are three programmes: bioinfo-2015, bioinfo-2016, bioinfo-2017
+#Events are separated into years. There are three programmes: bioinfo-2015, bioinfo-2016, bioinfo-2017. Last one currently doesn't have dates - check for startDate before adding
 programmes.each do |programme|
   programme['events'].last(30).each do |event|
-    if event['title'] == 'Mining gene-disease associations and drug target validation with Open Targets'
-      if !event['startDate'].nil?
+    if !event['startDate'].nil?
        event = Event.new({
           title: event['title'],
           content_provider_id: cp['id'],
@@ -80,7 +76,6 @@ programmes.each do |programme|
           organizer: "University of Cambridge"
       })
       event = Uploader.create_or_update_event(event)
-      end
     end
   end
 end
