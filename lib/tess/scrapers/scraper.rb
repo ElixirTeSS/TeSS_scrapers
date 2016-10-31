@@ -117,6 +117,10 @@ module Tess
                   output.puts "    '#{attr}' => #{value.inspect}" unless value.nil? || (value == [])
                 end
                 output.puts '  }'
+                if resource.errors
+                  output.puts "  ##### ERRORS #####"
+                  output.puts "  #{resource.errors.inspect}"
+                end
                 output.puts
               end
             end
@@ -131,8 +135,10 @@ module Tess
           output.puts "#{resources.length} #{type} scraped"
           created = resources.select { |r| r.last_action == :create }
           updated = resources.select { |r| r.last_action == :update }
+          errored = resources.select(&:errors)
           output.puts "  #{created.length} created"
           output.puts "  #{updated.length} updated"
+          output.puts "  #{errored.length} errored"
         end
         output.puts
       end
