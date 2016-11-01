@@ -1,5 +1,3 @@
-# This doesn't actually scrape anything, but does perform an upload.
-
 require 'nokogiri'
 
 class DtlsEventsScraper < Tess::Scrapers::Scraper
