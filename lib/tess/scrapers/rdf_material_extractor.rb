@@ -4,43 +4,32 @@ module Tess
   module Scrapers
     class RdfMaterialExtractor
 
-      SINGLETON_ATTRIBUTES = [:title, :short_description, :remote_created_date]
-      ARRAY_ATTRIBUTES = [:scientific_topic_names, :keywords, :authors, :target_audience]
-
-      def initialize(source, format)
-        @reader = RDF::Reader.for(format).new(source)
-      end
+      include Tess::Scrapers::RdfExtraction
 
       def extract
-        graph = RDF::Graph.new
-        graph << @reader
-
-        graph.query(self.class.materials_query).map do |res|
-          mat_res = graph.query(self.class.material_query(res.material))
-          bindings = mat_res.bindings
-          params = {}
-
-          SINGLETON_ATTRIBUTES.each do |attr|
-            params[attr] = bindings[attr] ? bindings[attr].map { |v| v.object.strip }.uniq.first : nil
-          end
-
-          ARRAY_ATTRIBUTES.each do |attr|
-            params[attr] = bindings[attr] ? bindings[attr].map { |v| v.object.strip }.uniq : []
-          end
-
+        super do |params|
           Tess::API::Material.new(params)
         end
       end
 
       private
 
-      def self.materials_query
+      def self.singleton_attributes
+        [:title, :short_description, :remote_created_date]
+      end
+
+      def self.array_attributes
+        [:scientific_topic_names, :keywords, :authors, :target_audience]
+      end
+
+      def self.type_query
         RDF::Query.new do
-          pattern RDF::Query::Pattern.new(:material, RDF.type, RDF::Vocab::SCHEMA.CreativeWork)
+          pattern RDF::Query::Pattern.new(:individual, RDF.type, RDF::Vocab::SCHEMA.CreativeWork)
         end
       end
 
-      def self.material_query(material_uri)
+      def self.individual_query(material_uri)
+        puts material_uri
         RDF::Query.new do
           pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.name, :title, optional: true)
           pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.description, :short_description, optional: true)
