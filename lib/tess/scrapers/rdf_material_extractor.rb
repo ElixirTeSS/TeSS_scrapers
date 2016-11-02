@@ -29,7 +29,6 @@ module Tess
       end
 
       def self.individual_query(material_uri)
-        puts material_uri
         RDF::Query.new do
           pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.name, :title, optional: true)
           pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.description, :short_description, optional: true)

@@ -4,8 +4,8 @@ module Tess
   module Scrapers
     module RdfExtraction
 
-      def initialize(source, format)
-        @reader = RDF::Reader.for(format).new(source)
+      def initialize(source, format, base_uri: nil)
+        @reader = RDF::Reader.for(format).new(source, { base_uri: base_uri })
         if format == :jsonld && !JSON::LD::Context::PRELOADED['http://schema.org/']
           puts 'Pre-loading schema.org context...'
           ctx = JSON::LD::Context.new.parse('http://schema.org/')
