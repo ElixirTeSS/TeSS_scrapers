@@ -9,13 +9,15 @@ module Tess
       def extract
         super do |params|
           # Need to check if this is a good solution...
-          params[:city], params[:country] = params.delete(:locality).split(',')
-
-          params[:city].strip!
-          params[:country].strip!
+          locality = params.delete(:locality)
+          if locality
+            params[:city], params[:country] = locality.split(',')
+            params[:city].strip!
+            params[:country].strip!
+          end
 
           duration = params.delete(:duration)
-          if !params[:end] && duration
+          if !params[:end] && params[:start] && duration
             params[:end] = modify_date(params[:start], duration)
           end
 
@@ -26,7 +28,7 @@ module Tess
       private
 
       def self.singleton_attributes
-        [:title, :description, :start, :end, :venue, :postcode, :locality, :organizer, :duration]
+        [:title, :description, :start, :end, :venue, :postcode, :locality, :organizer, :duration, :url]
       end
 
       def self.array_attributes
@@ -47,6 +49,7 @@ module Tess
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.endDate, :end, optional: true)
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.organizer, :end, optional: true)
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.duration, :duration, optional: true)
+          pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.url, :url, optional: true)
 
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.location, :location, optional: true)
           pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.name, :venue, optional: true)

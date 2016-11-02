@@ -6,6 +6,11 @@ module Tess
 
       def initialize(source, format)
         @reader = RDF::Reader.for(format).new(source)
+        if format == :jsonld && !JSON::LD::Context::PRELOADED['http://schema.org/']
+          puts 'Pre-loading schema.org context...'
+          ctx = JSON::LD::Context.new.parse('http://schema.org/')
+          JSON::LD::Context.add_preloaded('http://schema.org/', ctx)
+        end
       end
 
       def extract(&block)
@@ -32,12 +37,14 @@ module Tess
       def parse_values(values)
         if values
           values.map do |v|
-            case v
-              when RDF::Literal::HTML
+            # Using 'v.class.name' instead of just 'v' here or things like RDF::Literal::DateTime fall into the RDF::Literal block
+            # Not using 'v.class' because 'case' uses '===' for comparison and RDF::URI === RDF::URI is false!
+            case v.class.name
+              when 'RDF::Literal::HTML'
                 v.object.text.strip
-              when RDF::Literal::DateTime
-                v.object
-              when RDF::Literal
+              when 'RDF::URI'
+                v.value
+              when 'RDF::Literal'
                 v.object.strip
               else
                 v.object

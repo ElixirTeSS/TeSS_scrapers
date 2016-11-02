@@ -148,7 +148,7 @@ module Tess
 
         cached_file_path = cache_file_path(path, true)
 
-        puts "Caching in: #{cached_file_path}"
+        puts "... caching in: #{cached_file_path}"
         File.open(cached_file_path, 'w') do |cf|
           cf.write(file.read)
         end
