@@ -54,9 +54,12 @@ module Tess
 
         scraped.each do |type, resources|
           unless type == :content_providers
+            puts "#{resources.length} #{type}" if verbose
             resources.each do |resource|
               resource.create_or_update
+              print '.' if verbose
             end
+            puts if verbose
           end
         end
       end
