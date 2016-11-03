@@ -60,7 +60,7 @@ class EbiScraper < Tess::Scrapers::Scraper
             doi: nil,
             remote_updated_date: Time.now,
             remote_created_date: lesson['last_modified'],
-            content_provider_id: cp['id'],
+            content_provider: cp,
             scientific_topic: lesson['topics'],
             keywords: lesson['topics']}))
     end

@@ -51,7 +51,7 @@ class Genome3dScraper < Tess::Scrapers::Scraper
             short_description: data['description'],
             remote_updated_date: Time.now,
             remote_created_date: data['last_modified'],
-            content_provider_id: cp['id']
+            content_provider: cp
           }))
     end
   end
