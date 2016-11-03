@@ -8,7 +8,7 @@ class ErasysRdfaScraper < Tess::Scrapers::Scraper
     {
         name: 'ERASysAPP RDFa Scraper',
         offline_url_mapping: {},
-        root_url: 'http://www.sbedu.eu/',
+        root_url: 'http://www.sbedu.eu',
         per_page: 5
     }
   end
@@ -46,7 +46,7 @@ class ErasysRdfaScraper < Tess::Scrapers::Scraper
   private
 
   def get_materials_for_page(page)
-    url = "#{config[:root_url]}index.php?start=#{page}"
+    url = "#{config[:root_url]}/index.php?start=#{page}"
     reader = RDF::Reader.for(:rdfa).new(open_url(url))
     rdfa = RDF::Graph.new << reader
     materials = Tess::Scrapers::RdfaExtractor.parse_rdfa(rdfa, 'BlogPosting')
@@ -68,5 +68,4 @@ class ErasysRdfaScraper < Tess::Scrapers::Scraper
       return attribute.collect{|x| x.gsub("\\n", '').gsub("\\t", '').strip}
     end
   end
-
 end

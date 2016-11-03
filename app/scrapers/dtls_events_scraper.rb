@@ -7,7 +7,7 @@ class DtlsEventsScraper < Tess::Scrapers::Scraper
         name: 'DTLS Events',
         offline_url_mapping: {},
         root_url: 'http://www.dtls.nl',
-        feed_url: 'http://www.dtls.nl/courses/feed/?filter_course=active'
+        feed_path: '/courses/feed/?filter_course=active'
     }
   end
 
@@ -21,7 +21,7 @@ class DtlsEventsScraper < Tess::Scrapers::Scraper
           node: Tess::API::Node::NODE_NAMES[:NL]
         }))
 
-    docs = Nokogiri::XML(open_url(config[:feed_url])).xpath('//item')
+    docs = Nokogiri::XML(open_url(config[:root_url] + config[:feed_path])).xpath('//item')
 
 #fields = docs.first.element_children.collect{|x| x.name}
 #locations = docs.collect{|x| x.element_children.collect{|x| x.text if x.name == 'location'}.compact}.flatten  

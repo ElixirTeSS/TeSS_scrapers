@@ -8,7 +8,7 @@ class BitsvibRdfaScraper < Tess::Scrapers::Scraper
         name: 'VIB Bioinformatics Training and Services RDFa Scraper',
         offline_url_mapping: {},
         root_url: 'https://www.bits.vib.be',
-        materials_url: 'https://www.bits.vib.be/training-list'
+        materials_path: '/training-list'
     }
   end
 
@@ -22,7 +22,7 @@ class BitsvibRdfaScraper < Tess::Scrapers::Scraper
           node: Tess::API::Node::NODE_NAMES[:BE]
         }))
 
-    get_urls(config[:materials_url]).each do |url|
+    get_urls(config[:root_url] + config[:materials_path]).each do |url|
       materials = Tess::Scrapers::RdfMaterialExtractor.new(open_url(url), :rdfa).extract
 
       materials.each do |material|

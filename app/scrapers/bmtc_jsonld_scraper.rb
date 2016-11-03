@@ -9,7 +9,7 @@ class BtmcJsonldScraper < Tess::Scrapers::Scraper
         name: 'BTMC JSON-LD Scraper',
         offline_url_mapping: {},
         root_url: 'http://www.birmingham.ac.uk',
-        materials_url: 'http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/index.aspx'
+        materials_path: '/facilities/metabolomics-training-centre/index.aspx'
     }
   end
 
@@ -23,7 +23,7 @@ class BtmcJsonldScraper < Tess::Scrapers::Scraper
           node: Tess::API::Node::NODE_NAMES[:UK]
         }))
 
-    get_urls(config[:materials_url]).each do |url|
+    get_urls(config[:root_url] + config[:materials_path]).each do |url|
       doc = Nokogiri::HTML(open_url(url))
       events = []
       doc.search('//script[@type="application/ld+json"]').each do |element|
@@ -62,5 +62,4 @@ class BtmcJsonldScraper < Tess::Scrapers::Scraper
 
     [lat, lon]
   end
-
 end

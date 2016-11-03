@@ -7,7 +7,7 @@ class DenbiScraper < Tess::Scrapers::Scraper
         name: 'Data Carpentry Scraper',
         offline_url_mapping: {},
         root_url: 'https://www.denbi.de',
-        index_page: 'https://www.denbi.de/index.php/training-courses'
+        index_page: '/index.php/training-courses'
     }
   end
 
@@ -21,7 +21,7 @@ class DenbiScraper < Tess::Scrapers::Scraper
           node: 'Germany'
         }))
 
-    doc = Nokogiri::HTML(open_url(config[:index_page]))
+    doc = Nokogiri::HTML(open_url(config[:root_url] + config[:index_page]))
 
     table = doc.xpath('//*[@id="content"]/div[2]/div[2]/div[3]/table[1]/tbody/tr')
     table.each do |row|

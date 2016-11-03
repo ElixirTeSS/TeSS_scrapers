@@ -7,8 +7,8 @@ class BiocompRdfaScraper < Tess::Scrapers::Scraper
     {
         name: 'Biocomp RDFa Scraper',
         offline_url_mapping: {},
-        root_url: 'http://biocomp.vbcf.ac.at/training/',
-        materials_url: 'http://biocomp.vbcf.ac.at/training/index.html'
+        root_url: 'http://biocomp.vbcf.ac.at/training',
+        materials_path: '/index.html'
     }
   end
 
@@ -21,7 +21,7 @@ class BiocompRdfaScraper < Tess::Scrapers::Scraper
           content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION]
         }))
 
-    get_urls(config[:materials_url]).each do |url|
+    get_urls(config[:root_url] + config[:materials_path]).each do |url|
       materials = Tess::Scrapers::RdfMaterialExtractor.new(open_url(url), :rdfa).extract
 
       materials.each do |material|
@@ -43,11 +43,10 @@ class BiocompRdfaScraper < Tess::Scrapers::Scraper
     materials.each do |material|
       links = material.search('a')
       links.each do |l|
-        urls << config[:root_url] + l['href']
+        urls << "#{config[:root_url]}/#{l['href']}"
       end
     end
 
     urls
   end
-
 end
