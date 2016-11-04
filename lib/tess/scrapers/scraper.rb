@@ -54,10 +54,10 @@ module Tess
 
         scraped.each do |type, resources|
           unless type == :content_providers
-            puts "#{resources.length} #{type}" if verbose
+            puts "#{resources.length} #{type}"
             resources.each do |resource|
-              resource.create_or_update
-              print '.' if verbose
+              r = resource.create_or_update
+              print(r.errors ? 'E' : '.')
             end
             puts if verbose
           end
@@ -109,29 +109,28 @@ module Tess
       end
 
       def log(output)
-        if verbose
-          output.puts 'Resources scraped:'
-          scraped.each do |type, resources|
-            if resources.any?
-              output.puts '-' * 40
-              output.puts type.to_s
-              resources.each do |resource|
-                output.puts '  {'
-                resource.dump.each do |attr, value|
-                  output.puts "    '#{attr}' => #{value.inspect}" unless value.nil? || (value == [])
-                end
-                output.puts '  }'
-                if resource.errors
-                  output.puts "  ##### ERRORS #####"
-                  output.puts "  #{resource.errors.inspect}"
-                end
-                output.puts
+        output.puts(verbose ? 'Resources scraped:' : 'Errors:')
+        scraped.each do |type, resources|
+          resources = verbose ? resources : resources.select(&:errors)
+          if resources.any?
+            output.puts '-' * 40
+            output.puts type.to_s
+            resources.each do |resource|
+              output.puts '  {'
+              resource.dump.each do |attr, value|
+                output.puts "    '#{attr}' => #{value.inspect}" unless value.nil? || (value == [])
               end
+              output.puts '  }'
+              if resource.errors
+                output.puts "  ##### ERRORS #####"
+                output.puts "  #{resource.errors.inspect}"
+              end
+              output.puts
             end
           end
-          output.puts
-          output.puts '=' * 40
         end
+        output.puts
+        output.puts '=' * 40
         output.puts
         output.puts 'Summary:'
         output.puts
