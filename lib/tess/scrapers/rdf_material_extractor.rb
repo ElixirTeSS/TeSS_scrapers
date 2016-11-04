@@ -37,8 +37,7 @@ module Tess
           pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.genre, :scientific_topics, optional: true)
           pattern RDF::Query::Pattern.new(:scientific_topics, RDF::RDFS.label, :scientific_topic_names, optional: true)
 
-          pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.keywords, :keyword_obs, optional: true)
-          pattern RDF::Query::Pattern.new(:keyword_obs, RDF::RDFS.label, :keywords, optional: true)
+          pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.keywords, :keywords, optional: true)
 
           pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SIOC.has_creator, :author_obs, optional: true)
           pattern RDF::Query::Pattern.new(:author_obs, RDF::Vocab::SCHEMA.name, :authors, optional: true)
