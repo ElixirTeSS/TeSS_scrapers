@@ -21,19 +21,19 @@ class SoftwareCarpentryEventsScraper < Tess::Scrapers::Scraper
           content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION]
         }))
 
-    events = Icalendar::Event.parse(open_url(config[:root_url] + config[:ical_path]))
+    file = open_url(config[:root_url] + config[:ical_path])
+    events = Icalendar::Event.parse(file.set_encoding('utf-8'))
 
     events.each do |event|
       begin
         #@client = GooglePlaces::Client.new(ScraperConfig.google_api_key)
         #google_place = @client.spots_by_query(event.location, :language => 'en')
         #google_place = google_place.first || nil
-        if event.description.start_with?('http://cannot.find.url/')
+        if event.description.start_with?('http://cannot.find.url/') && verbose
           puts "skipping #{event.summary} - no URL"
         else
-          #HAX! A polish character was causing issues as it was being interpreted as ASCII. This forces everything into UTF-8 but loses the bad characters.
-          summary = [event.summary].flatten.join(' ').force_encoding("ASCII-8BIT").encode('UTF-8', undef: :replace, replace: '')
-          description = [event.description].flatten.join(' ').force_encoding("ASCII-8BIT").encode('UTF-8', undef: :replace, replace: '')
+          summary = [event.summary].flatten.join(' ')
+          description = [event.description].flatten.join(' ')
           add_event(Tess::API::Event.new(
               { content_provider: cp,
                 title: "Software Carpentry - #{summary}",
