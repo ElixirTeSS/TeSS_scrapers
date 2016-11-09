@@ -36,8 +36,8 @@ class DenbiScraper < Tess::Scrapers::Scraper
               url: config[:root_url] + url,
               description: nil,
               content_provider: cp,
-              start_date: date[0],
-              end_date: date[1]
+              start: date[0],
+              end: date[1]
             }))
       end
     end

@@ -68,8 +68,8 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
           { content_provider: cp,
             title: data['title'],
             url: config[:root_url] + path,
-            start_date: data['start_date'],
-            end_date: data['end_date'],
+            start: data['start_date'],
+            end: data['end_date'],
             event_types: [Tess::API::Event::EVENT_TYPE[:workshops_and_courses]]
           })
       if google_place

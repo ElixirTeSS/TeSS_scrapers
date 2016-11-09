@@ -72,8 +72,8 @@ class CscEventsScraper < Tess::Scrapers::Scraper
             url: url,
             description: event_info['description'],
             event_types: event_info['event_types'],
-            start_date: start_date,
-            end_date: end_date,
+            start: start_date,
+            end: end_date,
             venue: venue,
             latitude: lat,
             longitude: lon

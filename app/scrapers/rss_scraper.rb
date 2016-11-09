@@ -34,8 +34,8 @@ class RssScraper < Tess::Scrapers::Scraper
           { content_provider: cp,
             title: data[:title],
             url: url,
-            start_date: data[:start_date],
-            end_date: data[:end_date],
+            start: data[:start_date],
+            end: data[:end_date],
             description: data[:description],
             organizer: 'Royal Statistical Society',
             event_types: [Tess::API::Event::EVENT_TYPE[:workshops_and_courses]]
@@ -89,8 +89,8 @@ class RssScraper < Tess::Scrapers::Scraper
       events[url] = {
           title: title,
           description: description,
-          start_date: start_date.to_s,
-          end_date: end_date.to_s
+          start: start_date.to_s,
+          end: end_date.to_s
       }
     end
 
