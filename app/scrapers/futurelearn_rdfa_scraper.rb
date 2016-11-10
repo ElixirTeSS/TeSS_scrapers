@@ -16,7 +16,7 @@ class FuturelearnRdfaScraper < Tess::Scrapers::Scraper
           url: "https://www.futurelearn.com/courses/collections/genomics",
           image_url: "http://static.tumblr.com/1f4d7873a6ff8a8c0d571adf0d4e867f/ejyensv/ubIn1b1rl/tumblr_static_fl_logo_white.jpg",
           description: "Discover the growing importance of genomics in healthcare research, diagnosis and treatment, with these free online courses. Learn with researchers and clinicians from leading universities and medical schools.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:PORTAL]
+          content_provider_type: :portal
         }))
 
     events = []
@@ -31,7 +31,7 @@ class FuturelearnRdfaScraper < Tess::Scrapers::Scraper
     events.each do |event|
       event.content_provider = cp
       event.online = true
-      event.event_types = [Tess::API::Event::EVENT_TYPE[:workshops_and_courses]]
+      event.event_types = [:workshops_and_courses]
       event.url = config[:root_url] + event.url
       add_event(event)
     end

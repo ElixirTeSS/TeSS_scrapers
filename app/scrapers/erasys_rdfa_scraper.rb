@@ -19,7 +19,7 @@ class ErasysRdfaScraper < Tess::Scrapers::Scraper
           url: "http://www.sbedu.eu/", #url
           image_url: "http://www.sbedu.eu/images/erasysapp.PNG", #logo
           description: "A platform for the exchange of educational material on systems biology.", #description
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:PROJECT]
+          content_provider_type: :project
         }))
 
     page = 0

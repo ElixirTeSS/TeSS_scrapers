@@ -17,8 +17,8 @@ class EbiScraper < Tess::Scrapers::Scraper
           url: "http://www.ebi.ac.uk", #url
           image_url: "http://www.ebi.ac.uk/miriam/static/main/img/EBI_logo.png", #logo
           description: "EMBL-EBI provides freely available data from life science experiments, performs basic research in computational biology and offers an extensive user training programme, supporting researchers in academia and industry.", #description
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION],
-          node: Tess::API::Node::NODE_NAMES[:'EMBL-EBI']
+          content_provider_type: :organisation,
+          node_name: :'EMBL-EBI'
         }))
 
     lessons = {}

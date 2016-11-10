@@ -18,7 +18,7 @@ class BiocompRdfaScraper < Tess::Scrapers::Scraper
           url: "http://biocomp.vbcf.ac.at/training/index.html",
           image_url: "http://biocomp.vbcf.ac.at/training/biocomp.jpg",
           description: "BioComp is one of the core facilities at the Vienna BioCenter Core Facilities (VBCF). We offer data analysis services for next-generation sequencing data and develop software solutions for biological experiments, with an emphasis on image and video processing and hardware control. We also provide custom-made data management solutions to research groups. BioComp offers trainings and consultations in the areas of bioinformatics, statistics and computational skills.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION]
+          content_provider_type: :organisation
         }))
 
     get_urls(config[:root_url] + config[:materials_path]).each do |url|

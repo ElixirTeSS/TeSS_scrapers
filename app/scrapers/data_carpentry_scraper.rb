@@ -18,7 +18,7 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
           url: "http://www.datacarpentry.org",
           image_url: "http://www.datacarpentry.org/assets/img/DC_logo_vision.png",
           description: "Data Carpentry's aim is to teach researchers basic concepts, skills, and tools for working with data so that they can get more done in less time, and with less pain.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION]
+          content_provider_type: :organisation
         }))
 
     doc = Nokogiri::HTML(open_url(config[:root_url] + '/lessons'))

@@ -36,8 +36,8 @@ class CscEventsScraper < Tess::Scrapers::Scraper
           description: "CSC - IT Center for Science Ltd. is a non-profit, state-owned company administered by the Finnish Ministry of Education and Culture. CSC maintains and develops the state-owned centralised IT infrastructure and uses it to provide nationwide IT services for research, libraries, archives, museums and culture as well as information, education and research management.
     CSC has the task of promoting the operational framework of Finnish research, education, culture and administration. As a non-profit, government organisation, it is our duty to foster exemplary transparency, honesty and responsibility. Trust is the foundation of CSC's success. Customers, suppliers, owners and personnel alike must feel certain that we will fulfil our commitments and promises in an ethically sustainable manner.
     CSC has offices in Espoo's Keilaniemi and in the Renforsin Ranta business park in Kajaani.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION],
-          node: Tess::API::Node::NODE_NAMES[:FI]
+          content_provider_type: :organisation,
+          node_name: :FI
         }))
 
     events.each do |url, event_info|

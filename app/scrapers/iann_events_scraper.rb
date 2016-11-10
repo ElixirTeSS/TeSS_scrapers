@@ -19,7 +19,7 @@ class IannEventsScraper < Tess::Scrapers::Scraper
           url: "http://iann.pro",
           image_url: "http://iann.pro/sites/default/files/itico_logo.png",
           description: "iAnn is a portal for enabling collaborative announcement dissemination by providing providing relevant scientific announcements data and software tools to help annotation and curation of scientific announcements.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:PORTAL]
+          content_provider_type: :portal
         }))
 
     docs = Nokogiri::HTML(open_url(config[:root_url] + config[:path])).xpath('//doc')
@@ -46,9 +46,9 @@ class IannEventsScraper < Tess::Scrapers::Scraper
             when ['category']
               categories = element.children.collect{|children| children.text}
               if categories.include?('course')
-                event.event_types = [Tess::API::Event::EVENT_TYPE[:workshops_and_courses]]
+                event.event_types = [:workshops_and_courses]
               elsif categories.include?('meeting')
-                event.event_types = [Tess::API::Event::EVENT_TYPE[:meetings_and_conferences]]
+                event.event_types = [:meetings_and_conferences]
               end
             when ['field']
               event.scientific_topic_names = IANN_MAPPING[element.children.collect{|children| children.text}]

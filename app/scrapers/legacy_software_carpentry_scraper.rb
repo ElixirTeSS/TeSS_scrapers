@@ -20,7 +20,7 @@ class LegacySoftwareCarpentryScraper < Tess::Scrapers::Scraper
           url: "http://software-carpentry.org/",
           image_url: "http://software-carpentry.org/img/software-carpentry-banner.png",
           description: "The Software Carpentry Foundation is a non-profit organization whose members teach researchers basic software skills.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION]
+          content_provider_type: :organisation
         }))
 
     git_setup

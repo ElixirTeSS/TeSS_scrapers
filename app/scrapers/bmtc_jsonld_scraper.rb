@@ -19,8 +19,8 @@ class BtmcJsonldScraper < Tess::Scrapers::Scraper
           url: "http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/index.aspx",
           image_url: "",
           description: "Providing training to empower the next generation of metabolomics researchers. The Birmingham Metabolomics Training Centre will provide training to the metabolomics community in both analytical and computational methods. The training centre will partner with both the Phenome Centre Birmingham and the NERC Biomolecular Analysis Facility to provide vocational training courses in clinical and environmental metabolomics. A combination of both face-to-face and online courses will be provided.The training centre is directed by Professor Mark Viant, Dr Warwick Dunn, Dr Ralf Weber and Dr Catherine Winder.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION],
-          node: Tess::API::Node::NODE_NAMES[:UK]
+          content_provider_type: :organisation,
+          node_name: :GB
         }))
 
     get_urls(config[:root_url] + config[:materials_path]).each do |url|

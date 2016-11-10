@@ -18,7 +18,7 @@ class SoftwareCarpentryEventsScraper < Tess::Scrapers::Scraper
           url: "http://software-carpentry.org/",
           image_url: "http://software-carpentry.org/img/software-carpentry-banner.png",
           description: "The Software Carpentry Foundation is a non-profit organization whose members teach researchers basic software skills.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION]
+          content_provider_type: :organisation
         }))
 
     file = open_url(config[:root_url] + config[:ical_path])
@@ -42,7 +42,7 @@ class SoftwareCarpentryEventsScraper < Tess::Scrapers::Scraper
                 end: event.dtend,
                 description: "Find out more at #{description}",
                 organizer: 'Software Carpentry',
-                event_types: [Tess::API::Event::EVENT_TYPE[:workshops_and_courses]],
+                event_types: [:workshops_and_courses],
                 latitude: event.geo.first,
                 longitude: event.geo.last
               }))

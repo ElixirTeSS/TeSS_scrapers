@@ -17,8 +17,8 @@ class DenbiScraper < Tess::Scrapers::Scraper
           url: "https://www.denbi.de", #url
           image_url: "http://www.openms.de/wp-content/uploads/2016/06/deNBI_Logo_rgb.jpg", #logo
           description: "The 'German Network for Bioinformatics Infrastructure – de.NBI' is a national infrastructure supported by the Federal Ministry of Education and Research providing comprehensive, high-quality bioinformatics services to users in life sciences research and biomedicine. The partners organize training events, courses and summer schools on tools, standards and compute services provided by de.NBI to assist researchers to more effectively exploit their data.", #description
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION],
-          node: 'Germany'
+          content_provider_type: :organisation,
+          node_name: 'Germany'
         }))
 
     doc = Nokogiri::HTML(open_url(config[:root_url] + config[:index_page]))

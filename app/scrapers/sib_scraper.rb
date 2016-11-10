@@ -15,8 +15,8 @@ class SibScraper < Tess::Scrapers::Scraper
           url: "http://edu.isb-sib.ch/",
           image_url: "http://bcf.isb-sib.ch/img/sib.png",
           description: "The SIB Swiss Institute of Bioinformatics is an academic, non-profit foundation recognised of public utility and established in 1998. SIB coordinates research and education in bioinformatics throughout Switzerland and provides high quality bioinformatics services to the national and international research community.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION],
-          node: Tess::API::Node::NODE_NAMES[:CH]
+          content_provider_type: :organisation,
+          node_name: :CH
         }))
 
 

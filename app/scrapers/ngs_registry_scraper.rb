@@ -25,8 +25,8 @@ class NgsRegistryScraper < Tess::Scrapers::Scraper
           url: "https://microasp.upsc.se/ngs_trainers/Materials/wikis/home",
           image_url: "",
           description: "GitLab repository and its Wiki companion containing a collection of training materials for teaching next generation sequencing data analysis.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:PROJECT],
-          node: Tess::API::Node::NODE_NAMES[:GB]
+          content_provider_type: :project,
+          node_name: :GB
         }))
 
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)

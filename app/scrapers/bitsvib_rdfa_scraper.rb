@@ -18,8 +18,8 @@ class BitsvibRdfaScraper < Tess::Scrapers::Scraper
           url: "https://www.bits.vib.be/",
           image_url: "http://www.vib.be/VIBMediaLibrary/Logos/Service_facilities/BITS_website.jpg",
           description: "Provider of Bioinformatics and software training, plus informatics services and resource management support.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION],
-          node: Tess::API::Node::NODE_NAMES[:BE]
+          content_provider_type: :organisation,
+          node_name: :BE
         }))
 
     get_urls(config[:root_url] + config[:materials_path]).each do |url|

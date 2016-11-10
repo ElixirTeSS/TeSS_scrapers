@@ -19,7 +19,7 @@ class GobletRdfaScraper < Tess::Scrapers::Scraper
           url: "http://www.mygoblet.org",
           image_url: "http://www.mygoblet.org/sites/default/files/logo_goblet_trans.png",
           description: "GOBLET, the Global Organisation for Bioinformatics Learning, Education and Training, is a legally registered foundation providing a global, sustainable support and networking structure for bioinformatics educators/trainers and students/trainees.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:PORTAL]
+          content_provider_type: :portal
         }))
 
     get_urls(config[:root_url] + config[:materials_path]).each do |url|

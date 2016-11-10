@@ -20,7 +20,7 @@ class ElixirEventsScraper < Tess::Scrapers::Scraper
           description: "Building a sustainable European infrastructure for biological information, supporting life science research and its translation to medicine, agriculture, bioindustries and society.
 ELIXIR unites Europe’s leading life science organisations in managing and safeguarding the massive amounts of data being generated every day by publicly funded research. It is a pan-European research infrastructure for biological information.
 ELIXIR provides the facilities necessary for life science researchers - from bench biologists to cheminformaticians - to make the most of our rapidly growing store of information about living systems, which is the foundation on which our understanding of life is built.", #description
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION]
+          content_provider_type: :organisation
         }))
 
     events = {}
@@ -70,7 +70,7 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
             url: config[:root_url] + path,
             start: data['start_date'],
             end: data['end_date'],
-            event_types: [Tess::API::Event::EVENT_TYPE[:workshops_and_courses]]
+            event_types: [:workshops_and_courses]
           })
       if google_place
         event.venue = google_place.name

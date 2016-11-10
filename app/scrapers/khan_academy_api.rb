@@ -18,7 +18,7 @@ class KhanAcademyApiScraper < Tess::Scrapers::Scraper
           url: "https://www.khanacademy.org/math/probability",
           image_url: "https://fastly.kastatic.org/images/khan-logo-vertical-transparent.png",
           description: "Can I pick a red frog out of a bag that only contains marbles? Is it smart to buy a lottery ticket? Even if we are unsure about whether something will happen, can we start to be mathematical about the \"chances\" of an event (essentially realizing that some things are more likely than others). These tutorials will introduce us to the tools that allow us to think about random events.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:PORTAL]
+          content_provider_type: :portal
         }))
 
     config[:broad_topics].each do |topic|

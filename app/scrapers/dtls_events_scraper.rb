@@ -17,8 +17,8 @@ class DtlsEventsScraper < Tess::Scrapers::Scraper
           url: "http://www.dtls.nl", #url
           image_url: "http://www.dtls.nl/wp-content/themes/dtls/images/logo.png", #logo
           description: "DTL focuses on the great potential of high-end technologies in pioneering life science research, and on the skills and solutions to professionally use computers to deal with the ever-growing data streams in research.", #description
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:ORGANISATION],
-          node: Tess::API::Node::NODE_NAMES[:NL]
+          content_provider_type: :organisation,
+          node_name: :NL
         }))
 
     docs = Nokogiri::XML(open_url(config[:root_url] + config[:feed_path])).xpath('//item')
@@ -29,7 +29,7 @@ class DtlsEventsScraper < Tess::Scrapers::Scraper
     docs.each do |event_item|
       event = Tess::API::Event.new({ content_provider: cp })
       event_item.element_children.each do |element|
-        event.event_types = [Tess::API::Event::EVENT_TYPE[:workshops_and_courses]]
+        event.event_types = [:workshops_and_courses]
         case element.name
           when 'title'
             event.title = element.text

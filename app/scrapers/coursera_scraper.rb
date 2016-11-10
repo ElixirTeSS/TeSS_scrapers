@@ -19,7 +19,7 @@ class CourseraScraper < Tess::Scrapers::Scraper
           url: "http://www.coursera.org",
           image_url: "http://logonoid.com/images/coursera-logo.png",
           description: "Coursera is an education platform that partners with top universities and organizations worldwide, to offer courses online for anyone to take, for free.",
-          content_provider_type: Tess::API::ContentProvider::PROVIDER_TYPE[:PORTAL]
+          content_provider_type: :portal
         }))
 
     course_ids = parse_data("/?q=search&query=#{config[:search_term]}&limit=10")['elements'].collect {|x| x['id']}
