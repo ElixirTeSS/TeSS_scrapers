@@ -38,7 +38,7 @@ module Tess
           persist
         end
 
-        log(output_file ? File.open(output_file) : STDOUT)
+        log(output_file ? File.open(output_file, 'a') : STDOUT)
 
         puts 'Done'
       end
