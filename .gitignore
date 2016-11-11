@@ -6,3 +6,5 @@ iann
 parsed_goblet.json
 html/goblet_pages
 tmp
+/log/*
+!/log/.keep
