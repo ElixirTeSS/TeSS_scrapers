@@ -29,6 +29,7 @@ module Tess
 
       # Run the scraper
       def run
+        @start_time = Time.now
         puts "[Running #{config[:name]}]"
         puts 'Scraping...'
         scrape
@@ -109,10 +110,19 @@ module Tess
       end
 
       def log(output)
-        output.puts(verbose ? 'Resources scraped:' : 'Errors:')
+        output.puts '=' * 40
+        output.puts
+        output.puts "#{config[:name]}"
+        output.puts "Finished at: #{Time.now} (#{(Time.now - @start_time).round(2)} seconds)"
+        if verbose
+          output.puts("\nResources scraped:")
+        elsif scraped.values.flatten.select(&:errors).any?
+          output.puts("\nErrors:")
+        end
         scraped.each do |type, resources|
           resources = verbose ? resources : resources.select(&:errors)
           if resources.any?
+            output.puts
             output.puts '-' * 40
             output.puts type.to_s
             resources.each do |resource|
@@ -125,12 +135,9 @@ module Tess
                 output.puts "  ##### ERRORS #####"
                 output.puts "  #{resource.errors.inspect}"
               end
-              output.puts
             end
           end
         end
-        output.puts
-        output.puts '=' * 40
         output.puts
         output.puts 'Summary:'
         output.puts
