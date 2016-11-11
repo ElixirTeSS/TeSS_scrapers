@@ -2,11 +2,11 @@ require 'nokogiri'
 require 'linkeddata'
 require 'geocoder'
 
-class BtmcJsonldScraper < Tess::Scrapers::Scraper
+class BmtcJsonldScraper < Tess::Scrapers::Scraper
 
   def self.config
     {
-        name: 'BTMC JSON-LD Scraper',
+        name: 'BMTC JSON-LD Scraper',
         offline_url_mapping: {},
         root_url: 'http://www.birmingham.ac.uk',
         materials_path: '/facilities/metabolomics-training-centre/index.aspx'
