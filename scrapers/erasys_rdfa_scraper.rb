@@ -50,7 +50,7 @@ while materials.count > 0
               remote_updated_date: Time.now,
               remote_created_date: material['https://schema.org/dateCreated'],
               content_provider_id: cp['id'],
-              scientific_topic: trim_characters(material['https://schema.org/keywords']),
+              scientific_topic_names: trim_characters(material['https://schema.org/keywords']),
               keywords: trim_characters(material['https://schema.org/keywords']),
               authors: "#{trim_characters(material['https://schema.org/author'].values) unless material['https://schema.org/author'].nil?}"
          })
