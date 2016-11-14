@@ -25,7 +25,6 @@ class IannEventsScraper < Tess::Scrapers::Scraper
     docs = Nokogiri::HTML(open_url(config[:root_url] + config[:path])).xpath('//doc')
 
     events = []
-
     docs.each do |event_item|
       event = Tess::API::Event.new
       event_item.children.each do |element|
@@ -51,15 +50,20 @@ class IannEventsScraper < Tess::Scrapers::Scraper
                 event.event_types = [:meetings_and_conferences]
               end
             when ['field']
-              event.scientific_topic_names = IANN_MAPPING[element.children.collect{|children| children.text}]
+              topics = []
+              element.children.each do |topic|
+                topics << IANN_MAPPING[topic.text]
+              end
+              event.scientific_topic_names = topics
             when ['provider']
               event.organizer = element.text
+            when ['description']
+              event.description = element.text
             else
               event.send("#{element.values.first}=", element.text)
           end
         end
       end
-
       events << event
     end
 
