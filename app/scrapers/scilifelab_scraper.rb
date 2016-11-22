@@ -68,7 +68,7 @@ class ScilifelabScraper < Tess::Scrapers::Scraper
       location = parts[1].split(/ \| /)[1]
       type = parts[1].split(/ \| /)[0]
       start_date = dates[0]
-      end_date = dates[0]
+      end_date = dates[1]
 
       events[url] = {}
       events[url]['title'] = title
