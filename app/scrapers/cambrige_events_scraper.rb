@@ -65,10 +65,16 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
     if text.nil? or text.empty?
       return nil
     else
-      # split list, remove weird 3 apostrophe strings, remove extra note text (split * bit), chuck away the empties
-      parsed_text = text.split(',').collect{|x| x.gsub("\'\'\'", "").split('*').first}.reject{|x| x.empty?}
-      # Remove URLs in target audience
-      parsed_text
+      # split list, remove weird 3 apostrophe strings, separate out extra note text
+      parsed_text = text.split(',').collect{|x| x.gsub("\'\'\'", "").split('*')}
+      # chuck away any empty strings
+      parsed_text = parsed_text.flatten.reject{|x| x.empty?}
+      # Some sentences need getting rid of like 'Further details regarding the charging policy are available here"'
+      parsed_text = parsed_text.reject{|x| x.start_with?('Further details')}
+      # Remove URLs - so things like this:
+      #  [http://www.training.cam.ac.uk/bioinformatics/info/eligibility Affiliated Institutions]
+      # Will read like this 
+      #  Affiliated Institutions
       return parsed_text.collect do |x|
         if x.match(/\[(http[^\[]+)\s([^\[]+)\]/)
           x.gsub!(/\[(http[^\[]+)\s([^\[]+)\]/, '\2')
@@ -76,6 +82,7 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
           x
         end
       end
+
     end
   end
 
