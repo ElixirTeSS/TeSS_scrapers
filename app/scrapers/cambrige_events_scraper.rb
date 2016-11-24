@@ -74,7 +74,7 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
           x.gsub!(/\[(http[^\[]+)\s([^\[]+)\]/, '\2')
         else
           x
-        end
+        end.strip
       end
     end
   end
