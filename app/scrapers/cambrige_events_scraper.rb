@@ -6,7 +6,7 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
     {
         name: 'Cambridge Events Scraper',
         offline_url_mapping: {},
-        root_url: 'http://csx.cam.ac.uk',
+        root_url: 'http://training.csx.cam.ac.uk/bioinformatics/event/',
         json_api_url: 'http://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions&format=json',
         training_base_url: 'http://training.csx.cam.ac.uk/bioinformatics/event/'
     }
@@ -65,7 +65,7 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
     if text.nil? or text.empty?
       return nil
     else
-      # split list, remove weird 3 apostrophe strings, remove extra note text, chuck away the empties
+      # split list, remove weird 3 apostrophe strings, remove extra note text (split * bit), chuck away the empties
       parsed_text = text.split(',').collect{|x| x.gsub("\'\'\'", "").split('*').first}.reject{|x| x.empty?}
       # Remove URLs in target audience
       parsed_text
