@@ -13,7 +13,7 @@ module Tess
           if locality
             params[:city], params[:country] = locality.split(',')
             params[:city].strip!
-            params[:country].strip!
+            params[:country].strip! if params[:country]
           end
 
           duration = params.delete(:duration)
@@ -28,7 +28,7 @@ module Tess
       private
 
       def self.singleton_attributes
-        [:title, :description, :start, :end, :venue, :postcode, :locality, :organizer, :duration, :url]
+        [:title, :description, :start, :end, :venue, :postcode, :locality, :organizer, :duration, :url, :country]
       end
 
       def self.array_attributes
@@ -50,8 +50,14 @@ module Tess
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.organizer, :end, optional: true)
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.duration, :duration, optional: true)
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.url, :url, optional: true)
-
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.location, :location, optional: true)
+          #Some locations have proper address objects (e.g. EBI)
+          pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.address, :address, optional: true)
+          pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.location, :location, optional: true)
+          pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.postalCode, :postcode, optional: true)
+          pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressCountry, :country, optional: true)
+          pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressLocality, :locality, optional: true)
+          #Some locations don't have the intermediate address object (e.g. BMTC)
           pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.name, :venue, optional: true)
           pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.postalCode, :postcode, optional: true)
           pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.addressLocality, :locality, optional: true)
