@@ -12,7 +12,7 @@ module Tess
           locality = params.delete(:locality)
           if locality
             params[:city], params[:country] = locality.split(',')
-            params[:city].strip!
+            params[:city].strip! if params[:city]
             params[:country].strip! if params[:country]
           end
 
@@ -28,7 +28,8 @@ module Tess
       private
 
       def self.singleton_attributes
-        [:title, :description, :start, :end, :venue, :postcode, :locality, :organizer, :duration, :url, :country]
+        [:title, :description, :start, :end, :venue, :postcode, :locality, 
+          :organizer, :duration, :url, :country, :latitude, :longitude]
       end
 
       def self.array_attributes
@@ -51,13 +52,18 @@ module Tess
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.duration, :duration, optional: true)
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.url, :url, optional: true)
           pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.location, :location, optional: true)
-          #Some locations have proper address objects (e.g. EBI)
+          #Location Geoocordinates
+          pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.geo, :geo, optional: true)
+          pattern RDF::Query::Pattern.new(:geo, RDF::Vocab::SCHEMA.longitude, :longitude, optional: true)
+          pattern RDF::Query::Pattern.new(:geo, RDF::Vocab::SCHEMA.latitude, :latitude, optional: true)
+          #Location address
           pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.address, :address, optional: true)
           pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.location, :location, optional: true)
           pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.postalCode, :postcode, optional: true)
           pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressCountry, :country, optional: true)
           pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressLocality, :locality, optional: true)
-          #Some locations don't have the intermediate address object (e.g. BMTC)
+          
+          # Other location info
           pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.name, :venue, optional: true)
           pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.postalCode, :postcode, optional: true)
           pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.addressLocality, :locality, optional: true)
