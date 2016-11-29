@@ -11,7 +11,8 @@ scrapers = [
    CscEventsScraper,
    DataCarpentryScraper,
    DtlsEventsScraper,
-   # EbiScraper, # Broken
+   # EbiScraper, # Broken,
+   EbiJsonScraper,
    ElixirEventsScraper,
    FuturelearnRdfaScraper,
    Genome3dScraper,
@@ -20,7 +21,7 @@ scrapers = [
    KhanAcademyApiScraper,
    LegacySoftwareCarpentryScraper,
    NgsRegistryScraper,
-   SibScraper,
+   # SibScraper,
    SoftwareCarpentryEventsScraper,
    IannEventsScraper,
    CourseraScraper,
