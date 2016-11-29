@@ -27,6 +27,7 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
     reader = RDF::Reader.for(:rdfa).new(open_url(config[:root_url] + config[:materials_path]))
     rdfa = RDF::Graph.new << reader
     materials = Tess::Scrapers::RdfaExtractor.parse_rdfa(rdfa, 'CreativeWork')
+ 
 
     # TODO: Use RDFMaterialExtractor here
     materials.each do |data|
@@ -36,7 +37,7 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
       authors.delete('en')
       material = Tess::API::Material.new(
           { title: data['schema:name'],
-            url: config[:root_url] + data['@id'],
+            url: data['@id'],
             short_description: data['schema:about'],
             remote_updated_date: Time.now,
             remote_created_date: data['schema:dateCreated'],
