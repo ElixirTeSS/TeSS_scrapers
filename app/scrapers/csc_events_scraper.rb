@@ -14,7 +14,7 @@ class CscEventsScraper < Tess::Scrapers::Scraper
   def scrape
     events = {}
 
-    doc = Nokogiri::HTML(open_url(config[:root_url]))
+    doc = Nokogiri::HTML(open(config[:root_url]).read)
 
     doc.css('div.csc-article').each do |article|
       categories = article.search('.koulutus-category').collect {|x| x.text.strip}.reject(&:empty?)
@@ -26,7 +26,7 @@ class CscEventsScraper < Tess::Scrapers::Scraper
       events[link] = {'title' => title,
                       'description' => description,
                       'event_types' => categories,
-                      'keywords' => categories}
+                      'keywords' => categories} if for_tess?(categories)
     end
 
     cp = add_content_provider(Tess::API::ContentProvider.new(
@@ -41,44 +41,55 @@ class CscEventsScraper < Tess::Scrapers::Scraper
         }))
 
     events.each do |url, event_info|
-      lat,lon = nil # Can't seem to get these out of the Google maps URL
-      start_date, end_date, venue = nil
+        lat,lon = nil # Can't seem to get these out of the Google maps URL
+        start_date, end_date, venue = nil
 
-      newpage = Nokogiri::HTML(open_url(url))
+        newpage = Nokogiri::HTML(open_url(url))
 
-      newpage.search('table > tr').each do |row|
-        fieldname = row.css('td')[0].text.strip
-        if fieldname == 'Date:'
-          datefield = row.css('td')[1].text.strip
-          start_date,end_date = datefield.split(/ - /)
-        elsif fieldname == 'Location details:'
-          venue = row.css('td')[1].text.strip
-          # Strip out certain long strings we don't need in the venue.
-          venue.gsub!(/^The event is organised at the /,"")
-          venue.gsub!(/^The event is organised at /,"")
-          venue.gsub!(/ The best way to reach us is by public transportation; more detailed travel tips(\)?) are available.$/,"")
+        newpage.search('table > tr').each do |row|
+          fieldname = row.css('td')[0].text.strip
+          if fieldname == 'Date:'
+            datefield = row.css('td')[1].text.strip
+            start_date,end_date = datefield.split(/ - /)
+          elsif fieldname == 'Location details:'
+            venue = row.css('td')[1].text.strip
+            # Strip out certain long strings we don't need in the venue.
+            venue.gsub!(/^The event is organised at the /,"")
+            venue.gsub!(/^The event is organised at /,"")
+            venue.gsub!(/ The best way to reach us is by public transportation; more detailed travel tips(\)?) are available.$/,"")
+          end
         end
-      end
 
-      loc = Geocoder.search(venue)
-      unless loc.empty?
-        lat = loc[0].data['geometry']['location']['lat']
-        lon = loc[0].data['geometry']['location']['lng']
-      end
-
-      add_event(Tess::API::Event.new(
-          { content_provider: cp,
-            title: event_info['title'],
-            url: url,
-            description: event_info['description'],
-            event_types: event_info['event_types'],
-            start: start_date,
-            end: end_date,
-            venue: venue,
-            latitude: lat,
-            longitude: lon
-          }))
+        loc = Geocoder.search(venue)
+        unless loc.empty?
+          lat = loc[0].data['geometry']['location']['lat']
+          lon = loc[0].data['geometry']['location']['lng']
+        end
+        
+        add_event(Tess::API::Event.new(
+            { content_provider: cp,
+              title: event_info['title'],
+              url: url,
+              description: event_info['description'],
+              event_types: get_event_type(event_info['event_types']),
+              start: start_date,
+              end: end_date,
+              venue: venue,
+              latitude: lat,
+              longitude: lon
+            }))
     end
   end
 
+  def for_tess? keywords
+    return keywords.select{|x| x.include? "tess"}.any?
+  end
+
+  def get_event_type text
+    type = []
+    if text.include?('Courses and workshops')
+      type << :workshops_and_courses
+    end
+    return type
+  end
 end
