@@ -7,7 +7,7 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
         name: 'Cambridge Events Scraper',
         offline_url_mapping: {},
         root_url: 'http://training.csx.cam.ac.uk/bioinformatics/event/',
-        json_api_url: 'http://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions&format=json',
+        json_api_url: 'http://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions,events.topics&format=json',
         training_base_url: 'http://training.csx.cam.ac.uk/bioinformatics/event/'
     }
   end
@@ -42,6 +42,7 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
                     start: Time.at(event['startDate'].to_f/1000), #Remove milliseconds before parsing
                     end: Time.at(event['endDate'].to_f/1000),
                     target_audience: parse_audience(event['targetAudience']),
+                    scientific_topic_names: scientific_topics_for(event['topics']),
                     event_types: [:workshops_and_courses],
                     organizer: "University of Cambridge",
                     host_institutions: ['University of Cambridge Bioinformatics Training'],
@@ -52,7 +53,7 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
                     latitude: 52.2019652,
                     longitude: 0.1224858
                   })
-              )
+)
             end
         end
       end
@@ -83,6 +84,19 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
         end.strip
       end
 
+    end
+  end
+
+  # Scientific topics are in <em data-iri='topic_0001'>Bioinformatics,</em><em data-i... etc form
+  # Convert to hash to get value, parse as HTML and send extract the text. 
+  def scientific_topics_for text
+    a = text.collect{|x| x.to_hash['value'] unless x.nil?}
+    parsed_topic = Nokogiri::HTML.parse(a.first) unless a.first.nil?
+    topics = parsed_topic.search('em') unless parsed_topic.nil?
+    if topics.nil?
+      return []
+    else
+      return topics.collect{|x| x.text}
     end
   end
 
