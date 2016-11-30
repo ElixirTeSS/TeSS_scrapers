@@ -11,7 +11,7 @@ scrapers = [
    CscEventsScraper,
    DataCarpentryScraper,
    DtlsEventsScraper,
-   # EbiScraper, # Broken,
+  # EbiScraper, # Broken old materials one
    EbiJsonScraper,
    ElixirEventsScraper,
    FuturelearnRdfaScraper,
@@ -21,9 +21,9 @@ scrapers = [
    KhanAcademyApiScraper,
    LegacySoftwareCarpentryScraper,
    NgsRegistryScraper,
-   # SibScraper,
+# SibScraper, #Not working - SIB site being recreated
    SoftwareCarpentryEventsScraper,
-   IannEventsScraper,
+# IannEventsScraper,
    CourseraScraper,
    ErasysRdfaScraper,
    RssScraper,
