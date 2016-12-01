@@ -10,6 +10,7 @@ scrapers = [
    CambridgeEventsScraper,
    CscEventsScraper,
    DataCarpentryScraper,
+   DenbiScraper,
    DtlsEventsScraper,
   # EbiScraper, # Broken old materials one
    EbiJsonScraper,
