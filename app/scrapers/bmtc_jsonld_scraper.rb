@@ -24,21 +24,24 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
         }))
 
     get_urls(config[:root_url] + config[:materials_path]).each do |url|
-      doc = Nokogiri::HTML(open_url(url))
-      events = []
-      doc.search('//script[@type="application/ld+json"]').each do |element|
-        begin
-          events += Tess::Scrapers::RdfEventExtractor.new(element.text, :jsonld).extract
-        rescue MultiJson::ParseError # Some invalid JSON in one of the script tags
-        end
+      begin
+        doc = Nokogiri::HTML(open(url))
+        events = []
+        doc.search('//script[@type="application/ld+json"]').each do |element|
+          begin
+            events += Tess::Scrapers::RdfEventExtractor.new(element.text, :jsonld).extract
+          rescue MultiJson::ParseError # Some invalid JSON in one of the script tags
+          end
+        end 
+      rescue OpenURI::HTTPError
       end
-
-      events.each do |event|
-        event.url = url
-        event.content_provider = cp
-        event.latitude, event.longitude = get_location(event.postcode)
-
-        add_event(event)
+      if events
+        events.each do |event|
+          event.url = url
+          event.content_provider = cp
+          event.latitude, event.longitude = get_location(event.postcode)
+          add_event(event)
+        end
       end
     end
 
@@ -47,9 +50,9 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
   private
 
   def get_urls(index_page)
-    doc = Nokogiri::HTML(open_url(index_page))
+    doc = Nokogiri::HTML(open(index_page))
     links_div = doc.search('//*[@id="form1"]/main/div/div/div/div[1]/ul[1]')
-    links_div.search('a').collect{|x| config[:root_url] + x['href']}
+    return links_div.search('a').collect{|x| config[:root_url] + x['href']}
   end
 
   def get_location(venue)
