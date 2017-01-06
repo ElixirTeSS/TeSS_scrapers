@@ -18,16 +18,20 @@ module Tess
         graph << @reader
 
         graph.query(self.class.type_query).map do |res|
-          individual = graph.query(self.class.individual_query(res.individual))
-          bindings = individual.bindings
           params = {}
 
-          self.class.singleton_attributes.each do |attr|
-            params[attr] = parse_values(bindings[attr]).first
-          end
+          self.class.individual_queries(res.individual).each do |query|
+            bindings = graph.query(query).bindings
 
-          self.class.array_attributes.each do |attr|
-            params[attr] = parse_values(bindings[attr])
+            self.class.singleton_attributes.each do |attr|
+              value = parse_values(bindings[attr]).first
+              params[attr] = value unless value.blank?
+            end
+
+            self.class.array_attributes.each do |attr|
+              params[attr] ||= []
+              params[attr] |= parse_values(bindings[attr])
+            end
           end
 
           yield params

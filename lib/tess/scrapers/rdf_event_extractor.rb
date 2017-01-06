@@ -42,34 +42,42 @@ module Tess
         end
       end
 
-      def self.individual_query(event_uri)
-        RDF::Query.new do
-          pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.name, :title, optional: true)
-          pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.description, :description, optional: true)
-          pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.startDate, :start, optional: true)
-          pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.endDate, :end, optional: true)
-          pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.organizer, :end, optional: true)
-          pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.duration, :duration, optional: true)
-          pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.url, :url, optional: true)
-          pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.location, :location, optional: true)
-          #Location Geoocordinates
-          pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.geo, :geo, optional: true)
-          pattern RDF::Query::Pattern.new(:geo, RDF::Vocab::SCHEMA.longitude, :longitude, optional: true)
-          pattern RDF::Query::Pattern.new(:geo, RDF::Vocab::SCHEMA.latitude, :latitude, optional: true)
-          #Location address
-          pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.address, :address, optional: true)
-          pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.location, :location, optional: true)
-          pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.postalCode, :postcode, optional: true)
-          pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressCountry, :country, optional: true)
-          pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressLocality, :locality, optional: true)
-          
-          # Other location info
-          pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.name, :venue, optional: true)
-          pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.postalCode, :postcode, optional: true)
-          pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.addressLocality, :locality, optional: true)
-        end
+      def self.individual_queries(event_uri)
+        [
+            RDF::Query.new do
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.name, :title, optional: true)
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.description, :description, optional: true)
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.startDate, :start, optional: true)
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.endDate, :end, optional: true)
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.organizer, :end, optional: true)
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.duration, :duration, optional: true)
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.url, :url, optional: true)
+            end,
+            # Other location info
+            RDF::Query.new do
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.location, :location)
+              pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.name, :venue, optional: true)
+              pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.postalCode, :postcode, optional: true)
+              pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.addressLocality, :locality, optional: true)
+            end,
+            #Location Geoocordinates
+            RDF::Query.new do
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.location, :location)
+              pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.geo, :geo)
+              pattern RDF::Query::Pattern.new(:geo, RDF::Vocab::SCHEMA.longitude, :longitude, optional: true)
+              pattern RDF::Query::Pattern.new(:geo, RDF::Vocab::SCHEMA.latitude, :latitude, optional: true)
+            end,
+            #Location address
+            RDF::Query.new do
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.location, :location)
+              pattern RDF::Query::Pattern.new(:location, RDF::Vocab::SCHEMA.address, :address)
+              pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.location, :location, optional: true)
+              pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.postalCode, :postcode, optional: true)
+              pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressCountry, :country, optional: true)
+              pattern RDF::Query::Pattern.new(:address, RDF::Vocab::SCHEMA.addressLocality, :locality, optional: true)
+            end
+        ]
       end
-
     end
   end
 end
