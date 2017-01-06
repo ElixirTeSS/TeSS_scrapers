@@ -36,7 +36,7 @@ class ErasysRdfaScraper < Tess::Scrapers::Scraper
               content_provider: cp,
               scientific_topic_names: trim_characters(material['https://schema.org/keywords']),
               keywords: trim_characters(material['https://schema.org/keywords']),
-              authors: "#{trim_characters(material['https://schema.org/author'].values) unless material['https://schema.org/author'].nil?}"
+              authors: (trim_characters(material['https://schema.org/author'].values) unless material['https://schema.org/author'].blank?)
             }))
       end
       materials = get_materials_for_page(page = page + 5)
