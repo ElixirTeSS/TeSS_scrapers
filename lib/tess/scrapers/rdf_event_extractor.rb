@@ -49,7 +49,7 @@ module Tess
               pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.description, :description, optional: true)
               pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.startDate, :start, optional: true)
               pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.endDate, :end, optional: true)
-              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.organizer, :end, optional: true)
+              pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.organizer, :organizer, optional: true)
               pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.duration, :duration, optional: true)
               pattern RDF::Query::Pattern.new(event_uri, RDF::Vocab::SCHEMA.url, :url, optional: true)
             end,
