@@ -41,7 +41,12 @@ begin
 
   scrapers.each do |scraper_class|
     log_file.puts "Running #{scraper_class}"
-    scraper_class.new(options).run
+    begin
+      scraper_class.new(options).run
+    rescue => e
+      log_file.puts e.message
+      log_file.puts e.backtrace.join("\n")
+    end
   end
 
   log_file.puts 'Done'
