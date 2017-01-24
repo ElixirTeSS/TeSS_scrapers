@@ -40,7 +40,7 @@ class PraceEventsScraper < Tess::Scrapers::Scraper
                 start: event.dtstart,
                 end: event.dtend,
                 description: event.description,
-                organizer: 'Prace',
+                organizer: '',
                 event_types: [:workshops_and_courses]                
               }))
       end
