@@ -11,7 +11,8 @@ module Tess
           # Need to check if this is a good solution...
           locality = params.delete(:locality)
           if locality
-            params[:city], params[:country] = locality.split(',')
+            params[:city], locality_country = locality.split(',')
+            params[:country] ||= locality_country
             params[:city].strip! if params[:city]
             params[:country].strip! if params[:country]
           end
