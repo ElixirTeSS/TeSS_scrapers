@@ -1,12 +1,11 @@
 require 'nokogiri'
 
-class BitsvibEventsScraper < Tess::Scrapers::Scraper
+class BitsvibEventsJsonldScraper < Tess::Scrapers::Scraper
 
   def self.config
     {
         name: 'VIB Bioinformatics Training and Services Events Scraper',
-        root_url: 'http://www.vib.be/en/training/research-training/courses/Pages/default.aspx',
-        categories: %w{Bioinformatics, Skills, Science, Coaching}
+        root_url: 'http://dev.bits.vib.be/eulife/all_events.json'
     }
   end
 
@@ -20,21 +19,14 @@ class BitsvibEventsScraper < Tess::Scrapers::Scraper
           node_name: :BE
         }))
 
-    config[:categories].each do |cat|
-      url = "#{config[:root_url]}?VIBCourseCategory=#{cat}"
-      puts "Opening: #{url}"
-      doc = Nokogiri::HTML(open(url))
-      process_html(doc)
+    parsed_json = JSON.load(open(config[:root_url]))
+    json_ld = StringIO.new(parsed_json['list'].to_json)
+
+    events = Tess::Scrapers::RdfEventExtractor.new(json_ld, :jsonld).extract
+
+    events.each do |event|
+      event.content_provider = cp
+      add_event(event)
     end
   end
-
-  private
-
-  def process_html(doc)
-    # TODO: Come up with a means to process this which actually works
-    doc.search('table > tr').each do |row|
-      puts "ROW: #{row}"
-    end
-  end
-
 end
