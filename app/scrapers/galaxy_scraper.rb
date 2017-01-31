@@ -5,10 +5,20 @@ class GalaxyScraper < Tess::Scrapers::Scraper
         name: 'Galaxy Scraper',
         offline_url_mapping: {},
         root_url: 'https://microasp.upsc.se/ngs_trainers/Materials/tree/master',
-        repo_url: 'https://github.com/galaxyproject/training-material/',
+        git_endpoint: 'https://github.com/galaxyproject/training-material.git',
         folder_path: 'metadata/'
     }
   end
+
+  def git_setup
+    git_path = cache_file_path('git', true)
+    unless File.exists?(git_path)
+      puts "Cloning git repo..."
+      %x{git clone #{config[:git_endpoint]} #{git_path}}
+    end
+    %x{cd #{git_path} && git pull} unless offline
+  end
+
 
   def scrape
     cp = add_content_provider(Tess::API::ContentProvider.new(
@@ -20,8 +30,19 @@ class GalaxyScraper < Tess::Scrapers::Scraper
           node_name: :FR
         }))
 
-      material = Tess::API::Event.new
-      add_material(material)
-
+      git_setup
+      files = Dir["#{cache_file_path('git')}/metadata/*.yml"]
+      files.each do |file|
+          yaml = YAML.load_file(file)
+          yaml['material'].each do |material|
+            material = Tess::API::Material.new
+            if material['name']
+                url = 'http://galaxyproject.github.io/training-material/' + yaml['name'] + '/' + material['type'] + 's/' + material['name']
+                puts url
+            end
+            add_material(material)
+          end
+      end
+      #material = Tess::API::Event.new
   end
 end
