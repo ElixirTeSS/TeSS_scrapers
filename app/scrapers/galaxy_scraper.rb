@@ -55,8 +55,8 @@ class GalaxyScraper < Tess::Scrapers::Scraper
           new_material.doi = material['zenodo_link'] unless material['zenodo_link'].nil? || material['zenodo_link'].empty?
           new_material.authors = yaml['maintainers'].collect{|x| x['name']}
           externals = []
-          externals << {title: 'Docker image', url: "https://github.com/#{yaml['docker_image']}"} unless yaml['docker_image'].nil? || yaml['docker_image'].empty?
-          externals << {title: 'Datasets', url: material['zenodo_link']} unless material['zenodo_link'].nil? || material['zenodo_link'].empty?
+          externals << {title: "#{yaml['name']} Docker image", url: "https://github.com/#{yaml['docker_image']}"} unless yaml['docker_image'].nil? || yaml['docker_image'].empty?
+          externals << {title: "#{yaml['name']} Datasets", url: material['zenodo_link']} unless material['zenodo_link'].nil? || material['zenodo_link'].empty?
           new_material.external_resources_attributes = externals
           puts add_material(new_material).inspect
         end
