@@ -17,6 +17,7 @@ scrapers = [
    EbiJsonScraper,
    ElixirEventsScraper,
    FuturelearnRdfaScraper,
+   GalaxyScraper,
    Genome3dScraper,
    GobletRdfaScraper,
    IfbRdfaScraper,
