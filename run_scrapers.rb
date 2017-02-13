@@ -5,7 +5,7 @@ output = 'log/scrapers.out' # Need to logrotate this!
 
 scrapers = [
    BiocompRdfaScraper,
-   #BitsvibEventsJsonldScraper,
+   BitsvibEventsJsonldScraper,
    BitsvibRdfaScraper,
    BmtcJsonldScraper,
    CambridgeEventsScraper,
