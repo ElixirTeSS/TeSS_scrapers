@@ -19,10 +19,8 @@ class BitsvibEventsJsonldScraper < Tess::Scrapers::Scraper
           node_name: :BE
         }))
 
-    parsed_json = JSON.load(open(config[:root_url]))
-    json_ld = StringIO.new(parsed_json['list'].to_json)
-
-    events = Tess::Scrapers::RdfEventExtractor.new(json_ld, :jsonld).extract
+    jsonld = open(config[:root_url]).read
+    events = Tess::Scrapers::RdfEventExtractor.new(jsonld, :jsonld).extract
 
     events.each do |event|
       event.content_provider = cp
