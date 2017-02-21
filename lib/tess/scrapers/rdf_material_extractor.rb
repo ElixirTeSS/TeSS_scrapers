@@ -15,11 +15,11 @@ module Tess
       private
 
       def self.singleton_attributes
-        [:title, :short_description, :remote_created_date]
+        [:title, :short_description, :licence, :remote_created_date]
       end
 
       def self.array_attributes
-        [:scientific_topic_names, :keywords, :authors, :target_audience]
+        [:url, :scientific_topic_names, :keywords, :authors, :target_audience]
       end
 
       def self.type_query
@@ -32,9 +32,12 @@ module Tess
         [
             RDF::Query.new do
               pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.name, :title, optional: true)
+              pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.about, :short_description, optional: true)
               pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.description, :short_description, optional: true)
+              pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.url, :url, optional: true)
               pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::DC.date, :remote_created_date, optional: true)
               pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.keywords, :keywords, optional: true)
+              pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.license, :licence, optional: true)
             end,
             RDF::Query.new do
               pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.genre, :scientific_topics)
