@@ -9,6 +9,7 @@ scrapers = [
    BitsvibRdfaScraper,
    BmtcJsonldScraper,
    CambridgeEventsScraper,
+   CourseraScraper,
    CscEventsScraper,
    DataCarpentryScraper,
    DenbiScraper,
@@ -16,6 +17,8 @@ scrapers = [
   # EbiScraper, # Broken old materials one
    EbiJsonScraper,
    ElixirEventsScraper,
+   ErasysRdfaScraper,
+   FlemishJsonldEventsScraper,
    FuturelearnRdfaScraper,
    GalaxyScraper,
    Genome3dScraper,
@@ -24,14 +27,12 @@ scrapers = [
    KhanAcademyApiScraper,
    LegacySoftwareCarpentryScraper,
    NgsRegistryScraper,
+   PraceEventsScraper,
+   RssScraper,
 # SibScraper, #Not working - SIB site being recreated
    SoftwareCarpentryEventsScraper,
 # IannEventsScraper,
-   CourseraScraper,
-   ErasysRdfaScraper,
-   RssScraper,
-   ScilifelabScraper,
-   PraceEventsScraper
+   ScilifelabScraper
 ]
 
 options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
