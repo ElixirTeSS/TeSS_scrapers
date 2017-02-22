@@ -32,7 +32,6 @@ class FuturelearnRdfaScraper < Tess::Scrapers::Scraper
       event.content_provider = cp
       event.online = true
       event.event_types = [:workshops_and_courses]
-      event.url = config[:root_url] + event.url
       add_event(event)
     end
   end
