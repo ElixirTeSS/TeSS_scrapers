@@ -27,6 +27,7 @@ scrapers = [
    KhanAcademyApiScraper,
    LegacySoftwareCarpentryScraper,
    NgsRegistryScraper,
+   PortugalEventsScraper,
    PraceEventsScraper,
    RssScraper,
 # SibScraper, #Not working - SIB site being recreated
