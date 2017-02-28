@@ -42,8 +42,9 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
   	private
 
   	def parse_description(event, desc)
-  		url = /(https?:\/\/\S+?)(\.?([\s\n]|$))/.match(desc)
-  		desc = desc.sub /(https?:\/\/\S+?)(\.?([\s\n]|$))/, '' 
+
+  		url = /#url: (https?:\/\/\S+?)(\.?([\s\n]|$))/.match(desc)
+  		desc = desc.sub /#url: (https?:\/\/\S+?)(\.?([\s\n]|$))/, '' 
 		tags = /(^|\s)#(\w[\w-]*)(?=\s|$)/.match(event.description)
 		desc = desc.sub /(^|\s)#(\w[\w-]*)(?=\s|$)/, ''
 		if url 
