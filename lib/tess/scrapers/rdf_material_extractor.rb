@@ -15,7 +15,7 @@ module Tess
       private
 
       def self.singleton_attributes
-        [:title, :short_description, :licence, :remote_created_date]
+        [:url, :title, :short_description, :licence, :remote_created_date]
       end
 
       def self.array_attributes
@@ -37,6 +37,7 @@ module Tess
               pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.url, :url, optional: true)
               pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::DC.date, :remote_created_date, optional: true)
               pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.keywords, :keywords, optional: true)
+              pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.url, :url, optional: true)
               pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.license, :licence, optional: true)
             end,
             RDF::Query.new do

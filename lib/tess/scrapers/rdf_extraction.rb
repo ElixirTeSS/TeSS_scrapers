@@ -20,6 +20,8 @@ module Tess
         graph.query(self.class.type_query).map do |res|
           params = {}
 
+          params[:url] = res.individual.value if res.individual.is_a?(RDF::URI)
+
           self.class.individual_queries(res.individual).each do |query|
             bindings = graph.query(query).bindings
 
