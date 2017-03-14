@@ -19,7 +19,7 @@ module Tess
       end
 
       def self.array_attributes
-        [:url, :scientific_topic_names, :keywords, :authors, :target_audience]
+        [:scientific_topic_names, :keywords, :authors, :target_audience]
       end
 
       def self.type_query
