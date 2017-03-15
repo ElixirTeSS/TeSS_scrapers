@@ -8,7 +8,10 @@ class ElixirEventsScraper < Tess::Scrapers::Scraper
     {
         name: 'Elixir Events Scraper',
         offline_url_mapping: {},
-        root_url: 'https://www.elixir-europe.org'
+        root_url: 'https://www.elixir-europe.org',
+        meetings_path: '/events/meetings/upcoming',
+        workshops_path: '/events/workshops/upcoming',
+        webinars_path: '/events/webinars/upcoming'
     }
   end
 
@@ -23,67 +26,44 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
           content_provider_type: :organisation
         }))
 
-    events = {}
+    client = GooglePlaces::Client.new(Tess::API.config['google_api_key'])
 
-    0.upto(1) do |page_number|
-      doc = Nokogiri::HTML(open_url(config[:root_url] + "/events/workshops/upcoming?page=#{page_number}"))
+    [[config[:meetings_path], :meetings_and_conferences],
+     [config[:workshops_path], :workshops_and_courses],
+     [config[:webinars_path], nil]].each do |path, event_type|
+      0.upto(1) do |page_number|
+        doc = Nokogiri::HTML(open_url(config[:root_url] + path + "?page=#{page_number}"))
+        doc.css('.views-table tbody tr td:first a').map { |e| e['href'] }.each do |event_path|
+          url = config[:root_url] + event_path
+          events = Tess::Scrapers::RdfEventExtractor.new(open_url(url), :rdfa).extract
 
-      doc.search('tbody > tr').each do |row|
-        oldlink = nil
-        row.css("div.custom-right").map do |node|
-          name = node.at_css("h3 a").text.strip
-          link = node.at_css("h3 a")['href']
-          events[link] = {'title' => name}
-          oldlink =  link
-        end
-        row.css("div.date-display-range").search('span').each do |span|
-          if span['class'] == 'date-display-start'
-            events[oldlink]['start_date'] = span.text.strip
-          elsif span['class'] == 'date-display-end'
-            events[oldlink]['end_date'] = span.text.strip
-          end
-        end
-        row.css("div.date-location").search('.icon').each do |icon|
-          if icon['data-icon'] == 'i'
-            events[oldlink]['category'] = icon.text.strip
-          elsif icon['data-icon'] == 'r'
-            # Nothing to do here...
-          elsif icon['data-icon'] == '['
-            events[oldlink]['location'] = icon.text.strip
+          events.each do |event|
+            event.content_provider = cp
+            event.event_types = [event_type] if event_type
+            event.online = true if path == config[:webinars_path]
+            event.url = url
+
+            get_google_place_info(client, event)
+
+            add_event(event)
           end
         end
       end
     end
+  end
 
-    events.each do |path, data|
-      client = GooglePlaces::Client.new(Tess::API.config['google_api_key'])
-      if data['location']
-        location = data['location'].split(',').first
-        if location and !location.empty?
-          google_place = client.spots_by_query(location, :language => 'en')
-          google_place = google_place.first || nil
-        end
-      end
-      event = Tess::API::Event.new(
-          { content_provider: cp,
-            title: data['title'],
-            url: config[:root_url] + path,
-            start: data['start_date'],
-            end: data['end_date'],
-            event_types: [:workshops_and_courses]
-          })
+  private
+
+  def get_google_place_info(client, event)
+    location = [event.venue, event.city, event.country].reject(&:blank?).join(',')
+    unless location.blank?
+      google_place = client.spots_by_query(location, language: 'en')
+      google_place = google_place.first
       if google_place
-        event.venue = google_place.name
         event.latitude = google_place.lat
         event.longitude = google_place.lng
-        event.city = google_place.city
-        event.country = google_place.country
         event.postcode = google_place.postal_code
-      else
-        event.venue = data['location']
       end
-
-      add_event(event)
     end
   end
 
