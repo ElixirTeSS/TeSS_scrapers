@@ -32,6 +32,7 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
     materials.each do |material|
       material.content_provider = cp
       material.licence = 'CECILL-2.1' if material.licence == 'http://www.cecill.info/index.en.html' || material.licence == 'http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html'
+      material.licence = material.licence.gsub('http://', 'https://') if material.licence && material.licence.start_with?('http://creativecommons.org/')
 
       add_material(material)
     end
