@@ -24,30 +24,15 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
           keywords: ['bioinformatics', 'infrastructure', 'Big Data', 'NGS']
         }))
 
-    reader = RDF::Reader.for(:rdfa).new(open_url(config[:root_url] + config[:materials_path]))
-    rdfa = RDF::Graph.new << reader
-    materials = Tess::Scrapers::RdfaExtractor.parse_rdfa(rdfa, 'CreativeWork')
- 
+    index_page = open_url(config[:root_url] + config[:materials_path])
+    index_doc = index_page.read.gsub('XHTML+RDFa 1.0', 'XHTML+RDFa 1.1') # DOCTYPE hack, or licenses don't extract properly
 
-    # TODO: Use RDFMaterialExtractor here
-    materials.each do |data|
-      keywords = [data['schema:keywords']].flatten
-      keywords.delete('en') #Each has en meaning english in. Remove these
-      authors = [data['schema:author']].flatten
-      authors.delete('en')
-      material = Tess::API::Material.new(
-          { title: data['schema:name'],
-            url: data['@id'],
-            short_description: data['schema:about'],
-            remote_updated_date: Time.now,
-            remote_created_date: data['schema:dateCreated'],
-            content_provider: cp,
-            keywords: keywords, #material['schema:learningResourceType'],
-            authors: authors,
-            target_audience: [data['schema:audience']].flatten
-          })
+    materials = Tess::Scrapers::RdfMaterialExtractor.new(index_doc, :rdfa).extract
 
-      material.licence = 'CECILL-2.1' if data['schema:License'] == 'CeCILL'
+    materials.each do |material|
+      material.content_provider = cp
+      material.licence = 'CECILL-2.1' if material.licence == 'http://www.cecill.info/index.en.html' || material.licence == 'http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html'
+      material.licence = material.licence.gsub('http://', 'https://') if material.licence && material.licence.start_with?('http://creativecommons.org/')
 
       add_material(material)
     end
