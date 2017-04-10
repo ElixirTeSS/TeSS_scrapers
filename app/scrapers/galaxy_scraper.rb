@@ -58,10 +58,9 @@ class GalaxyScraper < Tess::Scrapers::Scraper
           #externals << {title: "#{yaml['name']} Docker image", url: "https://github.com/#{yaml['docker_image']}"} unless yaml['docker_image'].nil? || yaml['docker_image'].empty?
           #externals << {title: "#{yaml['name']} Datasets", url: material['zenodo_link']} unless material['zenodo_link'].nil? || material['zenodo_link'].empty?
           #new_material.external_resources_attributes = externals
-          puts add_material(new_material).inspect
+          add_material(new_material)
         end
       end
     end
-      #material = Tess::API::Event.new
   end
 end

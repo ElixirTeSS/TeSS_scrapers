@@ -26,6 +26,7 @@ scrapers = [
    IfbRdfaScraper,
    KhanAcademyApiScraper,
    LegacySoftwareCarpentryScraper,
+   NbisEventsScraper,
    NgsRegistryScraper,
    PortugalEventsScraper,
    PraceEventsScraper,
