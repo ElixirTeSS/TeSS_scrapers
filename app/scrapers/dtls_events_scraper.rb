@@ -14,7 +14,7 @@ class DtlsEventsScraper < Tess::Scrapers::Scraper
   def scrape
     cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "DTLS - Dutch Techcentre For Life Sciences", #name
-          url: "http://www.dtls.nl", #url
+          url: "https://www.dtls.nl", #url
           image_url: "http://www.dtls.nl/wp-content/themes/dtls/images/logo.png", #logo
           description: "DTL focuses on the great potential of high-end technologies in pioneering life science research, and on the skills and solutions to professionally use computers to deal with the ever-growing data streams in research.", #description
           content_provider_type: :organisation,
