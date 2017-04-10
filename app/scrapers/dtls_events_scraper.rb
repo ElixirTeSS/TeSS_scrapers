@@ -6,7 +6,7 @@ class DtlsEventsScraper < Tess::Scrapers::Scraper
     {
         name: 'DTLS Events',
         offline_url_mapping: {},
-        root_url: 'http://www.dtls.nl',
+        root_url: 'https://www.dtls.nl',
         feed_path: '/courses/feed/?filter_course=active'
     }
   end
