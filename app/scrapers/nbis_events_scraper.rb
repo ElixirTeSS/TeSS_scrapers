@@ -23,7 +23,6 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
         json["items"].each do |json|
             event = Tess::API::Event.new
             event = parse_description(event, json["description"])
-            puts event.inspect unless event.nil?
             unless (event.nil? or (json["start"]["date"].nil? and json["start"]["datetime"].nil?))
                 event.title = json['summary']
                 event.contact = "#{[json['creator']['displayName'], json['creator']['email']].reject{|x| x.nil? or x.empty?}.join(' - ')}"
