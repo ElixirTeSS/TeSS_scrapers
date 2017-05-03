@@ -2,14 +2,13 @@ require 'nokogiri'
 
 class ElixirJsonldScraper < Tess::Scrapers::Scraper
   def self.config
-	{ 
-	    name: 'ELIXIR Events Scraper',
-	    test: 'http://li1530-85.members.linode.com/events/elixir-europe-conference%3A-core-resources-data-economy',
-	    root_url: 'http://li1530-85.members.linode.com',
-	    meetings_path: '/events/meetings/upcoming',
-        workshops_path: '/events/workshops/upcoming',
-        webinars_path: '/events/webinars/upcoming'
-	}
+  { 
+      name: 'ELIXIR Events Scraper',
+      root_url: 'https://elixir-europe.org',
+      meetings_path: '/events/meetings/upcoming',
+      workshops_path: '/events/workshops/upcoming',
+      webinars_path: '/events/webinars/upcoming'
+  }
   end
 
   def scrape 
@@ -23,7 +22,7 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
           content_provider_type: :organisation
         }))
     
-	client = GooglePlaces::Client.new(Tess::API.config['google_api_key'])
+    client = GooglePlaces::Client.new(Tess::API.config['google_api_key'])
 
     [[config[:meetings_path], :meetings_and_conferences],
      [config[:workshops_path], :workshops_and_courses],
@@ -33,18 +32,18 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
         doc.css('.views-table tbody tr td:first a').map { |e| e['href'] }.each do |event_path|
           url = config[:root_url] + event_path
           html = open(url).read
-		  json = /<script type="application\/ld\+json">(.*)<\/script>/m.match(html)
-		  if json
-			  events = Tess::Scrapers::RdfEventExtractor.new(json[1], :jsonld).extract
-	          events.each do |event|
-	            event.content_provider = cp
-	            event.event_types = [event_type] if event_type
-	            event.online = true if path == config[:webinars_path]
-	            event.url = url
-	            add_event(event)
-	          end
-        	end
-		end
+      json = /<script type="application\/ld\+json">(.*)<\/script>/m.match(html)
+      if json
+        events = Tess::Scrapers::RdfEventExtractor.new(json[1], :jsonld).extract
+            events.each do |event|
+              event.content_provider = cp
+              event.event_types = [event_type] if event_type
+              event.online = true if path == config[:webinars_path]
+              event.url = url
+              add_event(event)
+            end
+          end
+        end
       end  
     end
   end
