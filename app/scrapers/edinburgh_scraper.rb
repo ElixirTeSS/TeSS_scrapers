@@ -14,7 +14,8 @@ class EdinburghScraper < Tess::Scrapers::Scraper
              url: config[:root_url], #url
              image_url: "https://genomics.ed.ac.uk/sites/default/files/unnamed.png",
              description: "The explosion in new sequencing technologies has changed genomics from being the province of a few to being a key part in many research programmes. To enable researchers to analyse their next generation sequencing data themselves, Edinburgh Genomics offers a range of hands-on bioinformatics workshops.",
-             content_provider_type: :organisation
+             content_provider_type: :organisation,
+             node_name: :UK
         }))
         doc = Nokogiri::HTML(open_url(config[:root_url] + config[:index_path]))
         urls = doc.xpath('//*[@id="node-34"]/div/div[2]/div/div/table/tbody/tr/td[2]/a').map{|x| config[:root_url] + x.attributes['href'].value}
