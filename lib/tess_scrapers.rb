@@ -4,6 +4,7 @@ module Tess
     require 'open-uri'
     require 'tess_api_client'
     require 'digest'
+    require 'sanitize'
     require_relative 'tess/scrapers/scraper'
     require_relative 'tess/scrapers/rdfa_extractor'
     require_relative 'tess/scrapers/rdf_extraction'

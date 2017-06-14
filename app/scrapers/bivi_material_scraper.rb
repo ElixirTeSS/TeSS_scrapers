@@ -7,14 +7,13 @@ class BiviMaterialScraper < Tess::Scrapers::Scraper
   end
 
   def scrape
-    cp = add_content_provider(Tess::API::ContentProvider.new({
-                                                             title: "Bioinformatics Visualization",
+    cp = add_content_provider(Tess::API::ContentProvider.new( title: "Bioinformatics Visualization",
                                                              url: config[:root_url],
                                                              image_url: "http://bivi.co/sites/default/files/logo.png",
                                                              description: "The Biological Visualisation Network (BiVi) provides a forum for dissemination, training and discussion for life-scientists to discover and promote complex data visualisation ideas and solutions. BiVi, funded by the BBSRC, is a central resource for information on bio-visualisation and is supplemented with annual meetings for networking and educational purposes, focussed around emerging trends in visualisation and challenges facing biology.",
                                                              content_provider_type: :organisation,
                                                              node_name: :UK
-                                                             }))
+                                                             ))
 
     doc = Nokogiri::XML(open_url(config[:root_url] + config[:index_path]))
 
@@ -26,7 +25,6 @@ class BiviMaterialScraper < Tess::Scrapers::Scraper
     creators = doc.xpath('//channel/item/creator')
 
     0.upto(items.length - 1) do |n|
-      puts "ITEM: #{n}"
       # Main fields
       title,link,date = ''
       creator = []
@@ -57,18 +55,17 @@ class BiviMaterialScraper < Tess::Scrapers::Scraper
       short_description += "\nCreated at: #{event}."
 
       # Create the material from the information above
-      m = add_material(Tess::API::Material.new(
-          { title: title,
-            url: link,
-            short_description: short_description,
-            remote_updated_date: date,
-            content_provider: cp,
-            scientific_topic_names: bio_keywords + comp_keywords,
-            keywords: bio_keywords + comp_keywords,
-            resource_type: presentation_type,
-            authors: [creator],
-            contributors: [presenter]
-          }))
+      m = add_material(Tess::API::Material.new(title: title,
+                                               url: link,
+                                               short_description: short_description,
+                                               remote_updated_date: date,
+                                               content_provider: cp,
+                                               scientific_topic_names: bio_keywords + comp_keywords,
+                                               keywords: bio_keywords + comp_keywords,
+                                               resource_type: presentation_type,
+                                               authors: [creator],
+                                               contributors: [presenter]
+                                              ))
 
     end
   end
