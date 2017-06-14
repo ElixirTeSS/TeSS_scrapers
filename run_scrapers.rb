@@ -34,7 +34,8 @@ scrapers = [
 # SibScraper, #Not working - SIB site being recreated
    SoftwareCarpentryEventsScraper,
 # IannEventsScraper,
-   ScilifelabScraper
+   ScilifelabScraper,
+   BiviMaterialScraper
 ]
 
 options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
