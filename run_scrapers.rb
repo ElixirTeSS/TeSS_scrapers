@@ -35,7 +35,8 @@ scrapers = [
    SoftwareCarpentryEventsScraper,
 # IannEventsScraper,
    ScilifelabScraper,
-   BiviMaterialScraper
+   BiviMaterialScraper,
+   BiviEventScraper
 ]
 
 options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!

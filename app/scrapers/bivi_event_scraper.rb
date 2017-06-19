@@ -8,6 +8,7 @@ class BiviEventScraper < Tess::Scrapers::Scraper
   end
 
   def scrape
+    client = GooglePlaces::Client.new(Tess::API.config['google_api_key'])
     cp = add_content_provider(Tess::API::ContentProvider.new(title: "Bioinformatics Visualization",
                                                              url: config[:root_url],
                                                              image_url: "http://bivi.co/sites/default/files/logo.png",
@@ -57,25 +58,40 @@ class BiviEventScraper < Tess::Scrapers::Scraper
         start = raw_dates[0]
         stop = raw_dates[1]
       end
-      location = desc.scan(/#Location:\s+([A-Za-z0-9\(\)\,\s]+)/).flatten
+      location = desc.scan(/#Location:\s+([A-Za-z0-9\(\)\,\s]+)/).flatten.to_s
       darray = desc.split(/\n/)
       darray.delete_at(0)
       darray.pop(2)
       desc = darray.join('\n')
 
-      # The location field is irregular so I am not sure how best to deal with it.
-      add_event(Tess::API::Event.new(content_provider: cp,
-                                     title: title,
-                                     url: link,
-                                     start: start,
-                                     end: stop,
-                                     description: desc,
-                                     city: location,
-                                     organizer: creator,
-                                     event_types: [:workshops_and_courses]
-                                    ))
 
+      begin
+        unless location.blank?
+          google_place = client.spots_by_query(location, language: 'en')
+          google_place = google_place.first
+          if google_place
+            latitude = google_place.lat
+            longitude = google_place.lng
+          else
+            latitude,longitude = nil
+          end
+        end
+      rescue Exception => e
+        puts "Failed to connect to Google places for '#{location}': #{e}"
+      end
 
+      new_event = Tess::API::Event.new(content_provider: cp,
+                                       title: title,
+                                       url: link,
+                                       start: start,
+                                       end: stop,
+                                       description: desc,
+                                       latitude: latitude,
+                                       longitude: longitude,
+                                       organizer: creator,
+                                       event_types: [:workshops_and_courses]
+                                      )
+      add_event(new_event)
 
 
     end
