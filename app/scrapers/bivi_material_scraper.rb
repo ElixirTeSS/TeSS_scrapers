@@ -46,13 +46,27 @@ class BiviMaterialScraper < Tess::Scrapers::Scraper
       # titles[0] with links[0] to create each record, then split descriptions[0] to get the various
       # parts thereof in the same order.
       descs =  descriptions[n].inner_text().split("<br />").collect {|y| y.gsub(/\n/,"")}.reject(&:empty?)
-      short_description = descs[0]
-      presenter = descs[1].gsub(/#Presenter:\s+/i,"").split(",").collect {|x| x.strip}
-      presentation_type = descs[2].gsub(/#Presentation Type:\s+/i,"").split(",").collect {|x| x.strip}
-      event = descs[3].gsub(/#Event:\s+/i,"")
-      bio_keywords = descs[4].gsub(/#Biological Keywords:\s+/i,"").split(",").collect {|x| x.strip}
-      comp_keywords = descs[5].gsub(/#Computing Keywords:\s+/i,"").split(",").collect {|x| x.strip}
-      short_description += "\nCreated at: #{event}."
+      print "D: #{descs.inspect}"
+      short_description,event = ''
+      presentation_type,bio_keywords,comp_keywords,presenter = []
+      descs.each do |d|
+        if d =~ /^#Presenter/
+          presenter = d.gsub(/#Presenter:\s+/i,"").split(",").collect {|x| x.strip}
+        elsif d =~ /^#Presentation/
+          presentation_type = d.gsub(/#Presentation Type:\s+/i,"").split(",").collect {|x| x.strip}
+        elsif d =~ /^#Event/
+          event = d.gsub(/#Event:\s+/i,"")
+        elsif d =~ /^#Biological/
+          bio_keywords = d.gsub(/#Biological Keywords:\s+/i,"").split(",").collect {|x| x.strip}
+        elsif d =~ /^#Computing/
+          comp_keywords = d.gsub(/#Computing Keywords:\s+/i,"").split(",").collect {|x| x.strip}
+        else
+          short_description += d
+        end
+      end
+      if event
+        short_description += "\nCreated at: #{event}."
+      end
 
       # Create the material from the information above
       m = add_material(Tess::API::Material.new(title: title,

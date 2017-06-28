@@ -1,8 +1,7 @@
 class BiviEventScraper < Tess::Scrapers::Scraper
 
   def self.config
-  {
-    root_url: 'http://bivi.co',
+  { root_url: 'http://bivi.co',
     index_path: '/event-feed'
   }
   end
@@ -92,7 +91,6 @@ class BiviEventScraper < Tess::Scrapers::Scraper
                                        event_types: [:workshops_and_courses]
                                       )
       add_event(new_event)
-
 
     end
 
