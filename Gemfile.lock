@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/ElixirUK/TeSS_api_client.git
+  remote: git://github.com/ElixirTeSS/TeSS_api_client.git
   revision: 849e5d4e8287bb45de5eda1617bf27f5aa0bfccf
   tag: 0.3.1
   specs:
@@ -12,7 +12,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.1.1)
+    activesupport (5.1.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
       minitest (~> 5.1)
