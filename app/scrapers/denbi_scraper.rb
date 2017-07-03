@@ -4,7 +4,7 @@ class DenbiScraper < Tess::Scrapers::Scraper
 
   def self.config
     {
-        name: 'Data Carpentry Scraper',
+        name: 'DENBI Scraper',
         offline_url_mapping: {},
         root_url: 'https://www.denbi.de',
         index_page: '/index.php/training-courses'
@@ -47,7 +47,6 @@ class DenbiScraper < Tess::Scrapers::Scraper
   private
 
   def parse_date(date_string)
-    puts date_string
     if (match_data = /([0-9]+)\-([0-9]+)\s([a-zA-Z]+)/.match(date_string))
       start_date = Date.parse(match_data[1].to_s + '-' + match_data[3].to_s + '-' + Time.now.year.to_s)
       end_date = Date.parse(match_data[2].to_s + '-' + match_data[3].to_s + '-' + Time.now.year.to_s)

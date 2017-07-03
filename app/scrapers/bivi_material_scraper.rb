@@ -1,6 +1,7 @@
 class BiviMaterialScraper < Tess::Scrapers::Scraper
   def self.config
   {
+    name: 'BiVi Material Scraper',
     root_url: 'http://bivi.co',
     index_path: '/presentation-feed'
   }
@@ -46,7 +47,6 @@ class BiviMaterialScraper < Tess::Scrapers::Scraper
       # titles[0] with links[0] to create each record, then split descriptions[0] to get the various
       # parts thereof in the same order.
       descs =  descriptions[n].inner_text().split("<br />").collect {|y| y.gsub(/\n/,"")}.reject(&:empty?)
-      print "D: #{descs.inspect}"
       short_description,event = ''
       presentation_type,bio_keywords,comp_keywords,presenter = []
       descs.each do |d|

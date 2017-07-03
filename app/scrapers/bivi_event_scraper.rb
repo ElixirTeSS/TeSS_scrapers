@@ -1,8 +1,10 @@
 class BiviEventScraper < Tess::Scrapers::Scraper
 
   def self.config
-  { root_url: 'http://bivi.co',
-    index_path: '/event-feed'
+  { 
+      name: 'BiVi Event Scraper',
+      root_url: 'http://bivi.co',
+      index_path: '/event-feed'
   }
   end
 
@@ -25,8 +27,6 @@ class BiviEventScraper < Tess::Scrapers::Scraper
     descriptions = doc.xpath('//channel/item/description')
     pubDates = doc.xpath('//channel/item/pubDate')
     creators = doc.xpath('//channel/item/creator')
-
-    puts "Got #{items.length} events."
 
     0.upto(items.length - 1) do |n|
       # Main fields
