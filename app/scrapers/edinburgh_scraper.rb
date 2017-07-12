@@ -3,6 +3,7 @@ require 'nokogiri'
 class EdinburghScraper < Tess::Scrapers::Scraper
     def self.config 
         {
+            name: 'Edinburgh genomics scraper',
             root_url: 'https://genomics.ed.ac.uk',
             index_path: '/services/training'
         }
