@@ -24,8 +24,10 @@ class EdinburghScraper < Tess::Scrapers::Scraper
             html = open(url).read
             json = /<script type="application\/ld\+json">(.*?)<\/script>/m.match(html)
             if json 
+                #Clean up - remove CDATA and <br /> that trip up parser
                 json = json[1].gsub('<!--//--><![CDATA[// ><!--', '')
                 json = json.gsub('//--><!]]>', '')
+                json = json.gsub('<br />', '')
                 event = Tess::Scrapers::RdfEventExtractor.new(json, :jsonld).extract.first
                 event.content_provider = cp
                 event.event_types = [:workshops_and_courses]
