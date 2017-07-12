@@ -21,7 +21,6 @@ class GalaxyScraper < Tess::Scrapers::Scraper
 
 
   def scrape
-
     cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "Galaxy Training",
           url: "http://galaxyproject.github.io/",
@@ -32,7 +31,7 @@ class GalaxyScraper < Tess::Scrapers::Scraper
         })
     )   
     git_setup
-    files = Dir["#{cache_file_path('git')}/metadata/*.yml"]
+    files = Dir["#{cache_file_path('git')}/metadata/*.yaml"]
     files.each do |file|
       yaml = YAML.load_file(file)
       yaml['material'].each do |material|
