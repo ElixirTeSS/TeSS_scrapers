@@ -7,7 +7,7 @@ class SoftwareCarpentryEventsScraper < Tess::Scrapers::Scraper
     {
         name: 'Software Carpentry Events Scraper',
         offline_url_mapping: {},
-        root_url: 'http://software-carpentry.org',
+        root_url: 'https://software-carpentry.org',
         ical_path: '/workshops.ics',
         geocoder_cache: {} # A little cache to stop duplicate queries
     }
@@ -16,8 +16,8 @@ class SoftwareCarpentryEventsScraper < Tess::Scrapers::Scraper
   def scrape
     cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "Software Carpentry",
-          url: "http://software-carpentry.org/",
-          image_url: "http://software-carpentry.org/img/software-carpentry-banner.png",
+          url: "https://software-carpentry.org/",
+          image_url: "https://software-carpentry.org/img/software-carpentry-banner.png",
           description: "The Software Carpentry Foundation is a non-profit organization whose members teach researchers basic software skills.",
           content_provider_type: :organisation
         }))
