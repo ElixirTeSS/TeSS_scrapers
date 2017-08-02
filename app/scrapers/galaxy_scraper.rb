@@ -21,11 +21,12 @@ class GalaxyScraper < Tess::Scrapers::Scraper
 
 
   def scrape
+    base_url = "http://galaxyproject.github.io/training-material"
     cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "Galaxy Training",
-          url: "http://galaxyproject.github.io/",
+          url: base_url,
           image_url: "https://raw.githubusercontent.com/galaxyproject/training-material/master/shared/images/GTNLogo1000.png",
-          description: "GitLab repository and its Wiki companion containing a collection of training materials for teaching next generation sequencing data analysis.",
+          description: "GitHub repository and its website companion containing a collection of training materials for teaching next generation sequencing data analysis uing Galaxy.",
           content_provider_type: :project#,
           # node_name: [:FR, :DE]
         })
@@ -36,27 +37,48 @@ class GalaxyScraper < Tess::Scrapers::Scraper
       yaml = YAML.load_file(file)
       yaml['material'].each do |material|
         new_material = Tess::API::Material.new
-        name = yaml['name']
-        if material['slides'] == 'no'
-          url = 'http://galaxyproject.github.io/training-material/' + yaml['name'] + '/' + material['type'] + 's/' + material['name']
-          name = "#{name} - #{material['title']}" if material['title']
-        elsif material['slides'] == 'yes'
-          url = 'http://galaxyproject.github.io/training-material/' + yaml['name'] + '/slides/#1' 
-          name = "#{name} - #{material['title']}" if material['title']
+        name = "#{yaml['title']} - #{material['title']}" if material['title']
+        description = yaml['summary']
+        extra_slides = nil
+        if material['enable'] == 'false'
+          url = nil
+        elsif material['type'] == 'tutorial'
+          if material['hands_on'] == 'yes'
+            url = base_url + '/topics/' + yaml['name'] + '/tutorials/' + material['name'] + '/tutorial.html'
+            if material['slides'] == 'yes'
+              extra_slides = base_url + '/topics/' + yaml['name'] + '/tutorials/' + material['name'] + '/slides.html'
+            end
+          else
+            url = base_url + '/topics/' + yaml['name'] + '/tutorials/' + material['name'] + '/slides.html'
+          end
+          if material['questions']
+            description += "\n\nQuestions of the tutorial:\n\n"
+            material['questions'].each do |question|
+              description += "- "  + question + "\n"
+            end
+          end
+          if material['objectives']
+            description += "\n\nObjectives of the tutorial:\n\n"
+            material['objectives'].each do |objective|
+              description += "- " + objective + "\n"
+            end
+          end
+        elsif material['type'] == 'introduction'
+          url = base_url + '/topics/' + yaml['name'] + '/slides/#1'
         else
           url = nil
         end
         if url
           new_material.url = url
           new_material.title = name
-          new_material.short_description = yaml['summary']
+          new_material.short_description = description
           new_material.content_provider = cp
-          new_material.doi = material['zenodo_link'] unless material['zenodo_link'].nil? || material['zenodo_link'].empty?
-          new_material.authors = yaml['maintainers'].collect{|x| x['name']}
-          #externals = []
+          #new_material.authors = material['contributors'].collect{|x| x['name']}
+          externals = []
           #externals << {title: "#{yaml['name']} Docker image", url: "https://github.com/#{yaml['docker_image']}"} unless yaml['docker_image'].nil? || yaml['docker_image'].empty?
-          #externals << {title: "#{yaml['name']} Datasets", url: material['zenodo_link']} unless material['zenodo_link'].nil? || material['zenodo_link'].empty?
-          #new_material.external_resources_attributes = externals
+          externals << {title: "Input datasets", url: material['zenodo_link']} unless material['zenodo_link'].nil? || material['zenodo_link'].empty?
+          externals << {title: "Associated slides", url: extra_slides} unless extra_slides.nil?
+          new_material.external_resources_attributes = externals
           add_material(new_material)
         end
       end
