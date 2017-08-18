@@ -31,7 +31,7 @@ class PortugalEventsScraper < Tess::Scrapers::Scraper
 		 #extract JSON with regex because passing whole JSON to RDFEventExtractor throws errors up.
 	    a = /<script type="application\/ld\+json">(.*)<\/script>/m.match(html)
 	   
-	    events = Tess::Scrapers::RdfEventExtractor.new(a[1], :jsonld).extract
+	    events = Tess::Rdf::EventExtractor.new(a[1], :jsonld).extract { |p| Tess::API::Event.new(p) }
 
 	    events.each do |event|
 	      event.content_provider = cp

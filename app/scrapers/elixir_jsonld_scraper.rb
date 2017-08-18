@@ -34,7 +34,7 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
           html = open(url).read
       json = /<script type="application\/ld\+json">(.*)<\/script>/m.match(html)
       if json
-        events = Tess::Scrapers::RdfEventExtractor.new(json[1], :jsonld).extract
+        events = Tess::Rdf::EventExtractor.new(json[1], :jsonld).extract { |p| Tess::API::Event.new(p) }
             events.each do |event|
               event.content_provider = cp
               event.event_types = [event_type] if event_type
