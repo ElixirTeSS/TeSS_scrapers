@@ -3,6 +3,7 @@ require_relative 'lib/tess_scrapers'
 log = 'log/scrapers.log'
 output = 'log/scrapers.out' # Need to logrotate this!
 
+=begin
 scrapers = [
    BiocompRdfaScraper,
    BitsvibEventsJsonldScraper,
@@ -37,6 +38,12 @@ scrapers = [
    ScilifelabScraper,
    BiviMaterialScraper,
    BiviEventScraper
+]
+=end
+
+scrapers = [
+    ElixirEventsScraper,
+    ElixirEventsScraperN
 ]
 
 options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!

@@ -1,8 +1,7 @@
 require 'nokogiri'
 require 'geocoder'
-require 'google_places'
 
-class ElixirEventsScraper < Tess::Scrapers::Scraper
+class ElixirEventsScraperN < Tess::Scrapers::Scraper
 
   def self.config
     {
@@ -26,8 +25,6 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
           content_provider_type: :organisation
         }))
 
-    client = GooglePlaces::Client.new(Tess::API.config['google_api_key'])
-
     [[config[:meetings_path], :meetings_and_conferences],
      [config[:workshops_path], :workshops_and_courses],
      [config[:webinars_path], nil]].each do |path, event_type|
@@ -43,8 +40,7 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
             event.online = true if path == config[:webinars_path]
             event.url = url
 
-            get_google_place_info(client, event)
-
+            get_place_info(event)
             add_event(event)
           end
         end
@@ -54,18 +50,18 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
 
   private
 
-  def get_google_place_info(client, event)
+  def get_place_info(event)
+    Geocoder.configure(:lookup => :nominatim)
     location = [event.venue, event.city, event.country].reject(&:blank?).join(',')
     unless location.blank?
-      google_place = client.spots_by_query(location, language: 'en')
-      google_place = google_place.first
-      if google_place
-        event.latitude = google_place.lat
-        event.longitude = google_place.lng
-        event.postcode = google_place.postal_code
+      place = Geocoder.search(location).first
+      if place
+        event.latitude = place.latitude
+        event.longitude = place.longitude
+        event.postcode = place.postal_code
       end
     end
-    puts "G: #{event.title}, #{event.latitude}, #{event.longitude}, #{event.postcode}"
+    puts "N: #{event.title}, #{event.latitude}, #{event.longitude}, #{event.postcode}"
   end
 
-end
+  end
