@@ -71,6 +71,8 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
       parsed_text = parsed_text.flatten.reject{|x| x.empty?}
       # Some sentences need getting rid of like 'Further details regarding the charging policy are available here"'
       parsed_text = parsed_text.reject{|x| x.start_with?('Further details')}
+
+      parsed_text = parsed_text.reject{|x| x.include?('Please be aware')}
       # Remove URLs - so things like this:
       #  [http://www.training.cam.ac.uk/bioinformatics/info/eligibility Affiliated Institutions]
       # Will read like this 
