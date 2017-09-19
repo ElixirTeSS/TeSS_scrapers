@@ -28,7 +28,7 @@ class EdinburghScraper < Tess::Scrapers::Scraper
                 json = json[1].gsub('<!--//--><![CDATA[// ><!--', '')
                 json = json.gsub('//--><!]]>', '')
                 json = json.gsub('<br />', '')
-                event = Tess::Scrapers::RdfEventExtractor.new(json, :jsonld).extract.first
+                event = Tess::Rdf::EventExtractor.new(json, :jsonld).extract { |p| Tess::API::Event.new(p) }.first
                 event.content_provider = cp
                 event.event_types = [:workshops_and_courses]
                 event.url = url

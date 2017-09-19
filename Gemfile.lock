@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/ElixirTeSS/TeSS_RDF_Extractors.git
+  revision: 17565c87e16d2149e5e57a812ffa7e8955b215d4
+  specs:
+    tess_rdf_extractors (0.0.1)
+      linkeddata (~> 2.0)
+
+GIT
   remote: git://github.com/ElixirTeSS/TeSS_api_client.git
   revision: 849e5d4e8287bb45de5eda1617bf27f5aa0bfccf
   tag: 0.3.1
@@ -221,6 +228,7 @@ DEPENDENCIES
   sanitize
   simple-rss
   tess_api_client!
+  tess_rdf_extractors!
 
 BUNDLED WITH
    1.15.1

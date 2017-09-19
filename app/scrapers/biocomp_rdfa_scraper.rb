@@ -22,7 +22,7 @@ class BiocompRdfaScraper < Tess::Scrapers::Scraper
         }))
 
     get_urls(config[:root_url] + config[:materials_path]).each do |url|
-      materials = Tess::Scrapers::RdfMaterialExtractor.new(open_url(url), :rdfa).extract
+      materials = Tess::Rdf::MaterialExtractor.new(open_url(url), :rdfa).extract { |p| Tess::API::Material.new(p) }
 
       materials.each do |material|
         material.url = url

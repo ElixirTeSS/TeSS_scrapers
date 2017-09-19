@@ -29,7 +29,7 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
         events = []
         doc.search('//script[@type="application/ld+json"]').each do |element|
           begin
-            events += Tess::Scrapers::RdfEventExtractor.new(element.text, :jsonld).extract
+            events += Tess::Rdf::EventExtractor.new(element.text, :jsonld).extract { |p| Tess::API::Event.new(p) }
           rescue MultiJson::ParseError # Some invalid JSON in one of the script tags
           end
         end 

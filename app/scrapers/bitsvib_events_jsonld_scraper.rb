@@ -20,7 +20,7 @@ class BitsvibEventsJsonldScraper < Tess::Scrapers::Scraper
         }))
 
     jsonld = open(config[:root_url]).read
-    events = Tess::Scrapers::RdfEventExtractor.new(jsonld, :jsonld).extract
+    events = Tess::Rdf::EventExtractor.new(jsonld, :jsonld).extract { |p| Tess::API::Event.new(p) }
 
     events.each do |event|
       event.content_provider = cp
