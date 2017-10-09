@@ -8,7 +8,7 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
     {
         name: 'BMTC JSON-LD Scraper',
         offline_url_mapping: {},
-        root_url: 'http://www.birmingham.ac.uk',
+        root_url: 'https://www.birmingham.ac.uk',
         materials_path: '/facilities/metabolomics-training-centre/course-list.aspx'
     }
   end
@@ -16,7 +16,7 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
   def scrape
     cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "Birmingham metabolomics Training Centre",
-          url: "http://www.birmingham.ac.uk/facilities/metabolomics-training-centre/course-list.aspx",
+          url: "https://www.birmingham.ac.uk/facilities/metabolomics-training-centre/course-list.aspx",
           image_url: "",
           description: "Providing training to empower the next generation of metabolomics researchers. The Birmingham Metabolomics Training Centre will provide training to the metabolomics community in both analytical and computational methods. The training centre will partner with both the Phenome Centre Birmingham and the NERC Biomolecular Analysis Facility to provide vocational training courses in clinical and environmental metabolomics. A combination of both face-to-face and online courses will be provided.The training centre is directed by Professor Mark Viant, Dr Warwick Dunn, Dr Ralf Weber and Dr Catherine Winder.",
           content_provider_type: :organisation,
@@ -25,6 +25,10 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
 
     get_urls(config[:root_url] + config[:materials_path]).each do |url|
       begin
+	if url.start_with?('http://')
+  		url = url.gsub('http://', 'https://')
+	end
+
         doc = Nokogiri::HTML(open(url))
         events = []
         doc.search('//script[@type="application/ld+json"]').each do |element|
