@@ -28,7 +28,6 @@ class GobletRdfaScraper < Tess::Scrapers::Scraper
 
       materials.each do |material|
         material.url = url
-        material.remote_updated_date = Time.now
         material.content_provider = cp
 
         add_material(material)
