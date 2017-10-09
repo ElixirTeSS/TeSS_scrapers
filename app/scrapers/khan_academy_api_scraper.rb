@@ -30,7 +30,6 @@ class KhanAcademyApiScraper < Tess::Scrapers::Scraper
             { title: subtopic['title'],
               url: subtopic['url'],
               short_description: description,
-              remote_updated_date: Time.now,
               content_provider: cp,
               scientific_topic_names: ['Statistics and probability'],
               keywords: [topics['title']]

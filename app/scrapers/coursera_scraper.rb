@@ -32,8 +32,6 @@ class CourseraScraper < Tess::Scrapers::Scraper
           { title: course['name'],
             url: config[:friendly_url] + course['slug'],
             short_description: course['description'],
-            remote_updated_date: Time.now,
-            remote_created_date: nil,
             content_provider: cp,
             keywords: topics
           }))
