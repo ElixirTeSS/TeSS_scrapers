@@ -32,6 +32,7 @@ scrapers = [
    PraceEventsScraper,
    RssScraper,
 # SibScraper, #Not working - SIB site being recreated
+   SibEventsScraper
    SoftwareCarpentryEventsScraper,
 # IannEventsScraper,
    ScilifelabScraper,
