@@ -31,8 +31,8 @@ scrapers = [
    PortugalEventsScraper,
    PraceEventsScraper,
    RssScraper,
-# SibScraper, #Not working - SIB site being recreated
-   SibEventsScraper
+   SibScraper,
+   SibEventsScraper,
    SoftwareCarpentryEventsScraper,
 # IannEventsScraper,
    ScilifelabScraper,
