@@ -1,8 +1,10 @@
 require_relative 'lib/tess_scrapers'
+require 'net/smtp'
 
 log = 'log/scrapers.log'
 output = 'log/scrapers.out' # Need to logrotate this!
 
+=begin
 scrapers = [
    BiocompRdfaScraper,
    BitsvibEventsJsonldScraper,
@@ -40,10 +42,14 @@ scrapers = [
    BiviMaterialScraper,
    BiviEventScraper
 ]
+=end
+scrapers = [SibScraper, 'BananaScraper', 'WibbleScraper']
 
 
 options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
 #options = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing
+
+failed_scrapers = []
 
 begin
   # Open log file
@@ -56,6 +62,24 @@ begin
     rescue => e
       log_file.puts e.message
       log_file.puts e.backtrace.join("\n")
+      failed_scrapers << "#{scraper_class}: #{e.message}\n"
+    end
+  end
+
+  if failed_scrapers.length > 0
+    message = <<MESSAGE_END
+From: TeSS <tess@elixir-uk.info>
+To: TeSS <tess@elixir-uk.info>
+Subject: Scraper Failure
+
+It would seem that the following scrapers have failed to run:
+
+MESSAGE_END
+
+    message += failed_scrapers.join("\n")
+
+    Net::SMTP.start('localhost') do |smtp|
+      smtp.send_message message, 'tess@elixir-uk.info', 'tess@elixir-uk.info'
     end
   end
 
