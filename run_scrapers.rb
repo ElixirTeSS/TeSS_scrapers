@@ -75,8 +75,12 @@ MESSAGE_END
 
     message += failed_scrapers.join("\n")
 
-    Net::SMTP.start('localhost') do |smtp|
-      smtp.send_message message, 'tess@elixir-uk.info', 'tess@elixir-uk.info'
+    begin
+      Net::SMTP.start('localhost') do |smtp|
+        smtp.send_message message, 'tess@elixir-uk.info', 'tess@elixir-uk.info'
+      end
+    rescue => e
+      puts "Could not email: #{message} | #{e}"
     end
   end
 
