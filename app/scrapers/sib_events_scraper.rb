@@ -32,6 +32,10 @@ international research community.',
       city = event['schema:location']['schema:name']
       title = trim_characters(event['schema:name'])
       url = event['schema:url']
+      country = nil
+      if city
+        country = Geocoder.search(city).first.country
+      end
       new = Tess::API::Event.new(
         content_provider: cp,
         external_id: external_id,
@@ -43,7 +47,7 @@ international research community.',
         start: start,
         end: finish,
         venue: host,
-        #country: 'Switzerland', # TODO: Set this properly, perhaps using Nominatim
+        country: country,
         event_types: get_event_type(event['schema:eventType'])
       )
       add_event(new)

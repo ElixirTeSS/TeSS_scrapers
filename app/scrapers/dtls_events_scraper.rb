@@ -47,7 +47,9 @@ class DtlsEventsScraper < Tess::Scrapers::Scraper
             event.venue = element.text
             loc = element.text.split(',')
             event.city = loc.first.strip
-            event.country = loc.last.strip
+            if event.city
+              event.country = Geocoder.search(event.city).first.country
+            end
           when 'provider'
             event.organizer = element.text
           when 'courseDate'

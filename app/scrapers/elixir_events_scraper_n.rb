@@ -58,7 +58,7 @@ which is the foundation on which our understanding of life is built.',
   private
 
   def get_place_info(event)
-    Geocoder.configure(lookup: 'nominatim')
+    Geocoder.configure(lookup: :nominatim)
     location = [event.venue, event.city, event.country].reject(&:blank?).join(',')
     unless location.blank?
       place = Geocoder.search(location).first
