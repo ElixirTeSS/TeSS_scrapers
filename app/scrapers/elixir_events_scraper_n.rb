@@ -4,26 +4,33 @@ require 'geocoder'
 class ElixirEventsScraperN < Tess::Scrapers::Scraper
 
   def self.config
-    {
-        name: 'Elixir Events Scraper',
-        offline_url_mapping: {},
-        root_url: 'https://www.elixir-europe.org',
-        meetings_path: '/events/meetings/upcoming',
-        workshops_path: '/events/workshops/upcoming',
-        webinars_path: '/events/webinars/upcoming'
-    }
+  {
+    name: 'Elixir Events Scraper',
+    offline_url_mapping: {},
+    root_url: 'https://www.elixir-europe.org',
+    meetings_path: '/events/meetings/upcoming',
+    workshops_path: '/events/workshops/upcoming',
+    webinars_path: '/events/webinars/upcoming'
+  }
   end
 
   def scrape
     cp = add_content_provider(Tess::API::ContentProvider.new(
-        { title: "ELIXIR", #name
-          url: "https://www.elixir-europe.org/", #url
-          image_url: "https://media.eurekalert.org/multimedia_prod/pub/web/38675_web.jpg",
-          description: "Building a sustainable European infrastructure for biological information, supporting life science research and its translation to medicine, agriculture, bioindustries and society.
-ELIXIR unites Europe’s leading life science organisations in managing and safeguarding the massive amounts of data being generated every day by publicly funded research. It is a pan-European research infrastructure for biological information.
-ELIXIR provides the facilities necessary for life science researchers - from bench biologists to cheminformaticians - to make the most of our rapidly growing store of information about living systems, which is the foundation on which our understanding of life is built.", #description
-          content_provider_type: :organisation
-        }))
+                                title: 'ELIXIR',
+                                url: 'https://www.elixir-europe.org/',
+                                image_url: 'https://media.eurekalert.org/multimedia_prod/pub/web/38675_web.jpg',
+                                description: 'Building a sustainable European
+infrastructure for biological information, supporting life science research and
+its translation to medicine, agriculture, bioindustries and society. ELIXIR
+unites Europe’s leading life science organisations in managing and safeguarding
+the massive amounts of data being generated every day by publicly funded
+research. It is a pan-European research infrastructure for biological
+information. ELIXIR provides the facilities necessary for life science
+researchers - from bench biologists to cheminformaticians - to make the most of
+our rapidly growing store of information about living systems,
+which is the foundation on which our understanding of life is built.',
+                                content_provider_type: :organisation
+        ))
 
     [[config[:meetings_path], :meetings_and_conferences],
      [config[:workshops_path], :workshops_and_courses],
@@ -51,7 +58,7 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
   private
 
   def get_place_info(event)
-    Geocoder.configure(:lookup => :nominatim)
+    Geocoder.configure(lookup: 'nominatim')
     location = [event.venue, event.city, event.country].reject(&:blank?).join(',')
     unless location.blank?
       place = Geocoder.search(location).first

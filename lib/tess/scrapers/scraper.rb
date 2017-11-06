@@ -14,6 +14,7 @@ module Tess
         @offline = offline
         @cache = cache
         @scraped = { content_providers: [], events: [], materials: [] }
+        Geocoder.configure(lookup: :nominatim)
       end
 
       def self.config

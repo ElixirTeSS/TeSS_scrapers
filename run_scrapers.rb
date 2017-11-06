@@ -4,7 +4,6 @@ require 'net/smtp'
 log = 'log/scrapers.log'
 output = 'log/scrapers.out' # Need to logrotate this!
 
-=begin
 scrapers = [
    BiocompRdfaScraper,
    BitsvibEventsJsonldScraper,
@@ -43,12 +42,7 @@ scrapers = [
    BiviMaterialScraper,
    BiviEventScraper
 ]
-=end
 
-scrapers = [
-    ElixirEventsScraper,
-    ElixirEventsScraperN
-]
 
 options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
 #options = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing

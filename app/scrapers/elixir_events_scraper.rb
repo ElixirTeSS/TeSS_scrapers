@@ -65,7 +65,7 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
         event.postcode = google_place.postal_code
       end
     end
-    puts "G: #{event.title}, #{event.latitude}, #{event.longitude}, #{event.postcode}"
+    #puts "G: #{event.title}, #{event.latitude}, #{event.longitude}, #{event.postcode}"
   end
 
 end
