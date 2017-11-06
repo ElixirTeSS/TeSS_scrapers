@@ -27,7 +27,7 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
     index_page = open_url(config[:root_url] + config[:materials_path])
     index_doc = index_page.read.gsub('XHTML+RDFa 1.0', 'XHTML+RDFa 1.1') # DOCTYPE hack, or licenses don't extract properly
 
-    materials = Tess::Scrapers::RdfMaterialExtractor.new(index_doc, :rdfa).extract
+    materials = Tess::Rdf::MaterialExtractor.new(index_doc, :rdfa).extract { |p| Tess::API::Material.new(p) }
 
     materials.each do |material|
       material.content_provider = cp

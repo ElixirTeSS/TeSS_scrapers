@@ -3,6 +3,7 @@ require 'nokogiri'
 class EdinburghScraper < Tess::Scrapers::Scraper
     def self.config 
         {
+            name: 'Edinburgh genomics scraper',
             root_url: 'https://genomics.ed.ac.uk',
             index_path: '/services/training'
         }
@@ -23,9 +24,11 @@ class EdinburghScraper < Tess::Scrapers::Scraper
             html = open(url).read
             json = /<script type="application\/ld\+json">(.*?)<\/script>/m.match(html)
             if json 
+                #Clean up - remove CDATA and <br /> that trip up parser
                 json = json[1].gsub('<!--//--><![CDATA[// ><!--', '')
                 json = json.gsub('//--><!]]>', '')
-                event = Tess::Scrapers::RdfEventExtractor.new(json, :jsonld).extract.first
+                json = json.gsub('<br />', '')
+                event = Tess::Rdf::EventExtractor.new(json, :jsonld).extract { |p| Tess::API::Event.new(p) }.first
                 event.content_provider = cp
                 event.event_types = [:workshops_and_courses]
                 event.url = url

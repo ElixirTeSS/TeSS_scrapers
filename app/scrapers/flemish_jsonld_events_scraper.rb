@@ -12,7 +12,7 @@ class FlemishJsonldEventsScraper < Tess::Scrapers::Scraper
   def scrape
     cp = add_content_provider(Tess::API::ContentProvider.new({ url: "https://www.vscentrum.be"})) #Metadata handled manually
 	jsonld = open(config[:root_url]).read
-	events = Tess::Scrapers::RdfEventExtractor.new(jsonld, :jsonld).extract
+	events = Tess::Rdf::EventExtractor.new(jsonld, :jsonld).extract { |p| Tess::API::Event.new(p) }
 	events.each do |event|
 		event.content_provider = cp
 	    add_event(event)

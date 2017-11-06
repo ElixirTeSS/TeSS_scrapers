@@ -1,0 +1,2 @@
+# run ./console to setup console with scraper environment
+bundle exec irb -r './lib/tess_scrapers'

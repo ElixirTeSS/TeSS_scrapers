@@ -31,7 +31,6 @@ class ErasysRdfaScraper < Tess::Scrapers::Scraper
             { title: trim_characters(material['https://schema.org/name']),
               url: material['https://schema.org/url'],
               short_description: material['description'],
-              remote_updated_date: Time.now,
               remote_created_date: material['https://schema.org/dateCreated'],
               content_provider: cp,
               scientific_topic_names: trim_characters(material['https://schema.org/keywords']),
@@ -53,7 +52,10 @@ class ErasysRdfaScraper < Tess::Scrapers::Scraper
     materials.each do |material|
       if material['https://schema.org/url']
         page = Nokogiri::HTML(open(material['https://schema.org/url']))
-        material['description'] = page.css('div.item-page p').first.text
+        desc_div = material['description'] = page.css('div.item-page p')
+        unless desc_div.first.nil?
+          material['description'] = desc_div.first.text 
+        end
         #puts page.css('div.item-page p').first.text
       end
     end unless materials.empty?

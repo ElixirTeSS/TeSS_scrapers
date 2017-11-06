@@ -23,11 +23,10 @@ class BitsvibRdfaScraper < Tess::Scrapers::Scraper
         }))
 
     get_urls(config[:root_url] + config[:materials_path]).each do |url|
-      materials = Tess::Scrapers::RdfMaterialExtractor.new(open_url(url), :rdfa).extract
+      materials = Tess::Rdf::MaterialExtractor.new(open_url(url), :rdfa).extract { |p| Tess::API::Material.new(p) }
 
       materials.each do |material|
         material.url = url
-        material.remote_updated_date = Time.now
         material.content_provider = cp
 
         add_material(material)

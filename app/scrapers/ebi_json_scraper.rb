@@ -8,7 +8,7 @@ class EbiJsonScraper < Tess::Scrapers::Scraper
         name: 'EBI Scraper',
         offline_url_mapping: {},
         root_url: 'http://www.ebi.ac.uk',
-        json_url: 'http://www.ebi.ac.uk/sites/ebi.ac.uk/files/data/ebi-events-tess-all.json'
+        json_url: 'https://www.ebi.ac.uk/sites/ebi.ac.uk/files/data/ebi-events-tess-all.json'
     }
   end
 
@@ -25,7 +25,7 @@ class EbiJsonScraper < Tess::Scrapers::Scraper
       json_events = JSON::load(open(config[:json_url]))
       events = []
       json_events.each do |event|
-        events += Tess::Scrapers::RdfEventExtractor.new(event.to_json, :jsonld).extract
+        events += Tess::Rdf::EventExtractor.new(event.to_json, :jsonld).extract { |p| Tess::API::Event.new(p) }
       end
       
       events.each do |event|

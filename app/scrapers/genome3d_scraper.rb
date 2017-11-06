@@ -49,7 +49,6 @@ class Genome3dScraper < Tess::Scrapers::Scraper
           { title: data['name'],
             url: "#{config[:root_url]}/#{path}",
             short_description: data['description'],
-            remote_updated_date: Time.now,
             remote_created_date: data['last_modified'],
             content_provider: cp
           }))

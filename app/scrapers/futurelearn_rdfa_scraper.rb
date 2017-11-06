@@ -25,7 +25,7 @@ class FuturelearnRdfaScraper < Tess::Scrapers::Scraper
             "#{config[:root_url]}/search?utf8=%E2%9C%93&q=bioinformatics"]
 
     urls.each do |url|
-      events += Tess::Scrapers::RdfEventExtractor.new(open_url(url), :rdfa).extract
+      events += Tess::Rdf::EventExtractor.new(open_url(url), :rdfa).extract { |p| Tess::API::Event.new(p) }
     end
 
     events.each do |event|
