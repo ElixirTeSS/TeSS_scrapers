@@ -65,8 +65,8 @@ begin
 
   if failed_scrapers.length > 0
     message = <<MESSAGE_END
-From: TeSS <tess@elixir-uk.info>
-To: TeSS <tess@elixir-uk.info>
+From: TeSS <tess@tess2-elixir.csc.fi>
+To: TeSS <tess-support@googlegroups.com>
 Subject: Scraper Failure
 
 It would seem that the following scrapers have failed to run:
