@@ -43,6 +43,7 @@ international research community.',
         start: start,
         end: finish,
         venue: host,
+        #country: 'Switzerland', # TODO: Set this properly, perhaps using Nominatim
         event_types: get_event_type(event['schema:eventType'])
       )
       add_event(new)
