@@ -39,9 +39,11 @@ class ScilifelabScraper < Tess::Scrapers::Scraper
           client = GooglePlaces::Client.new(Tess::API.config['google_api_key'])
           if !location.empty?
             google_place = client.spots_by_query(location, :language => 'en').first || nil
-            event.latitude = google_place.lat
-            event.longitude = google_place.lng
-            event.city = location
+            if google_place
+              event.latitude = google_place.lat
+              event.longitude = google_place.lng
+              event.city = location
+            end
           end
         end
       end
