@@ -32,10 +32,10 @@ class SoftwareCarpentryEventsScraper < Tess::Scrapers::Scraper
           country = nil
           lat = event.geo.first
           lon = event.geo.last
-          unless geo_cache(lat, lon).nil?
-            city = geo_cache(lat, lon).address_components.select { |c| c['types'].include?('locality') }.first
+          unless (geo = geo_cache(lat, lon)).nil?
+            city = geo.address_components.select { |c| c['types'].include?('locality') }.first
             city = city['long_name'] if city
-            country = geo_cache(lat, lon).address_components.select { |c| c['types'].include?('country') }.first
+            country = geo.address_components.select { |c| c['types'].include?('country') }.first
             country = country['long_name'] if country
           end
           if event.description.start_with?('http://cannot.find.url/') && verbose
