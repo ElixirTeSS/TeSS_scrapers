@@ -15,7 +15,7 @@ scrapers = [
    DataCarpentryScraper,
    DenbiScraper,
    DtlsEventsScraper,
-  # EbiScraper, # Broken old materials one
+   #EbiScraper, # Broken old materials one
    EbiJsonScraper,
    EdinburghScraper,
    ElixirEventsScraper,
@@ -24,7 +24,7 @@ scrapers = [
    FuturelearnRdfaScraper,
    GalaxyScraper,
    Genome3dScraper,
-   GobletRdfaScraper,
+   #GobletRdfaScraper, # See ticket #44
    #GobletApiScraper, # See ticket #20
    IfbRdfaScraper,
    KhanAcademyApiScraper,
@@ -37,7 +37,7 @@ scrapers = [
    SibScraper,
    SibEventsScraper,
    SoftwareCarpentryEventsScraper,
-# IannEventsScraper,
+   #IannEventsScraper,
    ScilifelabScraper,
    BiviMaterialScraper,
    BiviEventScraper
@@ -59,7 +59,7 @@ begin
     rescue => e
       log_file.puts e.message
       log_file.puts e.backtrace.join("\n")
-      failed_scrapers << "#{scraper_class}: #{e.message}\n"
+      failed_scrapers << [scraper_class, e.message]
     end
   end
 
@@ -67,17 +67,17 @@ begin
     message = <<MESSAGE_END
 From: TeSS <tess@tess2-elixir.csc.fi>
 To: TeSS <tess-support@googlegroups.com>
-Subject: Scraper Failure
+Subject: Scraper Failure (#{failed_scrapers.map { |e| e[0] }.join(', ')})
 
 It would seem that the following scrapers have failed to run:
 
-MESSAGE_END
+#{failed_scrapers.map { "#{e[0]}: #{e[1]}" }.join("\n")}
 
-    message += failed_scrapers.join("\n")
+MESSAGE_END
 
     begin
       Net::SMTP.start('localhost') do |smtp|
-        smtp.send_message message, 'tess@elixir-uk.info', 'tess@elixir-uk.info'
+        smtp.send_message message, 'tess@tess2-elixir.csc.fi', 'tess-support@googlegroups.com'
       end
     rescue => e
       puts "Could not email: #{message} | #{e}"
