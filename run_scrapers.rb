@@ -71,7 +71,7 @@ Subject: Scraper Failure (#{failed_scrapers.map { |e| e[0] }.join(', ')})
 
 It would seem that the following scrapers have failed to run:
 
-#{failed_scrapers.map { "#{e[0]}: #{e[1]}" }.join("\n")}
+#{failed_scrapers.map { |e| "#{e[0]}: #{e[1]}" }.join("\n")}
 
 MESSAGE_END
 
