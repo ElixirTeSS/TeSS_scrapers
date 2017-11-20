@@ -30,7 +30,7 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
     lesson_urls = doc.css('td > a').collect { |x| x.values }.flatten.select { |x| x.include?('github.io') }
 
     lesson_urls.each do |lesson_url|
-      lesson = Nokogiri::HTML(open(lesson_url))
+      lesson = Nokogiri::HTML(open_url(lesson_url))
       title = lesson.css('h1').text
       unless exclude.include?(title)
         if title.empty?
@@ -44,7 +44,7 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
         end
         descriptions = []
         index = 0
-        while !description.include?('Content Contributors') and index < 5 do
+        while description && !description.include?('Content Contributors') && index < 5 do
           description = lesson.css('p')[index=index+1]
           descriptions << lesson.css('p')[index]
         end
