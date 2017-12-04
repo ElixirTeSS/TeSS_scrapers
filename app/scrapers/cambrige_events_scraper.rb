@@ -28,7 +28,7 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
 
 #Events are separated into years. There are three programmes: bioinfo-2015, bioinfo-2016, bioinfo-2017. Last one currently doesn't have dates - check for startDate before adding
     programmes.each do |programme|
-      programme['events'].last(30).each do |event|
+      programme['events'].each do |event|
         if !event['startDate'].nil? and
             if event['title'].match(/^CRUK:/)
               puts "Skipping Cancer Research UK event" if verbose
