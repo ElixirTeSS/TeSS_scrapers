@@ -30,7 +30,7 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
     programmes.each do |programme|
       programme['events'].last(30).each do |event|
         if !event['startDate'].nil? and
-            if event['title'].match(/^[CRUK:]/)
+            if event['title'].match(/^CRUK:/)
               puts "Skipping Cancer Research UK event" if verbose
             else
               add_event(Tess::API::Event.new(
