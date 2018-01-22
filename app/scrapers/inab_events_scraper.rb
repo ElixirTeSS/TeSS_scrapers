@@ -1,5 +1,4 @@
 require 'icalendar'
-require 'google_places'
 
 class InabEventsScraper < Tess::Scrapers::Scraper
 
@@ -27,42 +26,22 @@ class InabEventsScraper < Tess::Scrapers::Scraper
 
     events.each_slice(40) do |batch|
       batch.each do |event|
-        begin
-=begin
-		  city = nil
-          country = nil
-          lat = event.geo.first
-          lon = event.geo.last
-          unless geo_cache(lat, lon).nil?
-            city = geo_cache(lat, lon).address_components.select { |c| c['types'].include?('locality') }.first
-            city = city['long_name'] if city
-            country = geo_cache(lat, lon).address_components.select { |c| c['types'].include?('country') }.first
-            country = country['long_name'] if country
-           end
-=end
-      
-            add_event(Tess::API::Event.new(
-                { content_provider: cp,
-                  title: event.summary,
-                  url: config[:root_url],
-                  start: event.dtstart,
-                  end: event.dtend,
-                  description: event.description,
-                  organizer: 'INAB',
-                  event_types: [:workshops_and_courses]
-                }))
+        add_event(Tess::API::Event.new(
+                    content_provider: cp,
+                    title: event.summary,
+                    url: config[:root_url],
+                    start: event.dtstart,
+                    end: event.dtend,
+                    description: event.description,
+                    organizer: 'INAB',
+                    event_types: [:workshops_and_courses]
+                  ))
 
-        end
       end
-      sleep 1.5 # Sleep between batches to avoid hitting Google's API rate limit (temporarily until we can find a better way)
     end
   end
 
-  private
 
-  def geo_cache(lat, lon)
-    config[:geocoder_cache]["#{lat},#{lon}"] ||= Geocoder.search([lat, lon]).first
-  end
 end
 
 

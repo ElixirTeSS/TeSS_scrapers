@@ -48,18 +48,5 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
     end
   end
 
-    def get_google_place_info(client, event)
-    location = [event.venue, event.city, event.country].reject(&:blank?).join(',')
-    unless location.blank?
-      google_place = client.spots_by_query(location, language: 'en')
-      google_place = google_place.first
-      if google_place
-        event.latitude = google_place.lat
-        event.longitude = google_place.lng
-        event.postcode = google_place.postal_code
-      end
-    end
-  end
-
 end
 

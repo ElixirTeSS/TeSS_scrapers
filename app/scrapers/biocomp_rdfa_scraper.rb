@@ -1,5 +1,4 @@
 require 'nokogiri'
-require 'geocoder'
 
 class BiocompRdfaScraper < Tess::Scrapers::Scraper
 
