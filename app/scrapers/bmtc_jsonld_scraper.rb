@@ -1,6 +1,5 @@
 require 'nokogiri'
 require 'linkeddata'
-require 'geocoder'
 
 class BmtcJsonldScraper < Tess::Scrapers::Scraper
 
@@ -43,7 +42,6 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
         events.each do |event|
           event.url = url
           event.content_provider = cp
-          event.latitude, event.longitude = get_location(event.postcode)
           add_event(event)
         end
       end
@@ -59,14 +57,4 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
     return links_div.search('a').collect{|x| x['href'] if x['href'].include?('http')}.uniq.compact
   end
 
-  def get_location(venue)
-    lat, lon = nil
-
-    unless (loc = Geocoder.search(venue)).empty?
-      lat = loc[0].data['geometry']['location']['lat']
-      lon = loc[0].data['geometry']['location']['lng']
-    end
-
-    [lat, lon]
-  end
 end

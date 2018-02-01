@@ -1,3 +1,5 @@
+require 'yaml'
+
 class GalaxyScraper < Tess::Scrapers::Scraper
 
   def self.config

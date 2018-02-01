@@ -1,5 +1,4 @@
 require 'nokogiri'
-require 'geocoder'
 
 class CscEventsScraper < Tess::Scrapers::Scraper
 
@@ -60,24 +59,17 @@ class CscEventsScraper < Tess::Scrapers::Scraper
           end
         end
 
-        loc = Geocoder.search(venue)
-        unless loc.empty?
-          lat = loc[0].data['geometry']['location']['lat']
-          lon = loc[0].data['geometry']['location']['lng']
-        end
-        
+
         add_event(Tess::API::Event.new(
-            { content_provider: cp,
-              title: event_info['title'],
-              url: url,
-              description: event_info['description'],
-              event_types: get_event_type(event_info['event_types']),
-              start: start_date,
-              end: end_date,
-              venue: venue,
-              latitude: lat,
-              longitude: lon
-            }))
+                    content_provider: cp,
+                    title: event_info['title'],
+                    url: url,
+                    description: event_info['description'],
+                    event_types: get_event_type(event_info['event_types']),
+                    start: start_date,
+                    end: end_date,
+                    venue: venue
+                  ))
     end
   end
 

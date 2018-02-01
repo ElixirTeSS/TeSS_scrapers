@@ -1,6 +1,4 @@
-
 require 'icalendar'
-require 'google_places'
 
 
 class PraceEventsScraper < Tess::Scrapers::Scraper
@@ -29,26 +27,17 @@ class PraceEventsScraper < Tess::Scrapers::Scraper
 
     events.each do |event|
       begin
-        #@client = GooglePlaces::Client.new(ScraperConfig.google_api_key)
-        #google_place = @client.spots_by_query(event.location, :language => 'en')
-        #google_place = google_place.first || nil
-        #puts google_place
          add_event(Tess::API::Event.new(
-              { content_provider: cp,
-                title: event.summary,
-                url: event.url,
-                start: event.dtstart,
-                end: event.dtend,
-                description: event.description,
-                organizer: '',
-                event_types: [:workshops_and_courses]                
-              }))
+                    content_provider: cp,
+                    title: event.summary,
+                    url: event.url,
+                    start: event.dtstart,
+                    end: event.dtend,
+                    description: event.description,
+                    organizer: '',
+                    event_types: [:workshops_and_courses]
+                  ))
       end
-      #   latitude: event.geo.first,
-#         longitude: event.geo.last
-      #    venue: event.location,
-      #    city: google_place.city,
-      #    country: google_place.country
     end
   end
 end

@@ -1,6 +1,4 @@
 require 'nokogiri'
-require 'geocoder'
-require 'google_places'
 
 class ElixirEventsScraper < Tess::Scrapers::Scraper
 
@@ -26,8 +24,6 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
           content_provider_type: :organisation
         }))
 
-    client = GooglePlaces::Client.new(Tess::API.config['google_api_key'])
-
     [[config[:meetings_path], :meetings_and_conferences],
      [config[:workshops_path], :workshops_and_courses],
      [config[:webinars_path], nil]].each do |path, event_type|
@@ -43,8 +39,6 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
             event.online = true if path == config[:webinars_path]
             event.url = url
 
-            get_google_place_info(client, event)
-
             add_event(event)
           end
         end
@@ -52,19 +46,5 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
     end
   end
 
-  private
-
-  def get_google_place_info(client, event)
-    location = [event.venue, event.city, event.country].reject(&:blank?).join(',')
-    unless location.blank?
-      google_place = client.spots_by_query(location, language: 'en')
-      google_place = google_place.first
-      if google_place
-        event.latitude = google_place.lat
-        event.longitude = google_place.lng
-        event.postcode = google_place.postal_code
-      end
-    end
-  end
 
 end
