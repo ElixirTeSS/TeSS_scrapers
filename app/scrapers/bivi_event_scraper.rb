@@ -69,8 +69,6 @@ class BiviEventScraper < Tess::Scrapers::Scraper
                                        start: start,
                                        end: stop,
                                        description: desc,
-                                       latitude: latitude,
-                                       longitude: longitude,
                                        organizer: creator,
                                        event_types: [:workshops_and_courses]
                                       )
