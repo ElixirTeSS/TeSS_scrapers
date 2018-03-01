@@ -22,38 +22,24 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
         json = JSON.parse(open(config[:content_url],{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)
         json["items"].each do |json|
             event = Tess::API::Event.new
-            if json["description"]
-              event = parse_description(event, json["description"])
-            end
-            unless (event.nil? or (json["start"]["date"].nil? and json["start"]["datetime"].nil?))
+            unless (json["start"]["date"].nil? and json["start"]["datetime"].nil?)
+                desc = Sanitize.clean(json['description'].sub /(^|\s)#(\w[\w-]*)(?=\s|$)/, '').gsub(/\s+/,' ')
+                tags = /(^|\s)#(\w[\w-]*)(?=\s|$)/.match(desc)
+                event.keywords = tags
+                event.description = desc
+                event.url = json['htmlLink']
                 event.title = json['summary']
                 event.contact = "#{[json['creator']['displayName'], json['creator']['email']].reject{|x| x.nil? or x.empty?}.join(' - ')}"
                 event.organizer = "#{json['organizer']['displayName']}"
                 event.content_provider = cp
-                #or !((/(^|\s)#(\w[\w-]*)(?=\s|$)/).match(event.description).nil?
-                
+
                 event.start = json["start"]["date"] unless json["start"]["date"].nil?
                 event.start = json["start"]["datetime"] unless json["start"]["datetime"].nil?   
                 event.end = json["end"]["date"] unless json["end"]["date"].nil?
                 event.end = json["end"]["datetime"] unless json["end"]["datetime"].nil?
+
                 add_event(event)
             end
         end
-    end
-    private
-
-    def parse_description(event, desc)
-        url = desc.match /#url: (https?:\/\/\S+?)(\.?([\s\n]|$))/
-        desc = desc.sub /#url: (https?:\/\/\S+?)(\.?([\s\n]|$))/, '' 
-        tags = /(^|\s)#(\w[\w-]*)(?=\s|$)/.match(event.description)
-        desc = desc.sub /(^|\s)#(\w[\w-]*)(?=\s|$)/, ''
-        if url 
-            event.description = desc 
-            event.url = url[1]
-            event.keywords = tags
-            return event
-        else
-            return nil
-        end    
     end
 end
