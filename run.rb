@@ -3,8 +3,10 @@ require './lib/tess_scrapers'
 log = 'log/scrapers.log'
 output = 'log/scrapers.out' # Need to logrotate this!
 
-options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
-# options = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing
+live = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
+testing = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing
+
+options = (ARGV[1] == 'testing') ? testing : live
 
 if !ARGV[0]
   puts 'Provide name of scraper as argument. e.g. RssScraper'
