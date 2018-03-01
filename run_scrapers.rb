@@ -3,6 +3,7 @@ require 'net/smtp'
 
 log = 'log/scrapers.log'
 output = 'log/scrapers.out' # Need to logrotate this!
+email = ARGV[0] != 'no_email' rescue true
 
 scrapers = [
    BiocompRdfaScraper,
@@ -63,7 +64,7 @@ begin
     end
   end
 
-  if failed_scrapers.length > 0
+  if email && failed_scrapers.length > 0
     message = <<MESSAGE_END
 From: TeSS <tess@tess2-elixir.csc.fi>
 To: TeSS <tess-support@googlegroups.com>
