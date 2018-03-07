@@ -43,7 +43,7 @@ international research community.',
         start: start,
         end: finish,
         venue: host,
-        #country: 'Switzerland', # TODO: Set this properly, perhaps using Nominatim
+        country: 'Switzerland', # TODO: Set this properly, perhaps using Nominatim
         event_types: get_event_type(event['schema:eventType']),
         target_audience: ['Graduate students',
                           'Industry',
@@ -52,8 +52,6 @@ international research community.',
                           'PhD students'
         ]
       )
-      puts "EVENT: #{new.inspect}"
-      puts
       add_event(new)
     end
   end
