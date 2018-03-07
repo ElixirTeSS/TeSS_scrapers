@@ -30,7 +30,6 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
     lesson_urls = doc.css('td > a').collect { |x| x.values }.flatten.select { |x| x.include?('github.io') }
 
     lesson_urls.each do |lesson_url|
-      puts "URL: #{lesson_url.inspect}"
       lesson = Nokogiri::HTML(open_url(lesson_url))
       title = lesson.css('h1').text
       unless exclude.include?(title)
