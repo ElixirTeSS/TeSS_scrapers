@@ -84,10 +84,20 @@ module Tess
         else
           puts "... from remote location" if verbose
           options = config[:ssl_verify_mode] ? { ssl_verify_mode: config[:ssl_verify_mode] } : {}
-          open(url, options).tap do |f|
-            cache_file(url, f) if cache
-            f.rewind
+          begin
+            open(url, options).tap do |f|
+              cache_file(url, f) if cache
+              f.rewind
+            end
+          rescue => e
+            case e
+              when OpenURI::HTTPError
+                puts("Error for URL #{url}: #{e}")
+              else
+                raise e
+            end
           end
+
         end
       end
 

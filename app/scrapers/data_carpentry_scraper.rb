@@ -30,23 +30,29 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
     lesson_urls = doc.css('td > a').collect { |x| x.values }.flatten.select { |x| x.include?('github.io') }
 
     lesson_urls.each do |lesson_url|
+      puts "URL: #{lesson_url.inspect}"
       lesson = Nokogiri::HTML(open_url(lesson_url))
       title = lesson.css('h1').text
       unless exclude.include?(title)
+        paragraphs = lesson.css('p')
+        if paragraphs.empty?
+          puts "No paragraphs found for #{lesson_url}"
+          next
+        end
         if title.empty?
-          title = lesson.css('p').first.text.gsub('<p>#', '').gsub('</p>', '').gsub('#', '')
-          description = lesson.css('p')[2]
+          title = paragraphs.first.text.gsub('<p>#', '').gsub('</p>', '').gsub('#', '')
+          description = paragraphs[2]
         else
-          description = lesson.css('p')[0].text
+          description = paragraphs[0].text
           if description == '======='
-            description = lesson.css('p')[1].text
+            description = paragraphs[1].text
           end
         end
         descriptions = []
         index = 0
         while description && !description.include?('Content Contributors') && index < 5 do
-          description = lesson.css('p')[index=index+1]
-          descriptions << lesson.css('p')[index]
+          description = paragraphs[index=index+1]
+          descriptions << paragraphs[index]
         end
         lessons[lesson_url] = {}
         lessons[lesson_url]['short_description'] = descriptions.join(' ')
