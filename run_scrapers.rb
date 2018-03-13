@@ -21,7 +21,7 @@ scrapers = [
    EbiJsonScraper,
    EdinburghScraper,
    ElixirEventsScraper,
-   ErasysRdfaScraper,
+   #ErasysRdfaScraper, # Domain changed to erasysapp.eu, breaking old links
    FlemishJsonldEventsScraper,
    FuturelearnRdfaScraper,
    GalaxyScraper,
