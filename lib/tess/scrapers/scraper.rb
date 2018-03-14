@@ -60,7 +60,7 @@ module Tess
               r = resource.create_or_update
               print(r.errors ? 'E' : '.')
             end
-            puts if verbose
+            puts
           end
         end
       end
