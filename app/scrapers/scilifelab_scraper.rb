@@ -23,31 +23,19 @@ class ScilifelabScraper < Tess::Scrapers::Scraper
     events = parse_data(config[:events_path])
 
     events.each do |url, data|
-      event = Tess::API::Event.new(
-          { title: data['title'],
-            url: url,
-            content_provider: cp,
-            start: data['start_date'],
-            end: data['end_date'],
-            event_types: [:workshops_and_courses],
-          })
+      event = Tess::API::Event.new(title: data['title'],
+                                   url: url,
+                                   content_provider: cp,
+                                   start: data['start_date'],
+                                   end: data['end_date'],
+                                   event_types: [:workshops_and_courses],
+                                  )
       if data['location']
         location = data['location']
         if location == 'Internet'
           event.online = true
-        else
-          client = GooglePlaces::Client.new(Tess::API.config['google_api_key'])
-          if !location.empty?
-            google_place = client.spots_by_query(location, :language => 'en').first || nil
-            if google_place
-              event.latitude = google_place.lat
-              event.longitude = google_place.lng
-              event.city = location
-            end
-          end
         end
       end
-      #print event.inspect
       add_event(event)
     end
   end

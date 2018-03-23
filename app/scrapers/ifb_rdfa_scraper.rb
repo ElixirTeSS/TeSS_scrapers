@@ -7,7 +7,8 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
         name: 'IFB RDFa Scraper',
         offline_url_mapping: {},
         root_url: 'https://www.france-bioinformatique.fr',
-        events_path: '/en/formations',
+        events_path: '/en/evenements_upcoming',
+        past_events_path: '/en/evenements_previous',
         materials_path: '/en/training_material',
         ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
     }
@@ -24,10 +25,8 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
           keywords: ['bioinformatics', 'infrastructure', 'Big Data', 'NGS']
         }))
 
-    index_page = open_url(config[:root_url] + config[:materials_path])
-    index_doc = index_page.read.gsub('XHTML+RDFa 1.0', 'XHTML+RDFa 1.1') # DOCTYPE hack, or licenses don't extract properly
-
-    materials = Tess::Rdf::MaterialExtractor.new(index_doc, :rdfa).extract { |p| Tess::API::Material.new(p) }
+    materials = Tess::Rdf::MaterialExtractor.new(
+        open_url(config[:root_url] + config[:materials_path]), :rdfa).extract { |p| Tess::API::Material.new(p) }
 
     materials.each do |material|
       material.content_provider = cp
@@ -35,6 +34,17 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
       material.licence = material.licence.gsub('http://', 'https://') if material.licence && material.licence.start_with?('http://creativecommons.org/')
 
       add_material(material)
+    end
+
+    [config[:events_path], config[:past_events_path]].each do |path|
+      events = Tess::Rdf::EventExtractor.new(
+          open_url(config[:root_url] + path).read, :rdfa).extract { |p| Tess::API::Event.new(p) }
+
+      events.each do |event|
+        event.content_provider = cp
+
+        add_event(event)
+      end
     end
   end
 end

@@ -9,7 +9,6 @@ class BiviEventScraper < Tess::Scrapers::Scraper
   end
 
   def scrape
-    client = GooglePlaces::Client.new(Tess::API.config['google_api_key'])
     cp = add_content_provider(Tess::API::ContentProvider.new(title: "Bioinformatics Visualization",
                                                              url: config[:root_url],
                                                              image_url: "http://bivi.co/sites/default/files/logo.png",
@@ -64,29 +63,12 @@ class BiviEventScraper < Tess::Scrapers::Scraper
       desc = darray.join('\n')
 
 
-      begin
-        unless location.blank?
-          google_place = client.spots_by_query(location, language: 'en')
-          google_place = google_place.first
-          if google_place
-            latitude = google_place.lat
-            longitude = google_place.lng
-          else
-            latitude,longitude = nil
-          end
-        end
-      rescue Exception => e
-        puts "Failed to connect to Google places for '#{location}': #{e}"
-      end
-
       new_event = Tess::API::Event.new(content_provider: cp,
                                        title: title,
                                        url: link,
                                        start: start,
                                        end: stop,
                                        description: desc,
-                                       latitude: latitude,
-                                       longitude: longitude,
                                        organizer: creator,
                                        event_types: [:workshops_and_courses]
                                       )

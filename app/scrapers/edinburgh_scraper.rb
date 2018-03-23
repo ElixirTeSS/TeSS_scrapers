@@ -19,9 +19,11 @@ class EdinburghScraper < Tess::Scrapers::Scraper
              node_name: :UK
         }))
         doc = Nokogiri::HTML(open_url(config[:root_url] + config[:index_path]))
-        urls = doc.xpath('//*[@id="node-34"]/div/div[2]/div/div/table/tbody/tr/td[2]/a').map{|x| config[:root_url] + x.attributes['href'].value}
+        urls = doc.xpath('//*[@id="node-34"]/div/div[2]/div/div/table/tbody/tr/td[2]/a').map do |x|
+            config[:root_url] + x.attributes['href'].value.gsub(config[:root_url], '')
+        end
         urls.each do |url|
-            html = open(url).read
+            html = open_url(url).read
             json = /<script type="application\/ld\+json">(.*?)<\/script>/m.match(html)
             if json 
                 #Clean up - remove CDATA and <br /> that trip up parser
