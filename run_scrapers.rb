@@ -36,6 +36,7 @@ scrapers = [
    PortugalEventsScraper,
    PraceEventsScraper,
    RssScraper,
+   SheffieldScraper,
    SibScraper,
    SibEventsScraper,
    SoftwareCarpentryEventsScraper,
