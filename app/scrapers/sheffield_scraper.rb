@@ -29,6 +29,7 @@ class SheffieldScraper < Tess::Scrapers::Scraper
     files.each do |file|
         eventyaml = YAML.load_file(file)
         event = Tess::API::Event.new({
+          description: File.read(file).match(/## Overview.*/m).to_s,
           content_provider: cp,
           event_types: [:workshops_and_courses],
           url: "#{config[:site_base]}/#{File.basename(file).chomp('.md')}",
@@ -36,6 +37,7 @@ class SheffieldScraper < Tess::Scrapers::Scraper
           venue: eventyaml['venue'],
           start: formatted_time(eventyaml['startTime'], eventyaml['date']),
           end: formatted_time(eventyaml['endTime'], eventyaml['date']),
+          city: "#{eventyaml['city'].capitalize if !eventyaml['city'].nil?}",
           country: eventyaml['country']
          })
          add_event(event)
