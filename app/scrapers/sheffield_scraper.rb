@@ -17,7 +17,7 @@ class SheffieldScraper < Tess::Scrapers::Scraper
         { title: "Sheffield Bioinformatics Core",
           url: "http://sbc.shef.ac.uk//training/",
           image_url: "http://sheffield-bioinformatics-core.github.io//images/site-logo.png",
-          description: "",
+          description: "The Sheffield Bioinformatics Core Facility aims to develop and advance the training and application of bioinformatics and computational biology to biological research, biomedical research and public health in Sheffield",
           content_provider_type: :organisation
         }))
 
@@ -26,21 +26,33 @@ class SheffieldScraper < Tess::Scrapers::Scraper
     cache_file_path('git')
     files = Dir["#{cache_file_path('git')}/#{config[:gh_events_path]}/*.md"]
     files.reject!{|x|x.include?('index.md')}
+    
     files.each do |file|
+      begin 
         eventyaml = YAML.load_file(file)
+        puts formatted_time(eventyaml['startTime'], eventyaml['date'])
         event = Tess::API::Event.new({
           description: File.read(file).match(/## Overview.*/m).to_s,
           content_provider: cp,
           event_types: [:workshops_and_courses],
           url: "#{config[:site_base]}/#{File.basename(file).chomp('.md')}",
           title: eventyaml['title'],
+
+          start: formatted_time(eventyaml['startTime'], eventyaml['startDate']),
+          end: formatted_time(eventyaml['endTime'], eventyaml['endDate']),
           venue: eventyaml['venue'],
-          start: formatted_time(eventyaml['startTime'], eventyaml['date']),
-          end: formatted_time(eventyaml['endTime'], eventyaml['date']),
           city: "#{eventyaml['city'].capitalize if !eventyaml['city'].nil?}",
-          country: eventyaml['country']
+          country: eventyaml['country'],
+
+          contact: eventyaml['contact'],
+          #difficulty_level: [eventyaml['difficulty']],
+          keywords: eventyaml['keywords']
          })
          add_event(event)
+       rescue Exception=>e
+        puts e
+       end
+
     end
   end
 
