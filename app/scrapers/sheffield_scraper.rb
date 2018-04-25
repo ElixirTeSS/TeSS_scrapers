@@ -31,7 +31,7 @@ class SheffieldScraper < Tess::Scrapers::Scraper
       begin 
         eventyaml = YAML.load_file(file)
         event = Tess::API::Event.new({
-          description: File.read(file).match(/## Overview.*/m).to_s,
+          description: eventyaml['description'],
           content_provider: cp,
           event_types: [:workshops_and_courses],
           url: "#{config[:site_base]}/#{File.basename(file).chomp('.md')}",
