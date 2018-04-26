@@ -1,6 +1,6 @@
 require 'nokogiri'
 
-class IfbRdfaScraper < Tess::Scrapers::Scraper
+class IfbEventsScraper < Tess::Scrapers::Scraper
 
   def self.config
     {
@@ -8,7 +8,6 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
         offline_url_mapping: {},
         root_url: 'https://www.france-bioinformatique.fr',
         events_path: '/en/evenements_upcoming',
-        materials_path: '/en/training_material',
         ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
     }
   end
@@ -24,18 +23,17 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
           keywords: ['bioinformatics', 'infrastructure', 'Big Data', 'NGS']
         }))
 
-    index_page = open_url(config[:root_url] + config[:materials_path])
-    index_doc = index_page.read.gsub('XHTML+RDFa 1.0', 'XHTML+RDFa 1.1') # DOCTYPE hack, or licenses don't extract properly
+    doc = Nokogiri::HTML(open_url(config[:root_url] + config[:events_path]))
+    events = doc.css('div.event_block')
 
-    materials = Tess::Rdf::MaterialExtractor.new(index_doc, :rdfa).extract { |p| Tess::API::Material.new(p) }
+    events.each do |event|
+      event.attributes.each do |attribute, value|
+        puts "A: #{attribute}, V: #{value}"
+      end
 
-    materials.each do |material|
-      material.content_provider = cp
-      material.licence = 'CECILL-2.1' if material.licence == 'http://www.cecill.info/index.en.html' || material.licence == 'http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html'
-      material.licence = material.licence.gsub('http://', 'https://') if material.licence && material.licence.start_with?('http://creativecommons.org/')
-
-      add_material(material)
     end
 
   end
+
+
 end
