@@ -45,13 +45,15 @@ class GalaxyScraper < Tess::Scrapers::Scraper
           if material['enable'] == 'false'
             url = nil
           elsif material['type'] == 'tutorial'
-            if material['hands_on'] == 'yes'
+            if material['hands_on']
               url = base_url + '/topics/' + yaml['name'] + '/tutorials/' + material['name'] + '/tutorial.html'
-              if material['slides'] == 'yes'
+              new_material.resource_type = ['Tutorial']
+              if material['slides']
                 extra_slides = base_url + '/topics/' + yaml['name'] + '/tutorials/' + material['name'] + '/slides.html'
               end
             else
               url = base_url + '/topics/' + yaml['name'] + '/tutorials/' + material['name'] + '/slides.html'
+              new_material.resource_type = ['Slides']
             end
             if material['questions']
               description += "\n\nQuestions of the tutorial:\n\n"
@@ -66,20 +68,21 @@ class GalaxyScraper < Tess::Scrapers::Scraper
               end
             end
           elsif material['type'] == 'introduction'
-            url = base_url + '/topics/' + yaml['name'] + '/slides/#1'
+            url = base_url + '/topics/' + yaml['name'] + '/slides/introduction.html'
           else
-            url = nil
+            url = ''
           end
           if url
             new_material.url = url
             new_material.title = name
+            new_material.authors = material["contributors"]
             new_material.short_description = description
             new_material.content_provider = cp
             #new_material.authors = material['contributors'].collect{|x| x['name']}
             externals = []
             #externals << {title: "#{yaml['name']} Docker image", url: "https://github.com/#{yaml['docker_image']}"} unless yaml['docker_image'].nil? || yaml['docker_image'].empty?
-            externals << {title: "Input datasets", url: material['zenodo_link']} unless material['zenodo_link'].nil? || material['zenodo_link'].empty?
-            externals << {title: "Associated slides", url: extra_slides} unless extra_slides.nil?
+            externals << {title: "#{yaml['title']} dataset", url: material['zenodo_link']} unless material['zenodo_link'].nil? || material['zenodo_link'].empty?
+            externals << {title: "#{yaml['title']} slides", url: extra_slides} unless extra_slides.nil?
             new_material.external_resources_attributes = externals
             add_material(new_material)
           end
