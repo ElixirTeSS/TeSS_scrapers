@@ -24,6 +24,7 @@ scrapers = [
    #ErasysRdfaScraper, # Domain changed to erasysapp.eu, breaking old links
    FlemishJsonldEventsScraper,
    FuturelearnRdfaScraper,
+   GalaxyEventsScraper,
    GalaxyScraper,
    Genome3dScraper,
    #GobletRdfaScraper, # See ticket #44
