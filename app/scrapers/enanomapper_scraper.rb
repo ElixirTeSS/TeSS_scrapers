@@ -1,4 +1,6 @@
 require 'yaml'
+require 'nokogiri'
+
 
 class EnanomapperScraper < Tess::Scrapers::Scraper
 
@@ -21,14 +23,38 @@ class EnanomapperScraper < Tess::Scrapers::Scraper
                                 content_provider_type: :project
     }))
  
-    # Had issues with MaterialExtractor code that didn't have time to debug so this does manual extraction
-    # Load the markdown, extract just YAML, parse YAML, and set-up Material object with each YAML key 
+
+    sitemap_url = 'https://raw.githubusercontent.com/enanomapper/tutorials/master/sitemap.xml'
+    sitemap = Nokogiri::XML.parse(open(sitemap_url).read)
+    ns = {"ns" => "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    locs = sitemap.xpath('/ns:urlset/ns:url/ns:loc', ns)
+
+    locs.collect{|x| x.text}.each do |file|
+    	tutorial = open(file).read
+    	json = /<script type="application\/ld\+json">(.*?)<\/script>/m.match(tutorial)
+    		puts json
+    	event = Tess::Rdf::MaterialExtractor.new(json, :jsonld).extract #{ |p| Tess::API::Material.new(p) }
+    end
+
+=begin
+
+    # This does a manual extraction rather than using MaterialExtractor as had issues. May try again later, this:
+    # Loads the markdown, extracts just YAML, parses YAML, and sets-up Material object with each YAML key 
 
      events_page = open_url(config[:root_url]).read
 	 
+
+ 	git_setup
+ 	files = Dir["#{cache_file_path('git')}/*/*.md"]
+     puts files 
+
 	 site_url = 'https://enanomapper.github.io/tutorials/'
-	 github_url = 'https://raw.githubusercontent.com/enanomapper/tutorials/master/'
 	 file_path = 'BrowseOntology/Tutorial%20browsing%20eNM%20ontology'
+
+
+
+	 github_url = 'https://raw.githubusercontent.com/enanomapper/tutorials/master/'
+	 
 
 	 page = open("#{github_url}#{file_path}.md").read
 	 yaml_data = page.match /---(.*?)---*./m 
@@ -57,6 +83,9 @@ class EnanomapperScraper < Tess::Scrapers::Scraper
     end
     %x{cd #{git_path} && git pull} unless offline
   end
+
+=end
+end
 
 end
 
