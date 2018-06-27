@@ -16,11 +16,12 @@ scrapers = [
    CscEventsScraper,
    DataCarpentryScraper,
    DenbiScraper,
-   DtlsEventsScraper,
+    DtlsEventsScraper,
    #EbiScraper, # Broken old materials one
    EbiJsonScraper,
    EdinburghScraper,
    ElixirEventsScraper,
+   EnanomapperScraper,
    #ErasysRdfaScraper, # Domain changed to erasysapp.eu, breaking old links
    FlemishJsonldEventsScraper,
    FuturelearnRdfaScraper,
