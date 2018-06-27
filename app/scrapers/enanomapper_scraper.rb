@@ -29,11 +29,20 @@ class EnanomapperScraper < Tess::Scrapers::Scraper
     ns = {"ns" => "http://www.sitemaps.org/schemas/sitemap/0.9"}
     locs = sitemap.xpath('/ns:urlset/ns:url/ns:loc', ns)
 
+    materials = []
+
     locs.collect{|x| x.text}.each do |file|
     	tutorial = open(file).read
-    	json = /<script type="application\/ld\+json">(.*?)<\/script>/m.match(tutorial)
-    		puts json
-    	event = Tess::Rdf::MaterialExtractor.new(json, :jsonld).extract #{ |p| Tess::API::Material.new(p) }
+    	json = (/<script type="application\/ld\+json">(.*?)<\/script>/m.match(tutorial))[1]
+      json = JSON.parse(json)
+      json['url'] = json['url'][0]['url'] if json['url'].is_a?(Array)
+    	materials += Tess::Rdf::MaterialExtractor.new(json.to_json, :jsonld).extract { |p| Tess::API::Material.new(p) }
+    end
+
+    materials.each do |material|
+      material.content_provider = cp
+
+      add_material(material)
     end
 
 =begin
