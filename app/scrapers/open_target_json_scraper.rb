@@ -12,7 +12,7 @@ class OpenTargetJsonScraper < Tess::Scrapers::Scraper
     cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "Open Target",
           url: "https://www.opentargets.org/",
-          #image_url: "",
+          image_url: "https://www.sanger.ac.uk/sites/default/files/Jul2017/open_targets.png",
           description: "Open Targets is an innovative, large-scale, multi-year, 
           public-private partnership that uses human genetics and genomics data for
            systematic drug target identification and prioritisation.",
@@ -28,16 +28,16 @@ class OpenTargetJsonScraper < Tess::Scrapers::Scraper
           startDate = Date.parse(session['date'])
           if startDate > Date.today and session['external'] and
            session['external']['link'] and !session['external']['link'].empty?
-            puts "Extracting! #{session}\n\n\n"
             event = Tess::API::Event.new({
-              title: session['description'],
-              description: session['external']['text'],
+              title: session['external']['text'],
+              description: session['description'],
               url: session['external']['link'],
               start: startDateString,
               end: "#{modify_date(startDateString, session['duration']) if session['duration']}",
               venue: session['place'].split(',').first,
               country: session['place'].split(',').last,
               keywords: ['Open Targets'],
+              event_types: [session['type'].gsub(' ', '_').downcase],
               content_provider: cp
             })
             add_event(event)
