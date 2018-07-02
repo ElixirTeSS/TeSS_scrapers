@@ -26,7 +26,13 @@ class OpenTargetJsonScraper < Tess::Scrapers::Scraper
         json['sessions'].each do |session|
           startDateString = session['date']
           startDate = Date.parse(session['date'])
-          if startDate > Date.today and session['external'] and
+          if session['duration']
+            endDate = modify_date(startDateString, session['duration'])
+          else
+            endDate = startDate
+          end
+
+          if endDate >= Date.today and session['external'] and
            session['external']['link'] and !session['external']['link'].empty?
             event = Tess::API::Event.new({
               title: session['external']['text'],
