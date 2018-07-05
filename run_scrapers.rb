@@ -10,13 +10,15 @@ scrapers = [
    BiocompRdfaScraper,
    BitsvibEventsJsonldScraper,
    BitsvibRdfaScraper,
+   BiviMaterialScraper,
+   BiviEventScraper,
    BmtcJsonldScraper,
    CambridgeEventsScraper,
    CourseraScraper,
    CscEventsScraper,
    DataCarpentryScraper,
    DenbiScraper,
-    DtlsEventsScraper,
+   DtlsEventsScraper,
    #EbiScraper, # Broken old materials one
    EbiJsonScraper,
    EdinburghScraper,
@@ -31,10 +33,12 @@ scrapers = [
    #GobletRdfaScraper, # See ticket #44
    #GobletApiScraper, # See ticket #20
    IfbRdfaScraper,
+   IntermineScraper,
    KhanAcademyApiScraper,
    LegacySoftwareCarpentryScraper,
    NbisEventsScraper,
    NgsRegistryScraper,
+   OpenTargetJsonScraper,
    PortugalEventsScraper,
    PraceEventsScraper,
    RssScraper,
@@ -43,9 +47,7 @@ scrapers = [
    SibEventsScraper,
    SoftwareCarpentryEventsScraper,
    #IannEventsScraper,
-   ScilifelabScraper,
-   BiviMaterialScraper,
-   BiviEventScraper
+   ScilifelabScraper
 ]
 
 
