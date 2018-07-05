@@ -73,6 +73,15 @@ class OpenTargetJsonScraper < Tess::Scrapers::Scraper
             date = date + value
         end
       end
+        time_period = matches[2]
+        
+        time_period.scan(/(\d+)([HMS])/).each do |match|
+          case match[1]
+            when 'H'
+            when 'M'
+            when 'S'
+          end
+        end      
       date
     end
 end
