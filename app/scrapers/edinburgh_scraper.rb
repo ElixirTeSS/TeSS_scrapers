@@ -18,23 +18,27 @@ class EdinburghScraper < Tess::Scrapers::Scraper
              content_provider_type: :organisation,
              node_name: :UK
         }))
-        doc = Nokogiri::HTML(open_url(config[:root_url] + config[:index_path]))
+        doc = Nokogiri::HTML(open(config[:root_url] + config[:index_path]).read)
         urls = doc.xpath('//*[@id="node-34"]/div/div[2]/div/div/table/tbody/tr/td[2]/a').map do |x|
             config[:root_url] + x.attributes['href'].value.gsub(config[:root_url], '')
         end
         urls.each do |url|
-            html = open_url(url).read
-            json = /<script type="application\/ld\+json">(.*?)<\/script>/m.match(html)
-            if json 
-                #Clean up - remove CDATA and <br /> that trip up parser
-                json = json[1].gsub('<!--//--><![CDATA[// ><!--', '')
-                json = json.gsub('//--><!]]>', '')
-                json = json.gsub('<br />', '')
-                event = Tess::Rdf::EventExtractor.new(json, :jsonld).extract { |p| Tess::API::Event.new(p) }.first
-                event.content_provider = cp
-                event.event_types = [:workshops_and_courses]
-                event.url = url
-                add_event(event)
+            begin
+                html = open(url).read
+                json = /<script type="application\/ld\+json">(.*?)<\/script>/m.match(html)
+                if json 
+                    #Clean up - remove CDATA and <br /> that trip up parser
+                    json = json[1].gsub('<!--//--><![CDATA[// ><!--', '')
+                    json = json.gsub('//--><!]]>', '')
+                    json = json.gsub('<br />', '')
+                    event = Tess::Rdf::EventExtractor.new(json, :jsonld).extract { |p| Tess::API::Event.new(p) }.first
+                    event.content_provider = cp
+                    event.event_types = [:workshops_and_courses]
+                    event.url = url
+                    add_event(event)
+                end
+            rescue
+                puts 'could not access URL'
             end
         end
     end
