@@ -30,7 +30,7 @@ scrapers = [
    GalaxyEventsScraper,
    GalaxyScraper,
    Genome3dScraper,
-   #GobletRdfaScraper, # See ticket #44
+   GobletRdfaScraper,
    #GobletApiScraper, # See ticket #20
    IfbRdfaScraper,
    IntermineScraper,
