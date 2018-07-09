@@ -6,7 +6,7 @@ class GobletRdfaScraper < Tess::Scrapers::Scraper
     {
         name: 'Goblet RDFa Scraper',
         offline_url_mapping: {},
-        root_url: 'http://www.mygoblet.org',
+        root_url: 'https://www.mygoblet.org',
         courses_path: '/training-portal/courses-xml', # Unused?
         materials_path: '/training-portal/materials-xml'
 
@@ -16,8 +16,8 @@ class GobletRdfaScraper < Tess::Scrapers::Scraper
   def scrape
     cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "GOBLET",
-          url: "http://www.mygoblet.org",
-          image_url: "http://www.mygoblet.org/sites/default/files/logo_goblet_trans.png",
+          url: "https://www.mygoblet.org",
+          image_url: "https://www.mygoblet.org/sites/default/files/logo_goblet_trans.png",
           description: "GOBLET, the Global Organisation for Bioinformatics Learning, Education and Training, is a legally registered foundation providing a global, sustainable support and networking structure for bioinformatics educators/trainers and students/trainees.",
           content_provider_type: :portal
         }))
@@ -29,13 +29,23 @@ class GobletRdfaScraper < Tess::Scrapers::Scraper
       materials.each do |material|
         material.url = url
         material.content_provider = cp
-
+        material.keywords = format_keywords(material.keywords)
         add_material(material)
       end
     end
   end
 
   private
+
+  def format_keywords(keywords)
+    return keywords.collect do |keyword|
+      if keyword.include?(config[:root_url])
+        keyword = keyword.gsub("#{config[:root_url]}/topic-tags/", "")
+        keyword = keyword.gsub('-', ' ')
+        keyword = keyword.humanize
+      end
+    end
+  end
 
   # Get all URLs from XML
   def get_urls(page)
