@@ -5,7 +5,7 @@ class BitsvibEventsJsonldScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'VIB Bioinformatics Training and Services Events Scraper',
-        root_url: 'http://dev.bits.vib.be/eulife/all_events.json'
+        root_url: 'https://dev.bits.vib.be/eulife/all_events.json'
     }
   end
 

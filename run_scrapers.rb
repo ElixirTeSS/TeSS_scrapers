@@ -9,6 +9,8 @@ scrapers = [
    BiocompRdfaScraper,
    BitsvibEventsJsonldScraper,
    BitsvibRdfaScraper,
+   BiviMaterialScraper,
+   BiviEventScraper,
    BmtcJsonldScraper,
    CambridgeEventsScraper,
    CourseraScraper,
@@ -20,18 +22,22 @@ scrapers = [
    EbiJsonScraper,
    EdinburghScraper,
    ElixirEventsScraper,
+   EnanomapperScraper,
    #ErasysRdfaScraper, # Domain changed to erasysapp.eu, breaking old links
    FlemishJsonldEventsScraper,
    FuturelearnRdfaScraper,
+   GalaxyEventsScraper,
    GalaxyScraper,
    Genome3dScraper,
-   #GobletRdfaScraper, # See ticket #44
+   GobletRdfaScraper,
    #GobletApiScraper, # See ticket #20
    IfbRdfaScraper,
+   IntermineScraper,
    KhanAcademyApiScraper,
    LegacySoftwareCarpentryScraper,
    NbisEventsScraper,
    NgsRegistryScraper,
+   OpenTargetJsonScraper,
    PortugalEventsScraper,
    PraceEventsScraper,
    RssScraper,
@@ -40,9 +46,7 @@ scrapers = [
    SibEventsScraper,
    SoftwareCarpentryEventsScraper,
    #IannEventsScraper,
-   ScilifelabScraper,
-   BiviMaterialScraper,
-   BiviEventScraper
+   ScilifelabScraper
 ]
 
 

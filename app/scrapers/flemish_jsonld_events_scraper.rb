@@ -5,7 +5,7 @@ class FlemishJsonldEventsScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Flemish Super Computing Events Scraper',
-        root_url: 'http://dev.bits.vib.be/eulife/all_events-vrc.json'
+        root_url: 'https://dev.bits.vib.be/eulife/all_events-vrc.json'
     }
   end
 
