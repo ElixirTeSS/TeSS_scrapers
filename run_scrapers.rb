@@ -5,7 +5,6 @@ log = 'log/scrapers.log'
 output = 'log/scrapers.out' # Need to logrotate this!
 email = ARGV[0] != 'no_email' rescue true
 
-
 scrapers = [
    BiocompRdfaScraper,
    BitsvibEventsJsonldScraper,
@@ -49,6 +48,7 @@ scrapers = [
    #IannEventsScraper,
    ScilifelabScraper
 ]
+
 
 
 options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
