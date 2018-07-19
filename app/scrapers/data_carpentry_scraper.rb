@@ -8,7 +8,7 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
     {
         name: 'Data Carpentry Scraper',
         offline_url_mapping: {},
-        root_url: 'http://www.datacarpentry.org',
+        root_url: 'https://www.datacarpentry.org',
     }
   end
 
@@ -21,7 +21,7 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
           content_provider_type: :organisation
         }))
 
-    doc = Nokogiri::HTML(open_url(config[:root_url] + '/lessons'))
+    doc = Nokogiri::HTML(open_url(config[:root_url] + '/lessons/'))
     exclude = [' Feeling Responsive']
     lessons = {}
     description = ''
