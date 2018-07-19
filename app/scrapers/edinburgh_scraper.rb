@@ -23,7 +23,9 @@ class EdinburghScraper < Tess::Scrapers::Scraper
             config[:root_url] + x.attributes['href'].value.gsub(config[:root_url], '')
         end
         urls.each do |url|
-            html = open_url(url).read
+            page = open_url(url)
+            next unless page
+            html = page.read
             json = /<script type="application\/ld\+json">(.*?)<\/script>/m.match(html)
             if json 
                 #Clean up - remove CDATA and <br /> that trip up parser
