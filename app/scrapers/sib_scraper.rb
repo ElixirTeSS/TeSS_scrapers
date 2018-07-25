@@ -57,7 +57,12 @@ international research community.',
       next unless course
       url = course['href']
       name = course.text.strip
-      description = coursebox.at_css('p').text.strip
+      desc = coursebox.at_css('p')
+      if desc
+        description = desc.text.strip
+      else
+        description = 'No description provided.'
+      end
       lessons[url] = {}
       lessons[url]['name'] = name
       lessons[url]['description'] = description
