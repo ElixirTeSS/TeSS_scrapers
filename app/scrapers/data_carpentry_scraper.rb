@@ -8,20 +8,20 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
     {
         name: 'Data Carpentry Scraper',
         offline_url_mapping: {},
-        root_url: 'http://www.datacarpentry.org',
+        root_url: 'https://www.datacarpentry.org',
     }
   end
 
   def scrape
     cp = add_content_provider(Tess::API::ContentProvider.new(
         { title: "Data Carpentry",
-          url: "http://www.datacarpentry.org",
+          url: "https://www.datacarpentry.org",
           image_url: "http://www.datacarpentry.org/assets/img/DC_logo_vision.png",
           description: "Data Carpentry's aim is to teach researchers basic concepts, skills, and tools for working with data so that they can get more done in less time, and with less pain.",
           content_provider_type: :organisation
         }))
 
-    doc = Nokogiri::HTML(open_url(config[:root_url] + '/lessons'))
+    doc = Nokogiri::HTML(open_url(config[:root_url] + '/lessons/'))
     exclude = [' Feeling Responsive']
     lessons = {}
     description = ''
