@@ -83,21 +83,21 @@ module Tess
           end
         else
           puts "... from remote location" if verbose
-          options = config[:ssl_verify_mode] ? { ssl_verify_mode: config[:ssl_verify_mode] } : {}
+          options = { redirect: false } # We're doing redirects manually below, since open-uri can't handle http -> https redirection
+          options[:ssl_verify_mode] = config[:ssl_verify_mode] if config.key?(:ssl_verify_mode)
           begin
+            redirect_attempts = 5
             open(url, options).tap do |f|
               cache_file(url, f) if cache
               f.rewind
             end
-          rescue => e
-            case e
-              when OpenURI::HTTPError
-                puts("Error for URL #{url}: #{e}")
-              else
-                raise e
-            end
+          rescue OpenURI::HTTPRedirect => e
+            url = e.uri.to_s
+            retry if (redirect_attempts -= 1) > 0
+            raise e
+          rescue OpenURI::HTTPError => e
+            puts("Error for URL #{url}: #{e}")
           end
-
         end
       end
 
