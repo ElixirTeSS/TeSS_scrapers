@@ -3,7 +3,8 @@ class BiviMaterialScraper < Tess::Scrapers::Scraper
   {
     name: 'BiVi Material Scraper',
     root_url: 'http://bivi.co',
-    index_path: '/presentation-feed'
+    index_path: '/presentation-feed',
+    ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
   }
   end
 
