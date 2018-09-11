@@ -1,8 +1,8 @@
 require_relative 'lib/tess_scrapers'
 require 'net/smtp'
 
-log = 'log/scrapers.log'
-output = 'log/scrapers.out' # Need to logrotate this!
+log = 'log/scrapers.log' # The log file for this script, just mentions which scrapers are run.
+output = 'log/scrapers.out' # The log file for scraper output. Says how many events etc. were scraped. Need to logrotate this, will be big!
 email = ARGV[0] != 'no_email' rescue true
 
 scrapers = [
@@ -48,8 +48,6 @@ scrapers = [
    #IannEventsScraper,
    ScilifelabScraper
 ]
-
-
 
 options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
 #options = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing
