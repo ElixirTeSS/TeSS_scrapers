@@ -5,7 +5,6 @@ class NgsRegistryScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Legacy Sofware Carpentry Scraper',
-        offline_url_mapping: {},
         root_url: 'https://microasp.upsc.se/ngs_trainers/Materials/tree/master',
         json_file: 'https://bioinformatics.upsc.se/trainers/details.json',
         tedious_string: '[Top](#sub-module-title) | [Keywords](#keywords) | [Authors](#authors) | [Type](#type) | [Description](#description) | [Aims](#aims) | [Prerequisites](#prerequisites) | [Target audience](#target-audience) | [Learning objectives](#learning-objectives) | [Materials](#materials) | [Data](#data) | [Timing](#timing) | [Content stability](#content-stability) | [Technical requirements](#technical-requirements) | [Literature references](#literature-references)',

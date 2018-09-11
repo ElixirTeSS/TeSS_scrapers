@@ -6,7 +6,6 @@ class BitsvibRdfaScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'VIB Bioinformatics Training and Services RDFa Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.bits.vib.be',
         materials_path: '/training-list'
     }

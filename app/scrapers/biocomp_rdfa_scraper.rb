@@ -5,7 +5,6 @@ class BiocompRdfaScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Biocomp RDFa Scraper',
-        offline_url_mapping: {},
         root_url: 'http://biocomp.vbcf.ac.at/training',
         materials_path: '/index.html'
     }

@@ -5,7 +5,6 @@ class KhanAcademyApiScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Khan Academy API Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.khanacademy.org',
         api_path: '/api/v1/topic/',
         broad_topics: %w() #TODO: Find some topics

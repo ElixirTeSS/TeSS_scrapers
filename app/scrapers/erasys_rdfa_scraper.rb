@@ -7,7 +7,6 @@ class ErasysRdfaScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'ERASysAPP RDFa Scraper',
-        offline_url_mapping: {},
         root_url: 'http://www.sbedu.eu',
         per_page: 5
     }

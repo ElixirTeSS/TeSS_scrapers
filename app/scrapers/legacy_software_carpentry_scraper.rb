@@ -5,7 +5,6 @@ class LegacySoftwareCarpentryScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Legacy Sofware Carpentry Scraper',
-        offline_url_mapping: {},
         root_url: 'https://github.com/swcarpentry',
         gh_pages_path: '/bc/tree/gh-pages/',
         git_repo: '/bc.git',

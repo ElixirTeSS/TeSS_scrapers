@@ -6,7 +6,6 @@ class PraceEventsScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Prace Events Scraper',
-        offline_url_mapping: {},
         root_url: 'https://events.prace-ri.eu',
         ical_path: '/category/2/events.ics',
     }

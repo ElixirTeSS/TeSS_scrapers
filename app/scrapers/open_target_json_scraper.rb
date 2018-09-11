@@ -3,7 +3,6 @@ class OpenTargetJsonScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Open Targets Scraper',
-        offline_url_mapping: {},
         json_feed: 'https://raw.githubusercontent.com/opentargets/live-files/gh-pages/outreach.json'
     }
   end

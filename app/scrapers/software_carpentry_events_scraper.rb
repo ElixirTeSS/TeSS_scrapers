@@ -5,7 +5,6 @@ class SoftwareCarpentryEventsScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Software Carpentry Events Scraper',
-        offline_url_mapping: {},
         root_url: 'https://software-carpentry.org',
         ical_path: '/workshops.ics'
     }

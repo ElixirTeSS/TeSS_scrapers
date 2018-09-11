@@ -3,7 +3,6 @@ class RssScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'RSS RSS Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.statslife.org.uk',
         events_path: '/index.php?option=com_jevents&task=modlatest.rss&format=feed&type=rss&modid=284',
         location: {

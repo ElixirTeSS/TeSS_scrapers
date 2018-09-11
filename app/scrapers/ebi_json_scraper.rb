@@ -5,7 +5,6 @@ class EbiJsonScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'EBI Scraper',
-        offline_url_mapping: {},
         root_url: 'http://www.ebi.ac.uk',
         json_url: 'https://www.ebi.ac.uk/sites/ebi.ac.uk/files/data/ebi-events-tess-all.json'
     }

@@ -7,7 +7,6 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Data Carpentry Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.datacarpentry.org',
     }
   end

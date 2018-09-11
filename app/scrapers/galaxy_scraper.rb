@@ -5,7 +5,6 @@ class GalaxyScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Galaxy Scraper',
-        offline_url_mapping: {},
         root_url: 'https://microasp.upsc.se/ngs_trainers/Materials/tree/master',
         git_endpoint: 'https://github.com/galaxyproject/training-material.git',
         folder_path: 'metadata/'

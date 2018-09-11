@@ -6,7 +6,6 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'BMTC JSON-LD Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.birmingham.ac.uk',
         materials_path: '/facilities/metabolomics-training-centre/course-list.aspx'
     }

@@ -6,7 +6,6 @@ class BiiScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'BISE Scraper',
-        offline_url_mapping: {},
         root_url: 'http://test.biii.eu',
         materials_path: '/training?_format=json'
     }
@@ -64,7 +63,6 @@ require 'json'
 def self.config
     {
         name: 'BISE Scraper',
-        offline_url_mapping: {},
         root_url: 'http://test.biii.eu',
         materials_path: '/training?_format=json'
     }

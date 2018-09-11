@@ -5,7 +5,6 @@ class CourseraScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Coursera Scraper',
-        offline_url_mapping: {},
         root_url: 'https://api.coursera.org/api/courses.v1',
         friendly_url: 'https://www.coursera.org/learn/',
         search_term: 'bioinformatics',

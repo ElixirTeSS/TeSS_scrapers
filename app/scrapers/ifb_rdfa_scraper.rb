@@ -5,7 +5,6 @@ class IfbRdfaScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'IFB RDFa Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.france-bioinformatique.fr',
         events_path: '/en/evenements_upcoming',
         past_events_path: '/en/evenements_previous',

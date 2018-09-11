@@ -5,7 +5,6 @@ class GobletRdfaScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Goblet RDFa Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.mygoblet.org',
         courses_path: '/training-portal/courses-xml', # Unused?
         materials_path: '/training-portal/materials-xml'

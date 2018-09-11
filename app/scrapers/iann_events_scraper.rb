@@ -7,7 +7,6 @@ class IannEventsScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'iAnn Scraper',
-        offline_url_mapping: {},
         root_url: 'http://iann.pro',
         path: '/solr/select/?q=*&rows=20000&start=0'
     }
