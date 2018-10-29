@@ -3,7 +3,6 @@ class ScilifelabScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'SciLifeLab Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.scilifelab.se/',
         events_path: 'education/courses/',
     }

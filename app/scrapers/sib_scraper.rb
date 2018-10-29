@@ -3,7 +3,6 @@ class SibScraper < Tess::Scrapers::Scraper
   def self.config
   {
     name: 'SIB Scraper',
-    offline_url_mapping: {},
     root_url: 'https://edu.isb-sib.ch',
     materials_path: 'course/index.php?categoryid=2',
   }

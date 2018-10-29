@@ -4,7 +4,6 @@ class SheffieldScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Sheffield Bioinformatics Core',
-        offline_url_mapping: {},
         repo: 'https://github.com/sheffield-bioinformatics-core/sheffield-bioinformatics-core.github.io',
         gh_events_path: 'training',
         site_base: 'http://sbc.shef.ac.uk/training',

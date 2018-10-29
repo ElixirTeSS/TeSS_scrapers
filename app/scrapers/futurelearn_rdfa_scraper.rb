@@ -5,7 +5,6 @@ class FuturelearnRdfaScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Future Learn JSON-LD Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.futurelearn.com',
     }
   end

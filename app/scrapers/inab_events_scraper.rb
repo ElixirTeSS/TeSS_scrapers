@@ -5,7 +5,6 @@ class InabEventsScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'INAB',
-        offline_url_mapping: {},
         root_url: 'http://www.inab.org/training',
         ical_path: '/calendar/export_execute.php?userid=2&authtoken=245644be1420086102e7c7a8d6ebe11c4515d405&preset_what=all&preset_time=custom',
         geocoder_cache: {} # A little cache to stop duplicate queries

@@ -5,7 +5,6 @@ class DenbiScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'DENBI Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.denbi.de',
         index_page: '/index.php/training-courses'
     }

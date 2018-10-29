@@ -4,7 +4,8 @@ class BiviEventScraper < Tess::Scrapers::Scraper
   { 
       name: 'BiVi Event Scraper',
       root_url: 'http://bivi.co',
-      index_path: '/event-feed'
+      index_path: '/event-feed',
+      ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
   }
   end
 

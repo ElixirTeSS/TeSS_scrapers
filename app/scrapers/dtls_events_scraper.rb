@@ -5,7 +5,6 @@ class DtlsEventsScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'DTLS Events',
-        offline_url_mapping: {},
         root_url: 'https://www.dtls.nl',
         feed_path: '/courses/feed/?filter_course=active'
     }

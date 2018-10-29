@@ -22,7 +22,6 @@ international research community.',
 
     events = get_events(config[:root_url])
     events.each do |event|
-      external_id = event['@id']
       email = event['schema:contact']['schema:email']
       description = event['schema:description'].gsub('\\n', ' ')
       start = event['schema:startDate']
@@ -34,7 +33,6 @@ international research community.',
       url = event['schema:url']
       new = Tess::API::Event.new(
         content_provider: cp,
-        external_id: external_id,
         contact: email,
         title: title,
         description: description,

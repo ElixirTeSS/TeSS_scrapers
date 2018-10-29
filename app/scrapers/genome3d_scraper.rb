@@ -5,7 +5,6 @@ class Genome3dScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Genome3D Scraper',
-        offline_url_mapping: {},
         root_url: 'http://genome3d.eu'
     }
   end

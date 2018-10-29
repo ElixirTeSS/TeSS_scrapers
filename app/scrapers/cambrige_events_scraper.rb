@@ -5,7 +5,6 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Cambridge Events Scraper',
-        offline_url_mapping: {},
         root_url: 'http://training.csx.cam.ac.uk/bioinformatics/event/',
         json_api_url: 'https://www.training.cam.ac.uk/api/v1/provider/BIOINFO/programmes?fetch=events.sessions,events.topics&format=json'
     }

@@ -16,15 +16,19 @@ module Tess
         @scraped = { content_providers: [], events: [], materials: [] }
       end
 
-      def self.config
+      def self.default_config
         {
             name: 'Unnamed Scraper',
-            offline_url_mapping: {} # TODO: Decide if this is really needed
+            offline_url_mapping: {}
         }
       end
 
+      def self.config
+        self.default_config
+      end
+
       def config
-        self.class.config
+        @config ||= self.class.default_config.merge(self.class.config)
       end
 
       # Run the scraper
@@ -67,7 +71,7 @@ module Tess
 
       # If in online mode, returns the content of the URL
       # If in offline mode, either skips the URL or opens the corresponding file for that URL, as defined in
-      #   `config[:offline_url_mapping]`
+      #   `config[:offline_url_mapping]`, or reads the file from the cache under `tmp/<scraperName>`.
       def open_url(url)
         puts "Opening URL: #{url}" if verbose
 

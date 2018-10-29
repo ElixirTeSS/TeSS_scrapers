@@ -5,7 +5,6 @@ class GobletApiScraper < Tess::Scrapers::Scraper
   def self.config
   {
     name: 'Goblet API Scraper',
-    offline_url_mapping: {},
     root_url: 'http://www.mygoblet.org',
     courses_path: '/training-portal/courses-xml', # Unused?
     materials_path: '/training-portal/materials-xml'

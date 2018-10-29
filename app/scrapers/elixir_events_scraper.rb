@@ -5,7 +5,6 @@ class ElixirEventsScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Elixir Events Scraper',
-        offline_url_mapping: {},
         root_url: 'https://www.elixir-europe.org',
         meetings_path: '/events/meetings/upcoming',
         workshops_path: '/events/workshops/upcoming',

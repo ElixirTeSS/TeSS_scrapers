@@ -5,7 +5,6 @@ class BioconductorScraper  < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'Bioconductor Scraper',
-        offline_url_mapping: {},
         root_url: 'https://raw.githubusercontent.com/Bioconductor/bioconductor.org/master/etc/course_descriptions.tsv',
         material_url: 'https://bioconductor.org/help/course-materials/'
     }
