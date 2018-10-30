@@ -52,7 +52,7 @@ class BabrahamScraper < Tess::Scrapers::Scraper
       add_event(Tess::API::Event.new(
           content_provider: cp,
           title: title,
-          url: 'https://www.bioinformatics.babraham.ac.uk/cgi-bin/public/course_dates.cgi#' + title.underscore,
+          url: 'https://www.bioinformatics.babraham.ac.uk/cgi-bin/public/course_dates.cgi#' + title.gsub(' ', '_'),
           contact: contact[0]['href'],
           description: desc,
           start: "#{start_date}, #{start_time}",
