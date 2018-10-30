@@ -33,8 +33,6 @@ class BioconductorScraper  < Tess::Scrapers::Scraper
                     It has two releases each year, 1560 software packages, and an active user community. 
                     Bioconductor is also available as an AMI (Amazon Machine Image) and a series of Docker images."
 
-      puts record[2].inspect
-      puts "*"*40
       if record[4]
         authors = [record[4].split(',')]
       else
