@@ -7,10 +7,10 @@ GIT
 
 GIT
   remote: git://github.com/ElixirTeSS/TeSS_api_client.git
-  revision: 7dca7ef479ff0850e6291ae965367ac866e28de2
-  tag: 0.3.2
+  revision: 91923a7b3ef6647cb688eb6401db38bdc7c34fc0
+  tag: 0.3.3
   specs:
-    tess_api_client (0.3.2)
+    tess_api_client (0.3.3)
       inifile (~> 3.0.0)
       json (~> 1.8)
       net (~> 0.3)
@@ -19,7 +19,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.2.0)
+    activesupport (5.2.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
@@ -89,9 +89,9 @@ GEM
       rdf-xsd (~> 2.0)
       sparql (~> 2.0)
       sparql-client (~> 2.0)
-    mime-types (3.1)
+    mime-types (3.2.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2016.0521)
+    mime-types-data (3.2018.0812)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multi_json (1.12.1)
@@ -231,4 +231,4 @@ DEPENDENCIES
   tess_rdf_extractors!
 
 BUNDLED WITH
-   1.16.1
+   1.17.1
