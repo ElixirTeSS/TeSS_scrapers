@@ -9,12 +9,10 @@ class OpenTargetJsonScraper < Tess::Scrapers::Scraper
 
   def scrape
     cp = add_content_provider(Tess::API::ContentProvider.new(
-        { title: "Open Target",
-          url: "https://www.opentargets.org/",
+        { title: "Open Targets Platform",
+          url: "https://www.targetvalidation.org/",
           image_url: "https://www.sanger.ac.uk/sites/default/files/Jul2017/open_targets.png",
-          description: "Open Targets is an innovative, large-scale, multi-year, 
-          public-private partnership that uses human genetics and genomics data for
-           systematic drug target identification and prioritisation.",
+          description: "",
           content_provider_type: :organization
         }))
 
