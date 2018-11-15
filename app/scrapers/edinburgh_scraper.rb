@@ -18,7 +18,7 @@ class EdinburghScraper < Tess::Scrapers::Scraper
              content_provider_type: :organisation,
              node_name: :UK
         }))
-        doc = Nokogiri::HTML(open_url(config[:root_url] + config[:index_path]))
+        doc = Nokogiri::HTML(open(config[:root_url] + config[:index_path]).read)
         urls = doc.xpath('//*[@id="node-34"]/div/div[2]/div/div/table/tbody/tr/td[2]/a').map do |x|
             config[:root_url] + x.attributes['href'].value.gsub(config[:root_url], '')
         end
