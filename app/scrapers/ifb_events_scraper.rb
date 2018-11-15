@@ -22,15 +22,18 @@ class IfbEventsScraper < Tess::Scrapers::Scraper
           keywords: ['bioinformatics', 'infrastructure', 'Big Data', 'NGS']
         }))
 
-    doc = Nokogiri::HTML(open_url(config[:root_url] + config[:events_path]))
-    events = doc.css('div.event_block')
+    #doc = Nokogiri::HTML(open_url(config[:root_url] + config[:events_path]))
+    doc = Nokogiri::HTML(open('/Users/milo/Work/Web/TeSS_scrapers/html/ifb_events/index.html'))
+    event_block = doc.css('div.event_block')
 
-    events.each do |event|
-      event.attributes.each do |attribute, value|
-        puts "A: #{attribute}, V: #{value}"
+    event_block.each do |e|
+      e.children.each do |c|
+        puts c.attributes.inspect
+        puts "--"
       end
-
+      puts "--- ---"
     end
+
 
   end
 

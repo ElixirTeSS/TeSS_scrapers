@@ -49,6 +49,21 @@ class BabrahamScraper < Tess::Scrapers::Scraper
 
       desc = "For more details please see https://www.bioinformatics.babraham.ac.uk/cgi-bin/public/course_dates.cgi. Course status: #{free_spaces}."
 
+      event = Tess::API::Event.new(
+          content_provider: cp,
+          title: title,
+          url: contact[0]['href'],
+          description: desc,
+          start: "#{start_date}, #{start_time}",
+          end: "#{end_date}, #{end_time}",
+          venue: venue,
+          postcode: postcode
+      )
+      #puts event.inspect
+      puts("Adding: #{title}")
+      add_event(event)
+
+=begin
       add_event(Tess::API::Event.new(
           content_provider: cp,
           title: title,
@@ -59,6 +74,7 @@ class BabrahamScraper < Tess::Scrapers::Scraper
           venue: venue,
           postcode: postcode
       ))
+=end
 
     end
 
