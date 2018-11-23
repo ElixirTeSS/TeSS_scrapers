@@ -1,5 +1,3 @@
-
-
 class HungaryEventbriteScraper < Tess::Scrapers::Scraper
 
   def self.config
@@ -10,6 +8,8 @@ class HungaryEventbriteScraper < Tess::Scrapers::Scraper
         venue_endpoint: 'https://www.eventbriteapi.com/v3/venues/',        
         token: 'ZP2R5TIY5WEG6VKRATVR',
         events: ["51195018679", "51516339759"]
+        #Try replace for https://www.eventbriteapi.com/v3/organizers/:organizerID/events/
+        #e.g. https://www.eventbriteapi.com/v3/organizers/17961687810/events
     }
   end
 
@@ -18,7 +18,24 @@ class HungaryEventbriteScraper < Tess::Scrapers::Scraper
         { title: "ELIXIR Hungary", #name
           url: "http://elixir-hungary.org/", #url
           image_url: "http://elixir-hungary.org/sites/default/files/elixir-hungary.png", #logo
-          description: "", #description
+          description: "The Hungarian ELIXIR Node will include twelve different Hungarian universities and research institutes. The participating institutes represent five major scientific focus:
+
+* Human genomics
+* Proteomics
+* Agricultural genomics
+* Veterinary sciences and Ecology.
+
+The Node has not established a Service Delivery Plan yet, but it can be anticipated that:
+
+
+* Protein databases (e.g. IUPred, ANCHOR, UniTmp)
+* Biomarker assesment portals (e.g. G-2-O, Kaplan-Meier Plotter)
+* Data depositories (e.g. Hungarian Oncogenome Portal) and 
+* Virtual research environments (e.g. Kooplex)
+
+will be part of it.
+
+Joining ELIXIR, Hungary has the opportunity to strengthen collaboration among its diverse and scattered bioinformatics community. With the coordination of the resources at national level, the aforementioned services and tools will be more visible to the international research community. This goes hand in hand with the development of up to date bioinformatics courses in the education and training field.", #description
           content_provider_type: :organisation,
           node_name: :Hungary
         }))  	
