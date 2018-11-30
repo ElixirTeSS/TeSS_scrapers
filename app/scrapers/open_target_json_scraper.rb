@@ -31,6 +31,11 @@ class OpenTargetJsonScraper < Tess::Scrapers::Scraper
 
           if endDate >= Date.today and session['external'] and
            session['external']['link'] and !session['external']['link'].empty?
+            if session['type']
+              types = [session['type'].gsub(' ', '_').downcase]
+            else
+              types = []
+            end
             event = Tess::API::Event.new({
               title: session['external']['text'],
               description: session['description'],
@@ -40,7 +45,7 @@ class OpenTargetJsonScraper < Tess::Scrapers::Scraper
               venue: session['place'].split(',').first,
               country: session['place'].split(',').last,
               keywords: ['Open Targets'],
-              event_types: [session['type'].gsub(' ', '_').downcase],
+              event_types: types,
               content_provider: cp
             })
             add_event(event)
