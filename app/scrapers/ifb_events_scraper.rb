@@ -22,11 +22,14 @@ class IfbEventsScraper < Tess::Scrapers::Scraper
           keywords: ['bioinformatics', 'infrastructure', 'Big Data', 'NGS']
         }))
 
-    #doc = Nokogiri::HTML(open_url(config[:root_url] + config[:events_path]))
-    doc = Nokogiri::HTML(open('/Users/milo/Work/Web/TeSS_scrapers/html/ifb_events/index.html'))
 
-=begin
+    scrape_url = config[:root_url] + config[:events_path]
+    doc = Nokogiri::HTML(open_url(scrape_url))
+    #doc = Nokogiri::HTML(open('/Users/milo/Work/Web/TeSS_scrapers/html/ifb_events/index.html'))
+
     event_block = doc.css('div.event_block')
+
+    puts event_block.inspect
 
     event_block.each do |e|
       e.children.each do |c|
@@ -35,14 +38,14 @@ class IfbEventsScraper < Tess::Scrapers::Scraper
       end
       puts "--- ---"
     end
-=end
 
-    url = config[:root_url] + config[:events_path]
-    events = Tess::Rdf::EventExtractor.new(open_url(url), :rdfa, base_uri: config[:root_url]).extract { |p| Tess::API::Event.new(p) }
+=begin
+    events = Tess::Rdf::EventExtractor.new(open_url(scrape_url), :rdfa, base_uri: scrape_url).extract { |p| Tess::API::Event.new(p) }
 
     events.each do |e|
       puts e.inspect
     end
+=end
 
 
 
