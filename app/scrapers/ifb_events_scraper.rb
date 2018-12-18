@@ -24,6 +24,8 @@ class IfbEventsScraper < Tess::Scrapers::Scraper
 
     #doc = Nokogiri::HTML(open_url(config[:root_url] + config[:events_path]))
     doc = Nokogiri::HTML(open('/Users/milo/Work/Web/TeSS_scrapers/html/ifb_events/index.html'))
+
+=begin
     event_block = doc.css('div.event_block')
 
     event_block.each do |e|
@@ -33,6 +35,15 @@ class IfbEventsScraper < Tess::Scrapers::Scraper
       end
       puts "--- ---"
     end
+=end
+
+    url = config[:root_url] + config[:events_path]
+    events = Tess::Rdf::EventExtractor.new(open_url(url), :rdfa, base_uri: config[:root_url]).extract { |p| Tess::API::Event.new(p) }
+
+    events.each do |e|
+      puts e.inspect
+    end
+
 
 
   end
