@@ -25,6 +25,15 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
       unless item['description'].nil? || (item["start"]["date"].nil? && item["start"]["datetime"].nil?)
         desc = Sanitize.clean(item['description'].sub /(^|\s)#(\w[\w-]*)(?=\s|$)/, '').gsub(/\s+/,' ')
         tags = /(^|\s)#(\w[\w-]*)(?=\s|$)/.match(desc)
+        # get city and country, exclude postal number
+        location = /(.*, [0-9 ]* )?([\p{L} ]+), (.*)/
+        unless item['location'].nil? || item["location"] !~ location
+          event.city = item['location'].match(location)[2]
+          if ["Sweden", "Sverige"].include? item['location'].match(location)[3]
+              # ignore other country names (need to be translated from Swedish)
+              event.country = "Sweden"
+          end
+        end
         event.keywords = tags
         event.description = desc
         event.url = item['htmlLink']
