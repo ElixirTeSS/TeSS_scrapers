@@ -29,7 +29,7 @@ scrapers = [
    FlemishJsonldEventsScraper,
    FuturelearnRdfaScraper,
    GalaxyEventsScraper,
-   GalaxyScraper,
+   #GalaxyScraper,
    Genome3dScraper,
    GobletRdfaScraper,
    #GobletApiScraper, # See ticket #20
