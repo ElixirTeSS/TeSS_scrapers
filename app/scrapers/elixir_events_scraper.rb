@@ -8,7 +8,8 @@ class ElixirEventsScraper < Tess::Scrapers::Scraper
         root_url: 'https://www.elixir-europe.org',
         meetings_path: '/events/meetings/upcoming',
         workshops_path: '/events/workshops/upcoming',
-        webinars_path: '/events/webinars/upcoming'
+        webinars_path: '/events/webinars/upcoming',
+        hub_events_url: 'https://www.elixir-europe.org/events/hub-events'
     }
   end
 
@@ -23,12 +24,27 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
           content_provider_type: :organisation
         }))
 
+
+    doc = Nokogiri::HTML(open_url(config[:hub_events_url]))
+    doc.css('.views-table tbody tr td:first a').map { |e| e['href'] }.each do |event_path|
+      url = config[:root_url] + event_path
+      events = Tess::Rdf::EventExtractor.new(open_url(url), :rdfa).extract { |p| Tess::API::Event.new(p) }
+      events.each do |event|
+        event.content_provider = cp
+        event.url = url
+        add_event(event)
+      end
+    end
+
+=begin
+    # Deprecated
     [[config[:meetings_path], :meetings_and_conferences],
      [config[:workshops_path], :workshops_and_courses],
      [config[:webinars_path], nil]].each do |path, event_type|
-      0.upto(1) do |page_number|
+      0.upto(5) do |page_number|
         doc = Nokogiri::HTML(open_url(config[:root_url] + path + "?page=#{page_number}"))
         doc.css('.views-table tbody tr td:first a').map { |e| e['href'] }.each do |event_path|
+          puts event_path
           url = config[:root_url] + event_path
           events = Tess::Rdf::EventExtractor.new(open_url(url), :rdfa).extract { |p| Tess::API::Event.new(p) }
 
@@ -43,7 +59,9 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
         end
       end
     end
-  end
+=end
 
+
+  end
 
 end
