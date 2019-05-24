@@ -5,7 +5,8 @@ class EdinburghScraper < Tess::Scrapers::Scraper
         {
             name: 'Edinburgh genomics scraper',
             root_url: 'https://genomics.ed.ac.uk',
-            index_path: '/services/training'
+            index_path: '/services/training',
+            root_regex: /https?:\/\/genomics\.ed\.ac\.uk/
         }
     end
 
@@ -20,7 +21,7 @@ class EdinburghScraper < Tess::Scrapers::Scraper
         }))
         doc = Nokogiri::HTML(open(config[:root_url] + config[:index_path]).read)
         urls = doc.xpath('//*[@id="node-34"]/div/div[2]/div/div/table/tbody/tr/td[2]/a').map do |x|
-            config[:root_url] + x.attributes['href'].value.gsub(config[:root_url], '')
+            config[:root_url] + x.attributes['href'].value.gsub(config[:root_regex], '')
         end
         urls.each do |url|
             page = open_url(url)
