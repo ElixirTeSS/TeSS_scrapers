@@ -6,3 +6,4 @@ user_token = my_secret_api_string
 user_email = me@elixir.eu
 debug = false
 google_api_key = 12345
+eventbrite_key = 12345
