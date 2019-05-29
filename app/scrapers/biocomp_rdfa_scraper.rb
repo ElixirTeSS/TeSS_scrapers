@@ -6,7 +6,7 @@ class BiocompRdfaScraper < Tess::Scrapers::Scraper
     {
         name: 'Biocomp RDFa Scraper',
         root_url: 'http://biocomp.vbcf.ac.at/training',
-        materials_path: '/index.html'
+        materials_path: '/index.php'
     }
   end
 
