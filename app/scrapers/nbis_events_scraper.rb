@@ -36,7 +36,11 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
         end
         event.keywords = tags
         event.description = desc
-        event.url = item['htmlLink']
+        if(u = desc.match(/^#url:\s*(.*)/))
+          event.url = u[1]
+        else
+          event.url = item['htmlLink']
+        end
         event.title = item['summary']
         event.contact = "#{[item['creator']['displayName'], item['creator']['email']].reject{|x| x.nil? || x.empty?}.join(' - ')}"
         event.organizer = "#{item['organizer']['displayName']}"
