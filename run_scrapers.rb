@@ -17,7 +17,9 @@ scrapers = [
    CambridgeEventsScraper,
    CourseraScraper,
    CscEventsScraper,
+   CvlEventbriteScraper,
    DataCarpentryScraper,
+   DataCarpentryEventsScraper,
    DenbiScraper,
    DtlsEventsScraper,
    #EbiScraper, # Broken old materials one
@@ -37,6 +39,7 @@ scrapers = [
    IntermineScraper,
    KhanAcademyApiScraper,
    LegacySoftwareCarpentryScraper,
+   LibraryCarpentryEventsScraper,
    NbisEventsScraper,
    NgsRegistryScraper,
    OpenTargetJsonScraper,
