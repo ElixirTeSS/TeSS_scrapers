@@ -36,7 +36,7 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
         end
         event.keywords = tags
         event.description = desc
-        if(u = desc.match(/^#url:\s*(.*)/))
+        if(u = desc.match(/\s#url:\s*(\S*)/))
           event.url = u[1]
         else
           event.url = item['htmlLink']
