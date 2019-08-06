@@ -51,7 +51,8 @@ scrapers = [
    SibEventsScraper,
    SoftwareCarpentryEventsScraper,
    #IannEventsScraper,
-   ScilifelabScraper
+   ScilifelabScraper,
+   WellcomeEventsScraper
 ]
 
 
