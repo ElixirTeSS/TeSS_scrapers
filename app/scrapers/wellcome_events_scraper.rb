@@ -27,7 +27,7 @@ class WellcomeEventsScraper < Tess::Scrapers::Scraper
       new_event = Tess::API::Event.new(event)
       new_event.content_provider = cp
       new_event.event_types = [:workshops_and_courses]
-      new_event.keywords = ["HDRUK"]
+      new_event.keywords = new_event.keywords.split(' ') << "HDRUK"
       add_event(new_event )
     end
   end
