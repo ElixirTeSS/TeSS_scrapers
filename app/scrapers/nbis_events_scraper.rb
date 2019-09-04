@@ -22,7 +22,7 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
     json = JSON.parse(open(config[:content_url],{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)
     json['items'].each do |item|
       event = Tess::API::Event.new
-      unless item['description'].nil? || (item["start"]["date"].nil? && item["start"]["datetime"].nil?)
+      unless item['description'].nil? || (item["start"]["date"].nil? && item["start"]["dateTime"].nil?)
         desc = Sanitize.clean(item['description'].sub /(^|\s)#(\w[\w-]*)(?=\s|$)/, '').gsub(/\s+/,' ')
         tags = /(^|\s)#(\w[\w-]*)(?=\s|$)/.match(desc)
         # get city and country, exclude postal number
@@ -47,9 +47,9 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
         event.content_provider = cp
 
         event.start = item['start']['date'] unless item['start']['date'].nil?
-        event.start = item['start']['datetime'] unless item['start']['datetime'].nil?
+        event.start = item['start']['dateTime'] unless item['start']['dateTime'].nil?
         event.end = item['end']['date'] unless item['end']['date'].nil?
-        event.end = item['end']['datetime'] unless item['end']['datetime'].nil?
+        event.end = item['end']['dateTime'] unless item['end']['dateTime'].nil?
 
         add_event(event)
       end
