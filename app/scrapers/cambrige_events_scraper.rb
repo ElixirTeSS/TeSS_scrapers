@@ -17,6 +17,7 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
           image_url: "http://www.crim.cam.ac.uk/global/test/images/logo.png", #logo
           description: "We offer a broad range of undergraduate and postgraduate hands-on training courses focused on bioinformatics and computational biology. These training activities aim at enabling life scientists to effectively handle and interpret biological data.", #description
           content_provider_type: :organisation,
+          keywords: ["HDRUK"],
           node_name: :GB
         }))
 
@@ -49,7 +50,8 @@ class CambridgeEventsScraper < Tess::Scrapers::Scraper
                     country: 'United Kingdom',
                     postcode: 'CB2 3AR',
                     latitude: 52.2019652,
-                    longitude: 0.1224858
+                    longitude: 0.1224858,
+                    keywords: ["HDRUK"]
                   })
 )
             end

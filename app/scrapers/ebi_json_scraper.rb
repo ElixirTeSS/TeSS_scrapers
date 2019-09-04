@@ -17,7 +17,8 @@ class EbiJsonScraper < Tess::Scrapers::Scraper
                                   image_url: "http://www.ebi.ac.uk/miriam/static/main/img/EBI_logo.png", #logo
                                   description: "EMBL-EBI provides freely available data from life science experiments, performs basic research in computational biology and offers an extensive user training programme, supporting researchers in academia and industry.", #description
                                   content_provider_type: :organisation,
-                                  node_name: :'EMBL-EBI'
+                                  node_name: :'EMBL-EBI',
+                                  keywords: ["HDRUK"]
                                 ))
 
       json_events = JSON::load(open(config[:json_url]))
@@ -28,6 +29,7 @@ class EbiJsonScraper < Tess::Scrapers::Scraper
       
       events.each do |event|
         event.content_provider = cp
+        event.keywords = ["HDRUK"]
         add_event(event)
       end
     end

@@ -211,6 +211,7 @@ PLATFORMS
 DEPENDENCIES
   geocoder
   google_places
+  htmlentities
   icalendar
   inifile
   linkeddata (~> 2.0)

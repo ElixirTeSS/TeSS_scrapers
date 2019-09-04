@@ -23,7 +23,8 @@ class RssScraper < Tess::Scrapers::Scraper
           url: "https://www.statslife.org.uk/",
           image_url: "https://www2.warwick.ac.uk/fac/sci/statistics/courses/rss/rss-strapline-logo-360x180.jpg",
           description: "Royal Statistical Society is a world-leading organisation promoting the importance of statistics and data - and a professional body for all statisticians and data analysts.",
-          content_provider_type: :organisation
+          content_provider_type: :organisation,
+          keywords: ["HDRUK"]
         }))
 
     events = parse_data(config[:root_url] + config[:events_path])
@@ -37,7 +38,8 @@ class RssScraper < Tess::Scrapers::Scraper
             end: data[:end_date],
             description: data[:description],
             organizer: 'Royal Statistical Society',
-            event_types: [:workshops_and_courses]
+            event_types: [:workshops_and_courses],
+            keywords: ["HDRUK"]
           }.merge(config[:location]))
       add_event(event)
     end

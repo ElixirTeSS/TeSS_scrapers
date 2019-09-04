@@ -34,7 +34,7 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
               event.country = "Sweden"
           end
         end
-        event.keywords = tags
+        event.keywords = tags.to_a
         event.description = desc
         if(u = desc.match(/\s#url:\s*(\S*)/))
           event.url = u[1]

@@ -17,7 +17,8 @@ class EdinburghScraper < Tess::Scrapers::Scraper
              image_url: "https://genomics.ed.ac.uk/sites/default/files/unnamed.png",
              description: "The explosion in new sequencing technologies has changed genomics from being the province of a few to being a key part in many research programmes. To enable researchers to analyse their next generation sequencing data themselves, Edinburgh Genomics offers a range of hands-on bioinformatics workshops.",
              content_provider_type: :organisation,
-             node_name: :UK
+             node_name: :UK,
+             keywords: ["HDRUK"]
         }))
         doc = Nokogiri::HTML(open(config[:root_url] + config[:index_path]).read)
         urls = doc.xpath('//*[@id="node-34"]/div/div[2]/div/div/table/tbody/tr/td[2]/a').map do |x|
@@ -37,6 +38,7 @@ class EdinburghScraper < Tess::Scrapers::Scraper
                 event.content_provider = cp
                 event.event_types = [:workshops_and_courses]
                 event.url = url
+                event.keywords = ["HDRUK"]
                 add_event(event)
             end
         end

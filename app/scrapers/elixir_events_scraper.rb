@@ -1,4 +1,6 @@
 require 'nokogiri'
+require 'htmlentities'
+
 
 class ElixirEventsScraper < Tess::Scrapers::Scraper
 
@@ -31,6 +33,8 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
       events = Tess::Rdf::EventExtractor.new(open_url(url), :rdfa).extract { |p| Tess::API::Event.new(p) }
       events.each do |event|
         event.content_provider = cp
+        event.title = HTMLEntities.new.decode event.title
+        event.description = HTMLEntities.new.decode event.description
         event.url = url
         add_event(event)
       end
