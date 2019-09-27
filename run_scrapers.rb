@@ -40,6 +40,7 @@ scrapers = [
    KhanAcademyApiScraper,
    LegacySoftwareCarpentryScraper,
    LibraryCarpentryEventsScraper,
+   LuxembourgRdfaScraper,
    NbisEventsScraper,
    NgsRegistryScraper,
    OpenTargetJsonScraper,
