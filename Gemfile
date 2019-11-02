@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'geocoder'
 gem 'inifile'
-gem 'nokogiri', '~> 1.8.1'
+gem 'nokogiri', '~> 1.10.5'
 gem 'redcarpet'
 gem 'simple-rss'
 gem 'google_places'
