@@ -26,11 +26,10 @@ class BioconductorJsonldScraper < Tess::Scrapers::Scraper
 
     sitemap = open(config[:sitemap]).read
     
-    locations = /<loc>(.*)<\/loc>/m.match sitemap 
-    locations = locations.to_a
-    locations = locations.drop(1) #remove match data
+    locations = sitemap.scan /<loc>(.*)<\/loc>/
+    locations = locations.to_a.flatten
+    
     locations.each do |location|
-        location = location[0..-2] #strip trailing / character
         json = /<script type="application\/ld\+json">(.*?)<\/script>/m.match(open(location).read)
         materials = Tess::Rdf::MaterialExtractor.new(json, :jsonld).extract { |p| Tess::API::Material.new(p) }
         materials.each do |material|
