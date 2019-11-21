@@ -9,6 +9,7 @@ scrapers = [
    BabrahamScraper,
    BiocompRdfaScraper,
    BioconductorScraper,
+   BioconductorJsonldScraper,
    BitsvibEventsJsonldScraper,
    BitsvibRdfaScraper,
    BiviMaterialScraper,
