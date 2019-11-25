@@ -6,7 +6,8 @@ class BioconductorScraper  < Tess::Scrapers::Scraper
     {
         name: 'Bioconductor Scraper',
         root_url: 'https://raw.githubusercontent.com/Bioconductor/bioconductor.org/master/etc/course_descriptions.tsv',
-        material_url: 'https://bioconductor.org/help/course-materials/'
+        material_url: 'https://bioconductor.org/help/course-materials/',
+        base_url: 'https://bioconductor.org'
     }
   end
 
@@ -49,7 +50,7 @@ class BioconductorScraper  < Tess::Scrapers::Scraper
       material = Tess::API::Material.new(
         {
           title: title,
-          url: "#{config[:material_url]}#{links[1]}",
+          url: "#{config[:base_url]}#{links[1]}",
           authors: authors,
           content_provider: cp,
           short_description: description,
