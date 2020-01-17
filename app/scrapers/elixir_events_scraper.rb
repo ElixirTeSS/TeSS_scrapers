@@ -30,13 +30,21 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
     doc = Nokogiri::HTML(open_url(config[:hub_events_url]))
     doc.css('.views-table tbody tr td:first a').map { |e| e['href'] }.each do |event_path|
       url = config[:root_url] + event_path
-      events = Tess::Rdf::EventExtractor.new(open_url(url), :rdfa).extract { |p| Tess::API::Event.new(p) }
-      events.each do |event|
-        event.content_provider = cp
-        event.title = HTMLEntities.new.decode event.title
-        event.description = HTMLEntities.new.decode event.description
-        event.url = url
-        add_event(event)
+      page = open_url(url)
+      doc = Nokogiri::HTML(page)
+      doc.search('//script[@type="application/ld+json"]').each do |element|
+        json = JSON.parse(element.text)
+        events = Tess::Rdf::EventExtractor.new(element.text, :jsonld, base_uri: url).extract { |p| Tess::API::Event.new(p) }
+        warn "#{events.length} events found at #{url} when only 1 was expected." if events.length > 1
+        events.each { |e| e.event_types = json['eventType'].downcase.gsub(' ', '_').to_sym }
+        events.each do |event|
+          event.content_provider = cp
+          event.title = HTMLEntities.new.decode event.title
+          event.description = HTMLEntities.new.decode event.description
+          event.url = url
+          event.event_types = json['eventType'].downcase.gsub(' ', '_').to_sym if json['eventType']
+          add_event(event)
+        end
       end
     end
 
