@@ -19,11 +19,12 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.2.1)
+    activesupport (6.0.3.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+      zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     bcp47 (0.3.3)
@@ -52,7 +53,7 @@ GEM
       domain_name (~> 0.5)
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
-    i18n (1.5.1)
+    i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     icalendar (2.4.1)
     inifile (3.0.0)
@@ -99,7 +100,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
     mini_portile2 (2.3.0)
-    minitest (5.11.3)
+    minitest (5.14.1)
     multi_json (1.14.1)
     multi_xml (0.5.5)
     net (0.3.3)
@@ -201,11 +202,12 @@ GEM
     temple (0.8.2)
     thread_safe (0.3.6)
     tilt (2.0.10)
-    tzinfo (1.2.5)
+    tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
+    zeitwerk (2.3.0)
 
 PLATFORMS
   ruby
