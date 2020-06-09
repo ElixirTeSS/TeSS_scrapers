@@ -20,7 +20,7 @@ class CvlEventbriteScraper < Tess::Scrapers::Scraper
       cp = add_content_provider(Tess::API::ContentProvider.new(
           { title: "Characterisation Virtual Laboratory", #name
             url: "https://characterisation-virtual-laboratory.github.io/CVL_Community/", #url
-            image_url: "eat https://characterisation-virtual-laboratory.github.io/CVL_Community/assets/images/logo.png", #logo
+            image_url: "https://characterisation-virtual-laboratory.github.io/CVL_Community/assets/images/logo.png", #logo
             description: "The Characterisation Virtual Laboratory (CVL) community is a group of researchers, university lecturers, and health professionals who engage in developing and maintaining materials for training and practice and encourage best data practices, including the use of the CVL infrastructure.", #description
             content_provider_type: :organisation
           }))
