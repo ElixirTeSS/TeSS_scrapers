@@ -4,6 +4,10 @@ class CvlEventbriteScraper < Tess::Scrapers::Scraper
     {
         name: 'CVL Eventbrite scraper',
         search_endpoint: 'https://www.eventbriteapi.com/v3/events/search/',
+        # Note the following endpoint is not documented anywhere, I found it here:
+        # https://groups.google.com/forum/#!searchin/eventbrite-api/organization|sort:date/eventbrite-api/uubABbdYLOg/ySFGRNN_AgAJ
+        # Also note that an `organizer` is not an `organization`
+        organizers_events_endpoint: 'https://www.eventbriteapi.com/v3/organizers/%{organizer_id}/events/',
         venue_endpoint: 'https://www.eventbriteapi.com/v3/venues/',
         organizer: '20185254580',
     }
@@ -16,13 +20,13 @@ class CvlEventbriteScraper < Tess::Scrapers::Scraper
       cp = add_content_provider(Tess::API::ContentProvider.new(
           { title: "Characterisation Virtual Laboratory", #name
             url: "https://characterisation-virtual-laboratory.github.io/CVL_Community/", #url
-            image_url: " https://characterisation-virtual-laboratory.github.io/CVL_Community/assets/images/logo.png", #logo
+            image_url: "https://characterisation-virtual-laboratory.github.io/CVL_Community/assets/images/logo.png", #logo
             description: "The Characterisation Virtual Laboratory (CVL) community is a group of researchers, university lecturers, and health professionals who engage in developing and maintaining materials for training and practice and encourage best data practices, including the use of the CVL infrastructure.", #description
             content_provider_type: :organisation
           }))
 
       # Get the events by the organizer
-      organizer_events_url = config[:search_endpoint] + "?organizer.id=" + config[:organizer] + "&token=" + token
+      organizer_events_url = (config[:organizers_events_endpoint] % { organizer_id: config[:organizer] }) + "?token=" + token
       event_data = JSON.parse(open_url(organizer_events_url).read)
 
       #Loop through each event, creating a new event and looking up the venue
