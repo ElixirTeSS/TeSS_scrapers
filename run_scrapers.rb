@@ -45,7 +45,7 @@ scrapers = [
    NbisEventsScraper,
    NgsRegistryScraper,
    OpenTargetJsonScraper,
-   #PortugalEventsScraper,
+   PortugalEventsScraper,
    PraceEventsScraper,
    RssScraper,
    SheffieldScraper,
