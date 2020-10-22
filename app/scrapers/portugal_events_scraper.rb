@@ -5,8 +5,7 @@ class PortugalEventsScraper < Tess::Scrapers::Scraper
   def self.config
     {
         name: 'ELIXIR Portugal',
-        # TODO: change URL to https://biodata.pt/events before deploying
-        root_url: 'https://biodata.pt/past-events',
+        root_url: 'https://biodata.pt/events',
         base_url: 'https://biodata.pt'
     }
   end
