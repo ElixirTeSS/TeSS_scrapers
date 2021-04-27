@@ -32,7 +32,7 @@ class CscEventsScraperNew < Tess::Scrapers::Scraper
           start: event['start'],
           end: event['end'],
           organizer: event['organizer'],
-          description: event['organization']&.gsub(/<\/?[^>]*>/, ""), # strip HTML tags
+          description: event['organization'],
           event_types: [:workshops_and_courses],
           # latitude: event['latitude'],
           # longitude: event['longitude'],
