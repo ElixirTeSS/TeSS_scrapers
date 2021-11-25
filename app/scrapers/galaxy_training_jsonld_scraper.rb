@@ -1,7 +1,7 @@
 require 'nokogiri'
 require 'yaml'
 
-class GalaxyJsonldScraper < Tess::Scrapers::Scraper
+class GalaxyTrainingJsonldScraper < Tess::Scrapers::Scraper
 
   def self.config
     {
