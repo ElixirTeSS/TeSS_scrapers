@@ -1,3 +1,5 @@
+require "active_support"
+require "active_support/testing/time_helpers"
 module Tess
   module Scrapers
     require 'fileutils'
