@@ -26,14 +26,16 @@ class BioschemasScraper < Tess::Scrapers::Scraper
           recurse: true,
           url_regex: sitemap_regex,
           headers: { 'User-Agent' => config[:user_agent] },
-        }).to_a
+        }).to_a.uniq
       else
         sources = [source_url]
       end
 
       sources.each do |url|
         source = open_url(url)
-        sample = source.read(256).strip
+        next unless source
+        sample = source.read(256)&.strip
+        next unless sample
         format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
         source.rewind
         source = source.read
