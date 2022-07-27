@@ -7,11 +7,12 @@ email = ARGV[0] != 'no_email' rescue true
 
 scrapers = [
    BabrahamScraper,
-   BiocompRdfaScraper,
+   #BiocompRdfaScraper,
    BioconductorScraper,
    BioconductorJsonldScraper,
-   BitsvibEventsJsonldScraper,
-   BitsvibRdfaScraper,
+   BioschemasScraper,
+   #BitsvibEventsJsonldScraper,
+   #BitsvibRdfaScraper,
    BiviMaterialScraper,
    BiviEventScraper,
    BmtcJsonldScraper,
@@ -21,7 +22,7 @@ scrapers = [
    CscEventsScraperNew,
    CvlEventbriteScraper,
    DataCarpentryScraper,
-   DataCarpentryEventsScraper,
+   #DataCarpentryEventsScraper,
    DenbiScraper,
    DtlsEventsScraper,
    #EbiScraper, # Broken old materials one
@@ -30,32 +31,32 @@ scrapers = [
    ElixirEventsScraper,
    EnanomapperScraper,
    #ErasysRdfaScraper, # Domain changed to erasysapp.eu, breaking old links
-   FlemishJsonldEventsScraper,
+   #FlemishJsonldEventsScraper,
    FuturelearnRdfaScraper,
    GalaxyEventsScraper,
    #GalaxyScraper,
    Genome3dScraper,
    GobletRdfaScraper,
    #GobletApiScraper, # See ticket #20
-   IfbRdfaScraper,
-   IntermineScraper,
+   #IfbRdfaScraper,
+   #IntermineScraper,
    KhanAcademyApiScraper,
    LegacySoftwareCarpentryScraper,
-   LibraryCarpentryEventsScraper,
+   #LibraryCarpentryEventsScraper,
    LuxembourgRdfaScraper,
    NbisEventsScraper,
-   NgsRegistryScraper,
-   OpenTargetJsonScraper,
+   #NgsRegistryScraper,
+   #OpenTargetJsonScraper,
    PortugalEventsScraper,
-   PraceEventsScraper,
-   RssScraper,
+   #PraceEventsScraper,
+   #RssScraper,
    SheffieldScraper,
    SibScraper,
-   SibEventsScraper,
-   SoftwareCarpentryEventsScraper,
+   #SibEventsScraper,
+   #SoftwareCarpentryEventsScraper,
    #IannEventsScraper,
    ScilifelabScraper,
-   WellcomeEventsScraper
+   #WellcomeEventsScraper
 ]
 
 

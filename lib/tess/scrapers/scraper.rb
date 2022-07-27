@@ -87,11 +87,14 @@ module Tess
           end
         else
           puts "... from remote location" if verbose
-          options = { redirect: false } # We're doing redirects manually below, since open-uri can't handle http -> https redirection
+          options = {
+            redirect: false, # We're doing redirects manually below, since open-uri can't handle http -> https redirection
+            read_timeout: 5
+          }
           options[:ssl_verify_mode] = config[:ssl_verify_mode] if config.key?(:ssl_verify_mode)
+          redirect_attempts = 5
           begin
-            redirect_attempts = 5
-            open(url, options).tap do |f|
+            URI.open(url, options).tap do |f|
               cache_file(url, f) if cache
               f.rewind
             end
@@ -105,10 +108,10 @@ module Tess
         end
       end
 
-      def add_content_provider(cp)
-        scraped[:content_providers] << cp
+      def add_content_provider(content_provider)
+        scraped[:content_providers] << content_provider
 
-        cp
+        content_provider
       end
 
       def add_event(event)
