@@ -30,7 +30,7 @@ class IntermineScraper < Tess::Scrapers::Scraper
           title: title,
           url: url,
           content_provider: cp,
-          short_description: description,
+          description: description,
           keywords: title.split(" ").first,
         )
         add_material(event)
@@ -54,7 +54,7 @@ class IntermineScraper < Tess::Scrapers::Scraper
           title: title,
           url: url,
           content_provider: cp,
-          short_description: description,
+          description: description,
           keywords: title.split(" ").first,
         )
         add_material(event)

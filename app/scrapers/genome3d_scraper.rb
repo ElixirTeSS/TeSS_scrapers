@@ -47,7 +47,7 @@ class Genome3dScraper < Tess::Scrapers::Scraper
       add_material(Tess::API::Material.new(
           { title: data['name'],
             url: "#{config[:root_url]}/#{path}",
-            short_description: data['description'],
+            description: data['description'],
             remote_created_date: data['last_modified'],
             content_provider: cp
           }))

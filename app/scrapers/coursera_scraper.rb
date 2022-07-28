@@ -30,7 +30,7 @@ class CourseraScraper < Tess::Scrapers::Scraper
       add_material(Tess::API::Material.new(
           { title: course['name'],
             url: config[:friendly_url] + course['slug'],
-            short_description: course['description'],
+            description: course['description'],
             content_provider: cp,
             keywords: topics
           }))

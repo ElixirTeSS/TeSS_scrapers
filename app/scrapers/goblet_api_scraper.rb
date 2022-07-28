@@ -27,7 +27,7 @@ bioinformatics educators/trainers and students/trainees.',
       lessons.each_key do |key|
         material = Tess::API::Material.new(title: lessons[key][:title],
                                            url: key,
-                                           short_description: "#{lessons[key][:title]} from #{key}.",
+                                           description: "#{lessons[key][:title]} from #{key}.",
                                            doi: nil,
                                            remote_updated_date: lessons[key][:updated],
                                            remote_created_date: nil,

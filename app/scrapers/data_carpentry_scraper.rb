@@ -53,8 +53,7 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
           descriptions << paragraphs[index]
         end
         lessons[lesson_url] = {}
-        lessons[lesson_url]['short_description'] = descriptions.join(' ')
-        lessons[lesson_url]['long_description'] = lesson.css('p h1 a')
+        lessons[lesson_url]['description'] = descriptions.join(' ')
         lessons[lesson_url]['title'] = title
       end
     end
@@ -63,9 +62,8 @@ class DataCarpentryScraper < Tess::Scrapers::Scraper
       add_material(Tess::API::Material.new(
           { title: data['title'],
             url: url,
-            short_description: data['short_description'],
-            content_provider: cp,
-            long_description: data['long_description']}))
+            description: data['description'],
+            content_provider: cp}))
     end
   end
 end

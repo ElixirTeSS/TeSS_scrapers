@@ -46,7 +46,7 @@ class NgsRegistryScraper < Tess::Scrapers::Scraper
         sections = ["## Keywords\n", "## Target audience (at least beginner/advanced)\n", "## Description\n"]
 
         if full_md_description.nil?
-          material.short_description = ngs_material['title']
+          material.description = ngs_material['title']
         else
           keywords_index = ngs_material['full'].find_index(sections[0])
           if !keywords_index.nil?
@@ -62,11 +62,10 @@ class NgsRegistryScraper < Tess::Scrapers::Scraper
           #Not sure about this. Maybe should just use the FULL description rather than succinct.
           description_index = ngs_material['full'].find_index(sections[2])
           if !description_index.nil?
-            material.short_description = ngs_material['full'][description_index+1]
+            material.description = ngs_material['full'][description_index+1]
           else
-            material.short_description = 'No description available'
+            material.description = 'No description available'
           end
-          material.long_description = markdown.render(ngs_material['full'].collect {|x| x.gsub(config[:tedious_string], '')}.join(' '))
           material.authors = ngs_material['authors']
 
           material.scientific_topic_names = [ngs_material['ontologies'] + material.keywords].flatten.map(&:strip).uniq

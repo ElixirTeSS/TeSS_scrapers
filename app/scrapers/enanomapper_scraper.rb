@@ -77,7 +77,7 @@ class EnanomapperScraper < Tess::Scrapers::Scraper
  	 material.difficulty_level = tm['difficultyLevel']
  	 material.keywords = tm['keywords'].split(',')
  	 #material.licence = tm['license']
- 	 material.short_description = "Training resource for eNanomapper"
+ 	 material.description = "Training resource for eNanomapper"
  	 material.url = "#{site_url}#{file_path}.html"
  	 material.content_provider = cp
  	 puts material.inspect

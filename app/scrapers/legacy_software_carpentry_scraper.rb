@@ -31,7 +31,7 @@ class LegacySoftwareCarpentryScraper < Tess::Scrapers::Scraper
       add_material(Tess::API::Material.new(
           { title: data['title'],
             url: key,
-            short_description: "#{data['title']} from #{key}.",
+            description: "#{data['title']} from #{key}.",
             remote_updated_date: data['date'],
             content_provider: cp,
             keywords: data['tags'],

@@ -28,7 +28,7 @@ class KhanAcademyApiScraper < Tess::Scrapers::Scraper
         add_material(Tess::API::Material.new(
             { title: subtopic['title'],
               url: subtopic['url'],
-              short_description: description,
+              description: description,
               content_provider: cp,
               scientific_topic_names: ['Statistics and probability'],
               keywords: [topics['title']]

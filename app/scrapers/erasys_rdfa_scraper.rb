@@ -29,7 +29,7 @@ class ErasysRdfaScraper < Tess::Scrapers::Scraper
         add_material(Tess::API::Material.new(
             { title: trim_characters(material['https://schema.org/name']),
               url: material['https://schema.org/url'],
-              short_description: material['description'],
+              description: material['description'],
               remote_created_date: material['https://schema.org/dateCreated'],
               content_provider: cp,
               scientific_topic_names: trim_characters(material['https://schema.org/keywords']),

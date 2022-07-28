@@ -29,7 +29,7 @@ international research community.',
       material = Tess::API::Material.new(
         title: data['name'],
         url: url,
-        short_description: data['description'],
+        description: data['description'],
         remote_updated_date: data['updated'],
         content_provider: cp
       )

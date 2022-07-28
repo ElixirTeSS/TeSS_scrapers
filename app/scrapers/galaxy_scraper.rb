@@ -75,7 +75,7 @@ class GalaxyScraper < Tess::Scrapers::Scraper
             new_material.url = url
             new_material.title = name
             new_material.authors = material["contributors"]
-            new_material.short_description = description
+            new_material.description = description
             new_material.content_provider = cp
             #new_material.authors = material['contributors'].collect{|x| x['name']}
             externals = []

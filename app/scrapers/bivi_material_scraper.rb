@@ -48,7 +48,7 @@ class BiviMaterialScraper < Tess::Scrapers::Scraper
       # titles[0] with links[0] to create each record, then split descriptions[0] to get the various
       # parts thereof in the same order.
       descs =  descriptions[n].inner_text().split("<br />").collect {|y| y.gsub(/\n/,"")}.reject(&:empty?)
-      short_description,event = ''
+      description,event = ''
       presentation_type,bio_keywords,comp_keywords,presenter = []
       descs.each do |d|
         if d =~ /^#Presenter/
@@ -62,17 +62,17 @@ class BiviMaterialScraper < Tess::Scrapers::Scraper
         elsif d =~ /^#Computing/
           comp_keywords = d.gsub(/#Computing Keywords:\s+/i,"").split(",").collect {|x| x.strip}
         else
-          short_description += d
+          description += d
         end
       end
       if event
-        short_description += "\nCreated at: #{event}."
+        description += "\nCreated at: #{event}."
       end
 
       # Create the material from the information above
       m = add_material(Tess::API::Material.new(title: title,
                                                url: link,
-                                               short_description: short_description,
+                                               description: description,
                                                remote_updated_date: date,
                                                content_provider: cp,
                                                scientific_topic_names: bio_keywords + comp_keywords,

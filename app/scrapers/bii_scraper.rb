@@ -39,7 +39,7 @@ class BiiScraper < Tess::Scrapers::Scraper
     extract = {}
     extract[:title] = material['title'].first['value'] if material['title'].any? && material['title'].first.has_key?('value')
     extract[:url] = material['field_url'].first['uri'] if material['field_url'].any? && material['field_url'].first.has_key?('uri')
-    extract[:short_description] = material['body'].first['value'] if material['body'].any? && material['body'].first.has_key?('value')
+    extract[:description] = material['body'].first['value'] if material['body'].any? && material['body'].first.has_key?('value')
     extract[:authors] = material['field_author_s_'].collect{|y| y['value']} if  material['field_author_s_'].any? && material['field_author_s_'].first.has_key?('value')
     #extract[:scientific_topic_names] =
     #extract[:keywords] =

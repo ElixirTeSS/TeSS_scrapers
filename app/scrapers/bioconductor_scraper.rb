@@ -53,7 +53,7 @@ class BioconductorScraper  < Tess::Scrapers::Scraper
           url: "#{config[:base_url]}#{links[1]}",
           authors: authors,
           content_provider: cp,
-          short_description: description,
+          description: description,
           external_resources_attributes: {url: 'https://bio.tools/bioconductor', title: 'Bioconductor'}
         }.merge(sortKeywords(keywords))
       )
