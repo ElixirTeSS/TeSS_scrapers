@@ -25,14 +25,14 @@ class EnanomapperScraper < Tess::Scrapers::Scraper
  
 
     sitemap_url = 'https://raw.githubusercontent.com/enanomapper/tutorials/master/sitemap.xml'
-    sitemap = Nokogiri::XML.parse(open(sitemap_url).read)
+    sitemap = Nokogiri::XML.parse(open_url(sitemap_url).read)
     ns = {"ns" => "http://www.sitemaps.org/schemas/sitemap/0.9"}
     locs = sitemap.xpath('/ns:urlset/ns:url/ns:loc', ns)
 
     materials = []
 
     locs.collect{|x| x.text}.each do |file|
-    	tutorial = open(file).read
+    	tutorial = open_url(file).read
     	json = (/<script type="application\/ld\+json">(.*?)<\/script>/m.match(tutorial))[1]
       json = JSON.parse(json)
       json['url'] = json['url'][0]['url'] if json['url'].is_a?(Array)
@@ -65,7 +65,7 @@ class EnanomapperScraper < Tess::Scrapers::Scraper
 	 github_url = 'https://raw.githubusercontent.com/enanomapper/tutorials/master/'
 	 
 
-	 page = open("#{github_url}#{file_path}.md").read
+	 page = open_url("#{github_url}#{file_path}.md").read
 	 yaml_data = page.match /---(.*?)---*./m 
 	 yaml = YAML.load(yaml_data.to_s)
 	 tm = yaml['trainingMaterial'] 

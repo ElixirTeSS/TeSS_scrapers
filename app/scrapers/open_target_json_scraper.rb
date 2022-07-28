@@ -17,9 +17,9 @@ class OpenTargetJsonScraper < Tess::Scrapers::Scraper
         }))
 
 
-        json = JSON.parse(open(config[:json_feed]).read)
+        json = JSON.parse(open_url(config[:json_feed]).read)
 
-        json = JSON.parse(open('https://raw.githubusercontent.com/opentargets/live-files/gh-pages/outreach.json').read)
+        json = JSON.parse(open_url('https://raw.githubusercontent.com/opentargets/live-files/gh-pages/outreach.json').read)
         json['sessions'].each do |session|
           startDateString = session['date']
           startDate = Date.parse(session['date'])

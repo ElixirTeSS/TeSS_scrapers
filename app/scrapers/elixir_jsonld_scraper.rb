@@ -31,7 +31,7 @@ ELIXIR provides the facilities necessary for life science researchers - from ben
         doc = Nokogiri::HTML(open_url(config[:root_url] + path + "?page=#{page_number}"))
         doc.css('.views-table tbody tr td:first a').map { |e| e['href'] }.each do |event_path|
           url = config[:root_url] + event_path
-          html = open(url).read
+          html = open_url(url).read
       json = /<script type="application\/ld\+json">(.*)<\/script>/m.match(html)
       if json
         events = Tess::Rdf::EventExtractor.new(json[1], :jsonld).extract { |p| Tess::API::Event.new(p) }

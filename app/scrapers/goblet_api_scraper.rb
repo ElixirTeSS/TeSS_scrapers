@@ -49,7 +49,7 @@ bioinformatics educators/trainers and students/trainees.',
   def parse_data(url)
     lessons = {}
     page = "#{config[:root_url]}/#{url}"
-    doc = Nokogiri::XML(open(page))
+    doc = Nokogiri::XML(open_url(page))
 
     doc.search('nodes > node').each do |node|
 

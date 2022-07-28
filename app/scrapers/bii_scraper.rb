@@ -51,8 +51,8 @@ class BiiScraper < Tess::Scrapers::Scraper
 
   def get_content()
     #{config[:root_url]}#{config[:materials_path]}
-    ids = JSON.load(open("#{config[:root_url]}#{config[:materials_path]}"))
-    return ids.collect{|x| JSON.load(open( PAGE_TEMPLATE.gsub('%i%', x['nid']) ) ) }
+    ids = JSON.load(open_url("#{config[:root_url]}#{config[:materials_path]}"))
+    return ids.collect{|x| JSON.load(open_url( PAGE_TEMPLATE.gsub('%i%', x['nid']) ) ) }
   end
 end
 
@@ -67,7 +67,7 @@ def self.config
         materials_path: '/training?_format=json'
     }
   end
-  a = JSON.load(open "#{config[:root_url]}#{config[:materials_path]}").collect{|x| JSON.load(open("#{config[:root_url]}/node/#{x['nid']}?_format=json"))}
+  a = JSON.load(open "#{config[:root_url]}#{config[:materials_path]}").collect{|x| JSON.load(open_url("#{config[:root_url]}/node/#{x['nid']}?_format=json"))}
   a.select!{|x| x.has_key?('field_url') && x['field_url'].any? && x['field_url'].first.has_key?('uri')}
 
 

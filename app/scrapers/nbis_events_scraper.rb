@@ -19,7 +19,7 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
 
     #file = JSON.parse(open config[:content_url])
     puts config[:content_url]
-    json = JSON.parse(open(config[:content_url],{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)
+    json = JSON.parse(open_url(config[:content_url],{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)
     json['items'].each do |item|
       event = Tess::API::Event.new
       unless item['description'].nil? || (item["start"]["date"].nil? && item["start"]["datetime"].nil?)

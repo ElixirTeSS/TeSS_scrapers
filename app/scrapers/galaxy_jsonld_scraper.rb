@@ -22,7 +22,7 @@ class GalaxyJsonldScraper < Tess::Scrapers::Scraper
 
     
     
-        courses = Tess::Rdf::CourseExtractor.new(open(test).read, :jsonld).extract do |course|
+        courses = Tess::Rdf::CourseExtractor.new(open_url(test).read, :jsonld).extract do |course|
             Tess::API::Material.new(course) 
         end
         courses.each do |course|

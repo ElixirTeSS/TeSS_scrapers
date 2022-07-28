@@ -12,7 +12,7 @@ class CscEventsScraper < Tess::Scrapers::Scraper
   def scrape
     events = {}
 
-    doc = Nokogiri::HTML(open(config[:root_url]).read)
+    doc = Nokogiri::HTML(open_url(config[:root_url]).read)
 
     doc.css('div.csc-article').each do |article|
       categories = article.search('.koulutus-category').collect {|x| x.text.strip}.reject(&:empty?)

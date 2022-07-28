@@ -21,7 +21,7 @@ class EbiJsonScraper < Tess::Scrapers::Scraper
                                   keywords: ["HDRUK"]
                                 ))
 
-      json_events = JSON::load(open(config[:json_url]))
+      json_events = JSON::load(open_url(config[:json_url]))
       events = []
       json_events.each do |event|
         events += Tess::Rdf::EventExtractor.new(event.to_json, :jsonld).extract { |p| Tess::API::Event.new(p) }

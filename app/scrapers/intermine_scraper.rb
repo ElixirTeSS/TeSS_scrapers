@@ -16,9 +16,9 @@ class IntermineScraper < Tess::Scrapers::Scraper
       node_name: :'UK',
     ))
 
-    #page = Nokogiri::HTML.parse(open(config[:index_page]).read)
+    #page = Nokogiri::HTML.parse(open_url(config[:index_page]).read)
     index = "http://intermine.org/tutorials/"
-    page = Nokogiri::HTML.parse(open(index).read)
+    page = Nokogiri::HTML.parse(open_url(index).read)
     tutorials = page.xpath("/html/body/main/ul/li")
 
     tutorials.each do |tutorial|
@@ -37,9 +37,9 @@ class IntermineScraper < Tess::Scrapers::Scraper
       end
     end
 
-    #page = Nokogiri::HTML.parse(open(config[:index_page]).read)
+    #page = Nokogiri::HTML.parse(open_url(config[:index_page]).read)
     index = "http://intermine.org/training-workshops/"
-    page = Nokogiri::HTML.parse(open(index).read)
+    page = Nokogiri::HTML.parse(open_url(index).read)
     tutorials = page.xpath("/html/body/div/section/ul/li/a")
     tutorials.each do |tutorial|
       if !tutorial.attributes["href"].nil?

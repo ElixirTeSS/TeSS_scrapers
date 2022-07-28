@@ -25,7 +25,7 @@ class IfbEventsScraper < Tess::Scrapers::Scraper
 
     scrape_url = config[:root_url] + config[:events_path]
     doc = Nokogiri::HTML(open_url(scrape_url))
-    #doc = Nokogiri::HTML(open('/Users/milo/Work/Web/TeSS_scrapers/html/ifb_events/index.html'))
+    #doc = Nokogiri::HTML(open_url('/Users/milo/Work/Web/TeSS_scrapers/html/ifb_events/index.html'))
 
     event_block = doc.css('div.event_block')
 

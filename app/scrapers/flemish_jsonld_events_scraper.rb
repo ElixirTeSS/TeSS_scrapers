@@ -21,7 +21,7 @@ class FlemishJsonldEventsScraper < Tess::Scrapers::Scraper
         "keywords":["Computing"]
      }
      )) #Metadata handled manually
-  	jsonld = open(config[:root_url]).read
+  	jsonld = open_url(config[:root_url]).read
   	events = Tess::Rdf::EventExtractor.new(jsonld, :jsonld).extract { |p| Tess::API::Event.new(p) }
   	events.each do |event|
   	    event.content_provider_id = cp.id

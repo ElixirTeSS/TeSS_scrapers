@@ -22,12 +22,12 @@ class PortugalEventsScraper < Tess::Scrapers::Scraper
 
 
 
-    index = Nokogiri::HTML(open(config[:root_url]))
+    index = Nokogiri::HTML(open_url(config[:root_url]))
     urls = index.search('tbody td.views-field-title a').map{|x| x.values}.flatten
 
     urls.each do |url|
       #url =
-      html = open(config[:base_url] + url).read
+      html = open_url(config[:base_url] + url).read
       #extract JSON with regex because passing whole JSON to RDFEventExtractor throws errors up.
       a = /<script type="application\/ld\+json">(.*?)<\/script>/m.match(html)
 

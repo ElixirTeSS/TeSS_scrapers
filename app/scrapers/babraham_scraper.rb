@@ -23,7 +23,7 @@ class BabrahamScraper < Tess::Scrapers::Scraper
     ))
 
     materials_route = "#{config[:root_url]}/#{config[:materials_path]}"
-    doc = Nokogiri::HTML(open(materials_route).read)
+    doc = Nokogiri::HTML(open_url(materials_route).read)
 
     contact = doc/'a[href ^="mailto:"]'
     doc.search('table > tr').each do |row|

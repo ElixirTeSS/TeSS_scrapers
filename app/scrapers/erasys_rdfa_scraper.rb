@@ -50,7 +50,7 @@ class ErasysRdfaScraper < Tess::Scrapers::Scraper
     materials = Tess::Scrapers::RdfaExtractor.parse_rdfa(rdfa, 'BlogPosting')
     materials.each do |material|
       if material['https://schema.org/url']
-        page = Nokogiri::HTML(open(material['https://schema.org/url']))
+        page = Nokogiri::HTML(open_url(material['https://schema.org/url']))
         desc_div = material['description'] = page.css('div.item-page p')
         unless desc_div.first.nil?
           material['description'] = desc_div.first.text 

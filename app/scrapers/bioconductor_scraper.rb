@@ -118,7 +118,7 @@ class BioconductorScraper  < Tess::Scrapers::Scraper
 
   def get_records(url)
     uri = URI.parse(url)
-    data = open(uri)
+    data = open_url(uri)
     #data = IO.read("course_descriptions.tsv")
     CSV.parse(data).collect {|x| x[0].split(/\t/)}
   end

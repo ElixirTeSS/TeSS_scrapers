@@ -27,7 +27,7 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
       		url = url.gsub('http://', 'https://')
     	end
 
-        doc = Nokogiri::HTML(open(url))
+        doc = Nokogiri::HTML(open_url(url))
         events = []
         doc.search('//script[@type="application/ld+json"]').each do |element|
           begin
@@ -51,7 +51,7 @@ class BmtcJsonldScraper < Tess::Scrapers::Scraper
   private
 
   def get_urls(index_page)
-    doc = Nokogiri::HTML(open(index_page))
+    doc = Nokogiri::HTML(open_url(index_page))
     links_div = doc.search('//*[@id="form1"]/main/article/div/div[2]/table')
     # Resolve relative links
     links = links_div.search('a').collect do |link|
@@ -71,6 +71,6 @@ end
 require 'open-uri'
 require 'nokogiri'  
 index_page = 'https://www.birmingham.ac.uk/facilities/metabolomics-training-centre/course-list.aspx'
-doc = Nokogiri::HTML(open(index_page))
+doc = Nokogiri::HTML(open_url(index_page))
 links_div = doc.search('//*[@id="form1"]/main/article/div/div[2]/table')
 =end

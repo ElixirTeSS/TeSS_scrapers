@@ -23,7 +23,7 @@ class LuxembourgRdfaScraper < Tess::Scrapers::Scraper
           node_name: :LU
         }))
     
-    events = Tess::Rdf::EventExtractor.new(open(config[:event_content]), :rdfa).extract { |p| Tess::API::Event.new(p) }
+    events = Tess::Rdf::EventExtractor.new(open_url(config[:event_content]), :rdfa).extract { |p| Tess::API::Event.new(p) }
     
     events.each do |event|
       event.content_provider = cp
