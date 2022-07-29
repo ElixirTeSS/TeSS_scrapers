@@ -41,11 +41,11 @@ class BioschemasScraper < Tess::Scrapers::Scraper
         source = source.read
         events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract { |p| Tess::API::Event.new(p) }
         courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract { |p| Tess::API::Event.new(p) }
-        materials = Tess::Rdf::MaterialExtractor.new(source, format, base_uri: url).extract { |p| Tess::API::Material.new(p) }
+        learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract { |p| Tess::API::Material.new(p) }
         if debug
           puts "Events: #{events.count}"
           puts "Courses: #{courses.count}"
-          puts "TrainingMaterials: #{materials.count}"
+          puts "LearningResources: #{learning_resources.count}"
         end
 
         (events + courses).each do |event|
@@ -53,9 +53,9 @@ class BioschemasScraper < Tess::Scrapers::Scraper
           add_event(event)
         end
 
-        materials.each do |material|
+        learning_resources.each do |material|
           material.content_provider = provider
-          add_event(material)
+          add_material(material)
         end
       end
     end
