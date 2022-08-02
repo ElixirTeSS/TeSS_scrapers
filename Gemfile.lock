@@ -1,16 +1,16 @@
 GIT
   remote: https://github.com/ElixirTeSS/TeSS_RDF_Extractors
-  revision: 703ea16bbb5b8806b8fe94506bcac8e8e6a959d8
+  revision: 1b1b57e42093b6813baafd36955d6caf2de8822c
   specs:
     tess_rdf_extractors (0.1.0)
       linkeddata (~> 3.2.0)
 
 GIT
   remote: https://github.com/ElixirTeSS/TeSS_api_client
-  revision: 4926e8dc8bc08a6964161344b3e35db5ee3325d9
-  tag: 0.4.1
+  revision: 352304da06b8aea1da55cc2848c4db3c8f1f99a4
+  tag: 0.4.2
   specs:
-    tess_api_client (0.4.1)
+    tess_api_client (0.4.2)
       inifile (~> 3.0.0)
       rest-client (~> 2.0.0)
 

@@ -31,6 +31,8 @@ class BioschemasScraper < Tess::Scrapers::Scraper
         sources = [source_url]
       end
 
+      provider_events = []
+      provider_materials = []
       sources.each do |url|
         source = open_url(url)
         next unless source
@@ -42,22 +44,64 @@ class BioschemasScraper < Tess::Scrapers::Scraper
         events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract { |p| Tess::API::Event.new(p) }
         courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract { |p| Tess::API::Event.new(p) }
         learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract { |p| Tess::API::Material.new(p) }
-        if debug
+        if verbose
           puts "Events: #{events.count}"
           puts "Courses: #{courses.count}"
           puts "LearningResources: #{learning_resources.count}"
         end
 
-        (events + courses).each do |event|
+        deduplicate(events + courses).each do |event|
           event.content_provider = provider
-          add_event(event)
+          provider_events << event
         end
 
-        learning_resources.each do |material|
+        deduplicate(learning_resources).each do |material|
           material.content_provider = provider
-          add_material(material)
+          provider_materials << material
         end
       end
+
+      deduplicate(provider_events).each { |event| add_event(event) }
+      deduplicate(provider_materials).each { |material| add_material(material) }
     end
+  end
+
+  # If duplicate resources have been extracted, prefer ones with the most metadata.
+  def deduplicate(resources)
+    return [] unless resources.any?
+    puts "De-duplicating #{resources.count} resources" if verbose
+    hash = {}
+    scores = {}
+    resources.each do |resource|
+      puts "  Considering: #{resource.url}" if verbose
+      if hash[resource.url]
+        score = metadata_score(resource)
+        # Replace the resource if this resource has a higher metadata score
+        puts "    Duplicate! Comparing #{score} vs. #{scores[resource.url]}" if verbose
+        if score > scores[resource.url]
+          puts "    Replacing resource" if verbose
+          hash[resource.url] = resource
+          scores[resource.url] = score
+        end
+      else
+        puts "    Not present, adding" if verbose
+        hash[resource.url] = resource
+        scores[resource.url] = metadata_score(resource)
+      end
+    end
+
+    puts "#{hash.values.count} resources after de-duplication" if verbose
+
+    hash.values
+  end
+
+  # Score based on number of metadata fields available
+  def metadata_score(resource)
+    score = 0
+    resource.dump.each_value do |value|
+      score += 1 unless value.nil? || value == {} || value == [] || (value.is_a?(String) && value.strip == '')
+    end
+
+    score
   end
 end
