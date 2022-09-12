@@ -22,7 +22,7 @@ class BioschemasScraper < Tess::Scrapers::Scraper
       sitemap_regex = /#{sitemap_regex}/ if sitemap_regex
       provider = add_content_provider(Tess::API::ContentProvider.new(provider_metadata))
 
-      if source_url.downcase.end_with?('sitemap.xml')
+      if source_url.downcase.match?(/sitemap(.*)?.xml\Z/)
         sources = SitemapParser.new(source_url, {
           recurse: true,
           url_regex: sitemap_regex,
