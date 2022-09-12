@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'sitemap-parser'
+require 'reverse_markdown'
 
 class BioschemasScraper < Tess::Scrapers::Scraper
   def self.config
@@ -41,9 +42,15 @@ class BioschemasScraper < Tess::Scrapers::Scraper
         format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
         source.rewind
         source = source.read
-        events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract { |p| Tess::API::Event.new(p) }
-        courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract { |p| Tess::API::Event.new(p) }
-        learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract { |p| Tess::API::Material.new(p) }
+        events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract do |p|
+          Tess::API::Event.new(convert_params(p))
+        end
+        courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract do |p|
+          Tess::API::Event.new(convert_params(p))
+        end
+        learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
+          Tess::API::Material.new(convert_params(p))
+        end
         if verbose
           puts "Events: #{events.count}"
           puts "Courses: #{courses.count}"
@@ -103,5 +110,20 @@ class BioschemasScraper < Tess::Scrapers::Scraper
     end
 
     score
+  end
+
+  def convert_params(params)
+    params[:description] = convert_html_description(params[:description]) if params.key?(:description)
+
+    params
+  end
+
+  def convert_html_description(desc)
+    # Hacky way of detecting if description contains common HTML tags
+    if desc.match?(/<(li|p|b|ul|div|br)\/?>/)
+      ReverseMarkdown.convert(desc)
+    else
+      desc
+    end
   end
 end

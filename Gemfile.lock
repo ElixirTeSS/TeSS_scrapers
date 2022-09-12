@@ -188,6 +188,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    reverse_markdown (2.1.1)
+      nokogiri
     rexml (3.2.5)
     sanitize (6.0.0)
       crass (~> 1.0.2)
@@ -247,6 +249,7 @@ DEPENDENCIES
   linkeddata (~> 3.2.0)
   nokogiri
   redcarpet
+  reverse_markdown (~> 2.1.1)
   sanitize
   simple-rss
   sitemap-parser
