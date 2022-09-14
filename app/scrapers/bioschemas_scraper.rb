@@ -48,16 +48,20 @@ class BioschemasScraper < Tess::Scrapers::Scraper
         courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract do |p|
           Tess::API::Event.new(convert_params(p))
         end
+        course_instances = Tess::Rdf::CourseInstanceExtractor.new(source, format, base_uri: url).extract do |p|
+          Tess::API::Event.new(convert_params(p))
+        end
         learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
           Tess::API::Material.new(convert_params(p))
         end
         if verbose
           puts "Events: #{events.count}"
           puts "Courses: #{courses.count}"
+          puts "CourseInstances (without Course): #{course_instances.count}"
           puts "LearningResources: #{learning_resources.count}"
         end
 
-        deduplicate(events + courses).each do |event|
+        deduplicate(events + courses + course_instances).each do |event|
           event.content_provider = provider
           provider_events << event
         end
