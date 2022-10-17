@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ElixirTeSS/TeSS_RDF_Extractors
-  revision: 0a721aa29631adbfe0ab55cf0a5683793f99f64f
+  revision: b7bb5e7aa4306e294408f93f8a63d7767c3c12f0
   specs:
     tess_rdf_extractors (0.1.0)
       linkeddata (~> 3.2.0)
@@ -24,7 +24,7 @@ GEM
       i18n
     builder (3.2.4)
     concurrent-ruby (1.1.10)
-    connection_pool (2.2.5)
+    connection_pool (2.3.0)
     crass (1.0.6)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -66,7 +66,7 @@ GEM
       multi_json (~> 1.15)
       rack (~> 2.2)
       rdf (~> 3.2, >= 3.2.9)
-    json-ld-preloaded (3.2.0)
+    json-ld-preloaded (3.2.1)
       json-ld (~> 3.2)
       rdf (~> 3.2)
     ld-patch (3.2.0)
@@ -118,7 +118,7 @@ GEM
     nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    psych (4.0.5)
+    psych (4.0.6)
       stringio
     public_suffix (5.0.0)
     racc (1.6.0)
@@ -181,7 +181,7 @@ GEM
     rdf-turtle (3.2.1)
       ebnf (~> 2.3)
       rdf (~> 3.2)
-    rdf-vocab (3.2.1)
+    rdf-vocab (3.2.2)
       rdf (~> 3.2, >= 3.2.4)
     rdf-xsd (3.2.1)
       rdf (~> 3.2)
@@ -229,8 +229,8 @@ GEM
       net-http-persistent (~> 4.0, >= 4.0.1)
       rdf (~> 3.2, >= 3.2.6)
     stringio (3.0.2)
-    sxp (1.2.2)
-      matrix
+    sxp (1.2.3)
+      matrix (~> 0.4)
       rdf (~> 3.2)
     temple (0.8.2)
     tilt (2.0.11)
