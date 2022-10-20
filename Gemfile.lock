@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ElixirTeSS/TeSS_RDF_Extractors
-  revision: b7bb5e7aa4306e294408f93f8a63d7767c3c12f0
+  revision: dfb7d1968655ed1b382b4ce4323baa84c4b6235c
   specs:
     tess_rdf_extractors (0.1.0)
       linkeddata (~> 3.2.0)
@@ -115,7 +115,7 @@ GEM
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
     netrc (0.11.0)
-    nokogiri (1.13.8)
+    nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     psych (4.0.6)
