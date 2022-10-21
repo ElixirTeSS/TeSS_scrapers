@@ -25,33 +25,35 @@ class SheffieldScraper < Tess::Scrapers::Scraper
     cache_file_path('git')
     files = Dir["#{cache_file_path('git')}/#{config[:gh_events_path]}/*.md"]
     files.reject!{|x|x.include?('index.md')}
-    
+
     files.each do |file|
-      begin 
-        eventyaml = YAML.load_file(file)
+      begin
+        eventyaml = YAML.load_file(file, permitted_classes: [Symbol, Date, DateTime])
+
         start_time = formatted_time(eventyaml['startTime'], eventyaml['startDate'])
         end_time = formatted_time(eventyaml['endTime'], eventyaml['endDate'])
         next unless start_time && end_time
         event = Tess::API::Event.new({
-          description: eventyaml['description'],
-          content_provider: cp,
-          event_types: [:workshops_and_courses],
-          url: "#{config[:site_base]}/#{File.basename(file).chomp('.md')}",
-          title: eventyaml['title'],
-          start: start_time,
-          end: end_time,
-          venue: eventyaml['venue'],
-          city: "#{eventyaml['city'].capitalize if !eventyaml['city'].nil?}",
-          country: eventyaml['country'],
-          postcode: eventyaml['postcode'],          
+                                       description: eventyaml['description'],
+                                       content_provider: cp,
+                                       event_types: [:workshops_and_courses],
+                                       url: "#{config[:site_base]}/#{File.basename(file).chomp('.md')}",
+                                       title: eventyaml['title'],
+                                       start: start_time,
+                                       end: end_time,
+                                       venue: eventyaml['venue'],
+                                       city: "#{eventyaml['city'].capitalize unless eventyaml['city'].nil?}",
+                                       country: eventyaml['country'],
+                                       postcode: eventyaml['postcode'],
 
-          contact: eventyaml['contact'],
-          #difficulty_level: [eventyaml['difficulty']],
-          keywords: eventyaml['keywords']
-         })
-         add_event(event)
-       rescue
-       end
+                                       contact: eventyaml['contact'],
+                                       #difficulty_level: [eventyaml['difficulty']],
+                                       keywords: eventyaml['keywords']
+                                     })
+        add_event(event)
+      rescue Psych::SyntaxError => e
+        puts "YAML parse error for: #{file} #{e.message}"
+      end
     end
   end
 
