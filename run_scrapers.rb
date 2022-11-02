@@ -1,5 +1,7 @@
 require_relative 'lib/tess_scrapers'
 require 'net/smtp'
+require 'pathname'
+require 'fileutils'
 
 log = 'log/scrapers.log' # The log file for this script, just mentions which scrapers are run.
 output = 'log/scrapers.out' # The log file for scraper output. Says how many events etc. were scraped. Need to logrotate this, will be big!
@@ -60,14 +62,24 @@ scrapers = [
 ]
 
 
-options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
-#options = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing
+#options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
+options = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing
 
 failed_scrapers = []
 
 begin
   # Open log file
   log_file = File.open(log, 'w')
+  begin
+    dir = Pathname(File.dirname(__FILE__)).expand_path
+    unless dir.join('email_config.yml').exist?
+      FileUtils.cp(dir.join('email_config.example.yml'), dir.join('email_config.yml'))
+    end
+    email_config = YAML.load(open(dir.join('email_config.yml')))['email']
+  rescue => e
+    puts "Couldn't load email_config.yml:"
+    raise e
+  end
 
   scrapers.each do |scraper_class|
     log_file.puts "Running #{scraper_class}"
@@ -81,20 +93,19 @@ begin
   end
 
   if email && failed_scrapers.length > 0
-    message = <<MESSAGE_END
-From: TeSS <tess@tess2-elixir.csc.fi>
-To: TeSS <tess-support@googlegroups.com>
-Subject: Scraper Failure (#{failed_scrapers.map { |e| e[0] }.join(', ')})
-
-It would seem that the following scrapers have failed to run:
-
-#{failed_scrapers.map { |e| "#{e[0]}: #{e[1].message}\n\t#{e[1].backtrace.join("\n\t")}" }.join("\n\n")}
-
-MESSAGE_END
+    message = ''
+    message << "From: #{email_config['from']}\n"
+    message << "To: #{email_config['to']}\n"
+    message << "Sender: #{email_config['sender']}\n" if email_config.key?('sender')
+    message << "Subject: Scraper Failure (#{failed_scrapers.map { |e| e[0] }.join(', ')})\n"
+    message << "\n"
+    message << "It would seem that the following scrapers have failed to run:\n\n"
+    message << failed_scrapers.map { |e| "#{e[0]}: #{e[1].message}\n\t#{e[1].backtrace.join("\n\t")}" }.join("\n\n")
+    message << "\n"
 
     begin
-      Net::SMTP.start('localhost') do |smtp|
-        smtp.send_message message, 'tess@tess2-elixir.csc.fi', 'tess-support@googlegroups.com'
+      Net::SMTP.start(email_config['server']) do |smtp|
+        smtp.send_message message, email_config['from'], email_config['to']
       end
     rescue => e
       puts "Could not email: #{message} | #{e}"

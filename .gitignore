@@ -8,3 +8,4 @@ html/goblet_pages
 tmp
 /log/*
 !/log/.keep
+email_config.yml

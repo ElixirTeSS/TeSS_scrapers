@@ -1,0 +1,4 @@
+email:
+  server: localhost
+  from: "TeSS <tess@tess2-elixir.csc.fi>"
+  to: "TeSS Support <tess-support@googlegroups.com>"
