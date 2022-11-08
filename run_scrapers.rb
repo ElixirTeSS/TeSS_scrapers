@@ -62,8 +62,8 @@ scrapers = [
 ]
 
 
-#options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
-options = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing
+options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
+# options = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing
 
 failed_scrapers = []
 
