@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ElixirTeSS/TeSS_RDF_Extractors
-  revision: dfb7d1968655ed1b382b4ce4323baa84c4b6235c
+  revision: 700d1b6a14c68b843b59b6c7a1ad5ac387e7ef2f
   specs:
     tess_rdf_extractors (0.1.0)
       linkeddata (~> 3.2.0)
@@ -66,7 +66,7 @@ GEM
       multi_json (~> 1.15)
       rack (~> 2.2)
       rdf (~> 3.2, >= 3.2.9)
-    json-ld-preloaded (3.2.1)
+    json-ld-preloaded (3.2.2)
       json-ld (~> 3.2)
       rdf (~> 3.2)
     ld-patch (3.2.0)
@@ -181,7 +181,7 @@ GEM
     rdf-turtle (3.2.1)
       ebnf (~> 2.3)
       rdf (~> 3.2)
-    rdf-vocab (3.2.2)
+    rdf-vocab (3.2.3)
       rdf (~> 3.2, >= 3.2.4)
     rdf-xsd (3.2.1)
       rdf (~> 3.2)
@@ -232,7 +232,7 @@ GEM
     sxp (1.2.3)
       matrix (~> 0.4)
       rdf (~> 3.2)
-    temple (0.8.2)
+    temple (0.9.1)
     tilt (2.0.11)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
@@ -266,4 +266,4 @@ DEPENDENCIES
   tess_rdf_extractors!
 
 BUNDLED WITH
-   2.3.6
+   2.3.22
