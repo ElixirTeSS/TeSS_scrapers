@@ -83,12 +83,19 @@ begin
 
   scrapers.each do |scraper_class|
     log_file.puts "Running #{scraper_class}"
+    exceptions = []
     begin
-      scraper_class.new(options).run
+      scraper = scraper_class.new(options)
+      scraper.run
+      exceptions = scraper.exceptions
     rescue => e
-      log_file.puts e.message
-      log_file.puts e.backtrace.join("\n")
-      failed_scrapers << [scraper_class, e]
+      exceptions << e
+    end
+    failed_scrapers << [scraper_class, exceptions]
+    exceptions.each do |exception|
+      log_file.puts exception.message
+      log_file.puts exception.backtrace.join("\n")
+      log_file.puts
     end
   end
 
@@ -100,7 +107,15 @@ begin
     message << "Subject: Scraper Failure (#{failed_scrapers.map { |e| e[0] }.join(', ')})\n"
     message << "\n"
     message << "It would seem that the following scrapers have failed to run:\n\n"
-    message << failed_scrapers.map { |e| "#{e[0]}: #{e[1].message}\n\t#{e[1].backtrace.join("\n\t")}" }.join("\n\n")
+    failed_scrapers.each do |scraper_class, exceptions|
+      message << "#{scraper_class}:\n"
+      exceptions.each do |e|
+        message << "  #{e.message}\n"
+        e.backtrace.each do |t|
+          message << "    #{t}\n"
+        end
+      end
+    end
     message << "\n"
 
     begin

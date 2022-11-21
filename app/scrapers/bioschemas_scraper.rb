@@ -3,6 +3,13 @@ require 'sitemap-parser'
 require 'reverse_markdown'
 
 class BioschemasScraper < Tess::Scrapers::Scraper
+  class ProviderException < StandardError
+    def initialize(provider_metadata, exception)
+      super("Error occurred scraping \"#{provider_metadata['title']}\": #{exception.class.name} - #{exception.message}")
+      set_backtrace(exception.backtrace)
+    end
+  end
+
   def self.config
     config_path = File.expand_path(File.join(__FILE__, '..', '..', '..', 'bioschemas_scraper_config.yml'))
     raise "No config file found at: #{config_path}" unless File.exist?(config_path)
@@ -16,64 +23,68 @@ class BioschemasScraper < Tess::Scrapers::Scraper
 
   def scrape
     config[:providers].each do |provider_metadata|
-      puts "  #{provider_metadata['title']}"
-      source_url = provider_metadata.delete('source')
-      sitemap_regex = provider_metadata.delete('sitemap_regex')
-      sitemap_regex = /#{sitemap_regex}/ if sitemap_regex
-      provider = add_content_provider(Tess::API::ContentProvider.new(provider_metadata))
+      begin
+        puts "  #{provider_metadata['title']}"
+        source_url = provider_metadata.delete('source')
+        sitemap_regex = provider_metadata.delete('sitemap_regex')
+        sitemap_regex = /#{sitemap_regex}/ if sitemap_regex
+        provider = add_content_provider(Tess::API::ContentProvider.new(provider_metadata))
 
-      if source_url.downcase.match?(/sitemap(.*)?.xml\Z/)
-        sources = SitemapParser.new(source_url, {
-          recurse: true,
-          url_regex: sitemap_regex,
-          headers: { 'User-Agent' => config[:user_agent] },
-        }).to_a.uniq
-      else
-        sources = [source_url]
+        if source_url.downcase.match?(/sitemap(.*)?.xml\Z/)
+          sources = SitemapParser.new(source_url, {
+            recurse: true,
+            url_regex: sitemap_regex,
+            headers: { 'User-Agent' => config[:user_agent] },
+          }).to_a.uniq
+        else
+          sources = [source_url]
+        end
+
+        provider_events = []
+        provider_materials = []
+        sources.each do |url|
+          source = open_url(url)
+          next unless source
+          sample = source.read(256)&.strip
+          next unless sample
+          format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
+          source.rewind
+          source = source.read
+          events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract do |p|
+            Tess::API::Event.new(convert_params(p))
+          end
+          courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract do |p|
+            Tess::API::Event.new(convert_params(p))
+          end
+          course_instances = Tess::Rdf::CourseInstanceExtractor.new(source, format, base_uri: url).extract do |p|
+            Tess::API::Event.new(convert_params(p))
+          end
+          learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
+            Tess::API::Material.new(convert_params(p))
+          end
+          if verbose
+            puts "Events: #{events.count}"
+            puts "Courses: #{courses.count}"
+            puts "CourseInstances (without Course): #{course_instances.count}"
+            puts "LearningResources: #{learning_resources.count}"
+          end
+
+          deduplicate(events + courses + course_instances).each do |event|
+            event.content_provider = provider
+            provider_events << event
+          end
+
+          deduplicate(learning_resources).each do |material|
+            material.content_provider = provider
+            provider_materials << material
+          end
+        end
+
+        deduplicate(provider_events).each { |event| add_event(event) }
+        deduplicate(provider_materials).each { |material| add_material(material) }
+      rescue StandardError => e
+        self.exceptions << ProviderException.new(provider_metadata, e)
       end
-
-      provider_events = []
-      provider_materials = []
-      sources.each do |url|
-        source = open_url(url)
-        next unless source
-        sample = source.read(256)&.strip
-        next unless sample
-        format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
-        source.rewind
-        source = source.read
-        events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract do |p|
-          Tess::API::Event.new(convert_params(p))
-        end
-        courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract do |p|
-          Tess::API::Event.new(convert_params(p))
-        end
-        course_instances = Tess::Rdf::CourseInstanceExtractor.new(source, format, base_uri: url).extract do |p|
-          Tess::API::Event.new(convert_params(p))
-        end
-        learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
-          Tess::API::Material.new(convert_params(p))
-        end
-        if verbose
-          puts "Events: #{events.count}"
-          puts "Courses: #{courses.count}"
-          puts "CourseInstances (without Course): #{course_instances.count}"
-          puts "LearningResources: #{learning_resources.count}"
-        end
-
-        deduplicate(events + courses + course_instances).each do |event|
-          event.content_provider = provider
-          provider_events << event
-        end
-
-        deduplicate(learning_resources).each do |material|
-          material.content_provider = provider
-          provider_materials << material
-        end
-      end
-
-      deduplicate(provider_events).each { |event| add_event(event) }
-      deduplicate(provider_materials).each { |material| add_material(material) }
     end
   end
 

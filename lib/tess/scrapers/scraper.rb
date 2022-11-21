@@ -5,7 +5,7 @@ module Tess
       CACHE_ROOT_DIR = 'tmp'
 
       attr_accessor :output_file, :debug, :verbose, :offline, :cache
-      attr_reader :scraped
+      attr_reader :scraped, :exceptions
 
       def initialize(output_file: nil, debug: false, verbose: false, offline: false, cache: false)
         @output_file = output_file
@@ -14,6 +14,7 @@ module Tess
         @offline = offline
         @cache = cache
         @scraped = { content_providers: [], events: [], materials: [] }
+        @exceptions = []
       end
 
       def self.default_config
