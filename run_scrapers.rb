@@ -91,7 +91,7 @@ begin
     rescue => e
       exceptions << e
     end
-    failed_scrapers << [scraper_class, exceptions]
+    failed_scrapers << [scraper_class, exceptions] if exceptions.any?
     exceptions.each do |exception|
       log_file.puts exception.message
       log_file.puts exception.backtrace.join("\n")
