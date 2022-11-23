@@ -6,7 +6,8 @@ class EdinburghScraper < Tess::Scrapers::Scraper
             name: 'Edinburgh genomics scraper',
             root_url: 'https://genomics.ed.ac.uk',
             index_path: '/services/training',
-            root_regex: /https?:\/\/genomics\.ed\.ac\.uk/
+            root_regex: /https?:\/\/genomics\.ed\.ac\.uk/,
+            ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
         }
     end
 

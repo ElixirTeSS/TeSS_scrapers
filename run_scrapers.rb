@@ -46,7 +46,7 @@ scrapers = [
    LegacySoftwareCarpentryScraper,
    #LibraryCarpentryEventsScraper,
    LuxembourgRdfaScraper,
-   NbisEventsScraper,
+   #NbisEventsScraper,
    #NgsRegistryScraper,
    #OpenTargetJsonScraper,
    PortugalEventsScraper,

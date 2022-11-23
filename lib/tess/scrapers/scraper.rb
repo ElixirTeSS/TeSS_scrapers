@@ -74,6 +74,7 @@ module Tess
       # If in offline mode, either skips the URL or opens the corresponding file for that URL, as defined in
       #   `config[:offline_url_mapping]`, or reads the file from the cache under `tmp/<scraperName>`.
       def open_url(url)
+        url = url.to_s
         puts "Opening URL: #{url}" if verbose
 
         if offline

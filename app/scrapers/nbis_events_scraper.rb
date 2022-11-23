@@ -2,7 +2,9 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
 
   def self.config
     {
-        content_url: "https://www.googleapis.com/calendar/v3/calendars/bils.elixir%40gmail.com/events?key=AIzaSyA7tQAGCL4d8mNBSUZRBhedexrswhzgY6s&orderBy=startTime&singleEvents=true&timeMin=#{Time.now.strftime('%Y-%m-%dT%H:%M:%S')}.124Z"
+      name: 'NBIS Calendar Scraper',
+      content_url: "https://www.googleapis.com/calendar/v3/calendars/bils.elixir%40gmail.com/events?key=AIzaSyA7tQAGCL4d8mNBSUZRBhedexrswhzgY6s&orderBy=startTime&singleEvents=true&timeMin=#{Time.now.strftime('%Y-%m-%dT%H:%M:%S')}.124Z",
+      ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
     }
   end
 
@@ -19,7 +21,7 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
 
     #file = JSON.parse(open config[:content_url])
     puts config[:content_url]
-    json = JSON.parse(open_url(config[:content_url],{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)
+    json = JSON.parse(open_url(config[:content_url]).read)
     json['items'].each do |item|
       event = Tess::API::Event.new
       unless item['description'].nil? || (item["start"]["date"].nil? && item["start"]["datetime"].nil?)
@@ -30,8 +32,8 @@ class NbisEventsScraper < Tess::Scrapers::Scraper
         unless item['location'].nil? || item["location"] !~ location
           event.city = item['location'].match(location)[2]
           if ["Sweden", "Sverige"].include? item['location'].match(location)[3]
-              # ignore other country names (need to be translated from Swedish)
-              event.country = "Sweden"
+            # ignore other country names (need to be translated from Swedish)
+            event.country = "Sweden"
           end
         end
         event.keywords = tags.to_a

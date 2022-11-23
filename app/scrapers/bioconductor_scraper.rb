@@ -35,7 +35,7 @@ class BioconductorScraper  < Tess::Scrapers::Scraper
                     Bioconductor is also available as an AMI (Amazon Machine Image) and a series of Docker images."
 
       if record[4]
-        authors = [record[4].split(',')]
+        authors = record[4].split(',').map(&:strip)
       else
         authors = []
       end
@@ -43,7 +43,7 @@ class BioconductorScraper  < Tess::Scrapers::Scraper
         links = get_urls(record[5])
         #puts links.inspect
       end
-      keywords = record[2] if record[2].present?
+      keywords = record[2] unless (record[2].nil? || record[2].strip != '')
 
       next unless links
 
@@ -55,7 +55,7 @@ class BioconductorScraper  < Tess::Scrapers::Scraper
           content_provider: cp,
           description: description,
           external_resources_attributes: {url: 'https://bio.tools/bioconductor', title: 'Bioconductor'}
-        }.merge(sortKeywords(keywords))
+        }.merge(sort_keywords(keywords))
       )
       add_material(material)
       #puts material.inspect
@@ -66,7 +66,7 @@ class BioconductorScraper  < Tess::Scrapers::Scraper
   private
 
 
-  def sortKeywords(keyword)
+  def sort_keywords(keyword)
     operation_names = []
     scientific_topic_names = []
     resource_type = []
