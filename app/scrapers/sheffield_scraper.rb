@@ -48,7 +48,8 @@ class SheffieldScraper < Tess::Scrapers::Scraper
 
                                        contact: eventyaml['contact'],
                                        #difficulty_level: [eventyaml['difficulty']],
-                                       keywords: eventyaml['keywords']
+                                       keywords: eventyaml['keywords']&.split(','),
+                                       scientific_topic_names: eventyaml['scientific_topic_names']&.split(',')
                                      })
         add_event(event)
       rescue Psych::SyntaxError => e
