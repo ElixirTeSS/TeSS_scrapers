@@ -1,5 +1,12 @@
 module Tess
   module Scrapers
+    class PersistException < StandardError
+      def initialize(resource, exception)
+        super("Error occurred persisting resource:\n \"#{resource.inspect}\"\n#{exception.class.name} - #{exception.message}")
+        set_backtrace(exception.backtrace)
+      end
+    end
+
     class Scraper
 
       CACHE_ROOT_DIR = 'tmp'
@@ -63,10 +70,10 @@ module Tess
             puts "#{resources.length} #{type}"
             resources.each do |resource|
               begin
-              r = resource.create_or_update
+                r = resource.create_or_update
               rescue StandardError => e
                 print('E')
-                exceptions << e
+                exceptions << PersistException.new(resource, e)
               else
                 print(r.errors ? 'F' : '.')
               end
