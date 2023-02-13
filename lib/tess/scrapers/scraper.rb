@@ -62,8 +62,14 @@ module Tess
           unless type == :content_providers
             puts "#{resources.length} #{type}"
             resources.each do |resource|
+              begin
               r = resource.create_or_update
-              print(r.errors ? 'E' : '.')
+              rescue StandardError => e
+                print('E')
+                exceptions << e
+              else
+                print(r.errors ? 'F' : '.')
+              end
             end
             puts
           end
