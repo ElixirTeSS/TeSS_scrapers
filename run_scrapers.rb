@@ -53,7 +53,7 @@ scrapers = [
    #PraceEventsScraper,
    #RssScraper,
    SheffieldScraper,
-   SibScraper,
+   #SibScraper,
    #SibEventsScraper,
    #SoftwareCarpentryEventsScraper,
    #IannEventsScraper,
