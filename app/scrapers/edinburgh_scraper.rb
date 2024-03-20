@@ -36,12 +36,16 @@ class EdinburghScraper < Tess::Scrapers::Scraper
                 json = json.gsub('//--><!]]>', '')
                 json = json.gsub('<br />', '')
                 json = json.gsub("\n", "")
-                event = Tess::Rdf::EventExtractor.new(json, :jsonld).extract { |p| Tess::API::Event.new(p) }.first
-                event.content_provider = cp
-                event.event_types = [:workshops_and_courses]
-                event.url = url
-                event.keywords = ["HDRUK"]
-                add_event(event)
+                begin
+                    event = Tess::Rdf::EventExtractor.new(json, :jsonld).extract { |p| Tess::API::Event.new(p) }.first
+                    event.content_provider = cp
+                    event.event_types = [:workshops_and_courses]
+                    event.url = url
+                    event.keywords = ["HDRUK"]
+                    add_event(event)
+                rescue StandardError => e
+                    exceptions << e
+                end
             end
         end
     end
