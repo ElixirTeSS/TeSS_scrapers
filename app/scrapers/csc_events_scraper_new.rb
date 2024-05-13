@@ -4,7 +4,7 @@ class CscEventsScraperNew < Tess::Scrapers::Scraper
     {
         name: 'CSC Events Scraper (New)',
         root_url: 'https://www.csc.fi/en/training/',
-        json_api_url: 'https://www.csc.fi/o/events'
+        json_api_url: 'https://beta.csc.fi/wp-json/training/events'
     }
   end
 
@@ -53,7 +53,8 @@ class CscEventsScraperNew < Tess::Scrapers::Scraper
     JSON.parse(open_url(url).read)
   end
 
-  def for_tess? keywords
+  def for_tess?(keywords)
+    return true
     return keywords.select{|x| x.upcase.include? "TESS"}.any?
   end
 
