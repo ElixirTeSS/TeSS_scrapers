@@ -4,7 +4,7 @@ class CscEventsScraperNew < Tess::Scrapers::Scraper
     {
         name: 'CSC Events Scraper (New)',
         root_url: 'https://www.csc.fi/en/training/',
-        json_api_url: 'https://beta.csc.fi/wp-json/training/events'
+        json_api_url: 'https://csc.fi/wp-json/training/events'
     }
   end
 
