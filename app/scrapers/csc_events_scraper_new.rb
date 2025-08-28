@@ -24,25 +24,31 @@ class CscEventsScraperNew < Tess::Scrapers::Scraper
 
     events.each do |event|
       if for_tess?(event['keywords'])
-
-        add_event(Tess::API::Event.new(
+        e = Tess::API::Event.new(
           content_provider: cp,
           title: event['title'],
+          description: 'Please refer to the event page, accessible via the button above, for more information about this training.',
           url: event['url'],
           start: event['start'],
           end: event['end'],
           organizer: event['organizer'],
-          description: event['organization'],
           event_types: [:workshops_and_courses],
-          # latitude: event['latitude'],
-          # longitude: event['longitude'],
-          venue: event['venue'],
-          postcode: event['postcode'],
-          city: event['city'],
-          country: event['country'],
           keywords: event['keywords']
-      ))
+        )
 
+        if event['venue']&.downcase&.strip == 'online'
+          e.online = true
+        else
+          if event['venue']&.downcase&.include?('online') && event['city'] && event['city'].strip != ''
+            e.online = 'hybrid'
+          end
+          e.venue = event['venue']
+          e.postcode = event['postcode']
+          e.city = event['city']
+          e.country = event['country']
+        end
+
+        add_event(e)
       end
     end
   end
