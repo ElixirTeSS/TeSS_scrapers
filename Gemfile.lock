@@ -20,12 +20,16 @@ GEM
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
     amazing_print (1.4.0)
+    base64 (0.3.0)
     bcp47 (0.3.3)
       i18n
+    bigdecimal (3.3.1)
     builder (3.2.4)
     concurrent-ruby (1.1.10)
     connection_pool (2.3.0)
     crass (1.0.6)
+    csv (3.3.3)
+    date (3.5.1)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     ebnf (2.3.1)
@@ -114,11 +118,16 @@ GEM
     multi_xml (0.6.0)
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
+    net-protocol (0.2.2)
+      timeout
+    net-smtp (0.5.1)
+      net-protocol
     netrc (0.11.0)
     nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    psych (4.0.6)
+    psych (5.4.0)
+      date
       stringio
     public_suffix (5.0.0)
     racc (1.6.0)
@@ -228,12 +237,13 @@ GEM
     sparql-client (3.2.1)
       net-http-persistent (~> 4.0, >= 4.0.1)
       rdf (~> 3.2, >= 3.2.6)
-    stringio (3.0.2)
+    stringio (3.2.0)
     sxp (1.2.3)
       matrix (~> 0.4)
       rdf (~> 3.2)
     temple (0.9.1)
     tilt (2.0.11)
+    timeout (0.6.1)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
     unf (0.1.4)
@@ -250,12 +260,16 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  base64
+  bigdecimal
+  csv
   geocoder (~> 1.8.0)
   google_places (~> 2.0.0)
   htmlentities (~> 4.3.4)
   icalendar (~> 2.8.0)
   inifile (~> 3.0.0)
   linkeddata (~> 3.2.0)
+  net-smtp
   nokogiri (~> 1.13.8)
   redcarpet (~> 3.5.1)
   reverse_markdown (~> 2.1.1)
@@ -266,4 +280,4 @@ DEPENDENCIES
   tess_rdf_extractors!
 
 BUNDLED WITH
-   2.3.22
+   2.6.1

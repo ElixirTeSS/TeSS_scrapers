@@ -44,7 +44,7 @@ class LegacySoftwareCarpentryScraper < Tess::Scrapers::Scraper
 
   def git_setup
     git_path = cache_file_path('git', true)
-    unless File.exists?(git_path)
+    unless File.exist?(git_path)
       puts "Cloning git repo..."
       %x{git clone #{config[:root_url]}#{config[:git_repo]} #{git_path}}
     end

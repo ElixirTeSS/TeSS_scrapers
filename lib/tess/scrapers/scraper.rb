@@ -94,7 +94,7 @@ module Tess
           if config[:offline_url_mapping].key?(url)
             puts "... using local file: #{config[:offline_url_mapping][url]}" if verbose
             File.open(config[:offline_url_mapping][url])
-          elsif (cache_path = cache_file_path(Digest::SHA1.hexdigest(url))) && File.exists?(cache_path)
+          elsif (cache_path = cache_file_path(Digest::SHA1.hexdigest(url))) && File.exist?(cache_path)
             puts "... using cache: #{cache_path}" if verbose
             File.open(cache_path)
           else

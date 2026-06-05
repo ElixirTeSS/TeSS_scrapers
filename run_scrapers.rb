@@ -62,8 +62,8 @@ scrapers = [
 ]
 
 
-options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
-# options = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing
+#options = { output_file: output, debug: false, verbose: false, offline: false, cache: false } # Live!
+ options = { output_file: output, debug: true, verbose: true, offline: false, cache: true } # Testing
 
 failed_scrapers = []
 
@@ -85,7 +85,7 @@ begin
     log_file.puts "Running #{scraper_class}"
     exceptions = []
     begin
-      scraper = scraper_class.new(options)
+      scraper = scraper_class.new(**options)
       scraper.run
       exceptions = scraper.exceptions
     rescue => e

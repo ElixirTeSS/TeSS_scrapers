@@ -14,3 +14,7 @@ gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extracto
 gem 'htmlentities', '~> 4.3.4'
 gem 'sitemap-parser', '~> 0.5.6'
 gem 'reverse_markdown', '~> 2.1.1'
+gem 'net-smtp'
+gem 'bigdecimal'
+gem 'base64'
+gem 'csv'
